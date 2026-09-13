@@ -1,6 +1,6 @@
 # claude-work
 
-A small collection of simple, usefull utility functions for basic arithmetic operations.
+A small collection of simple, useful utility functions for basic arithmetic operations.
 
 ## Usage
 
