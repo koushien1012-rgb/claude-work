@@ -1,0 +1,330 @@
+<title>タイムリー通知</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --surface: #ffffff;
+    --surface-2: #efe8d8;
+    --ink: #1d1a15;
+    --ink-muted: #746b58;
+    --ink-faint: #9a9280;
+    --hairline: #e2d9c4;
+    --accent: #a97a1f;
+    --accent-ink: #ffffff;
+    --bull: #2f7d54;
+    --bull-soft: #d9ecdf;
+    --bear: #b2452c;
+    --bear-soft: #f3ddd4;
+    --neutral: #8a8270;
+    --neutral-soft: #ece6d6;
+    --shadow: 0 1px 2px rgba(30, 24, 10, 0.06), 0 8px 24px -16px rgba(30, 24, 10, 0.35);
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161a;
+      --surface: #1b1e24;
+      --surface-2: #22262e;
+      --ink: #eeece4;
+      --ink-muted: #9a9a8f;
+      --ink-faint: #6c6a60;
+      --hairline: #2c2f37;
+      --accent: #dcae51;
+      --accent-ink: #1a1305;
+      --bull: #5cb787;
+      --bull-soft: #1c3327;
+      --bear: #de7259;
+      --bear-soft: #3a241e;
+      --neutral: #8f9299;
+      --neutral-soft: #2a2d33;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #14161a;
+    --surface: #1b1e24;
+    --surface-2: #22262e;
+    --ink: #eeece4;
+    --ink-muted: #9a9a8f;
+    --ink-faint: #6c6a60;
+    --hairline: #2c2f37;
+    --accent: #dcae51;
+    --accent-ink: #1a1305;
+    --bull: #5cb787;
+    --bull-soft: #1c3327;
+    --bear: #de7259;
+    --bear-soft: #3a241e;
+    --neutral: #8f9299;
+    --neutral-soft: #2a2d33;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 20px 64px;
+  }
+
+  header.masthead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 20px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    margin: 0 0 4px;
+    text-wrap: balance;
+    letter-spacing: 0.02em;
+  }
+  .masthead .sub { color: var(--ink-muted); font-size: 0.86rem; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--hairline);
+    color: var(--ink-muted);
+    background: var(--surface);
+  }
+  .back-link {
+    display: inline-block;
+    margin: 14px 18px 24px 0;
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .day-group { margin-bottom: 26px; }
+  .day-label {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    margin: 0 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--hairline);
+  }
+
+  .entry {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 12px 16px;
+    margin-bottom: 10px;
+  }
+  .entry.type-figure_mention { border-left-color: var(--accent); }
+  .entry.type-macro_news { border-left-color: var(--neutral); }
+  .entry.type-macro_event_result { border-left-color: var(--bear); }
+
+  .entry-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .entry-time {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .type-badge {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    padding: 1px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .type-badge.figure_mention { background: var(--accent); color: var(--accent-ink); }
+  .type-badge.macro_news { background: var(--neutral-soft); color: var(--neutral); }
+  .type-badge.macro_event_result { background: var(--bear-soft); color: var(--bear); }
+
+  .entry-title {
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0 0 6px;
+  }
+  .entry-title a { color: var(--ink); text-decoration: none; }
+  .entry-title a:hover { color: var(--accent); }
+
+  .entry-result {
+    font-size: 0.82rem;
+    color: var(--ink);
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+  }
+  .entry-impact {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+  }
+  .entry-impact::before {
+    content: "影響: ";
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .entry-tickers { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+  .entry-tickers .tk {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 1px 7px;
+  }
+
+  footer.note {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline);
+    color: var(--ink-faint);
+    font-size: 0.74rem;
+    line-height: 1.7;
+  }
+
+  .empty-state {
+    padding: 48px 18px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.88rem;
+  }
+</style>
+
+<div class="page">
+  <header class="masthead">
+    <div>
+      <h1>タイムリー通知</h1>
+      <div class="sub">要人発言・地政学ニュース・マクロイベントの速報ログ</div>
+    </div>
+    <span class="chip" id="updatedChip"></span>
+  </header>
+
+  <a class="back-link" href="https://claude.ai/code/artifact/aae8bc26-18de-4aaf-964b-9ef16ccbd3f7" target="_blank" rel="noopener">📈 相場ボードを見る ↗</a>
+  <a class="back-link" href="https://claude.ai/artifact/ENesyoDoLBEcd4W2MtQ7pY" target="_blank" rel="noopener">🧭 セクター相場ボードを見る ↗</a>
+
+  <div id="feed"></div>
+
+  <footer class="note">
+    毎時（6:00〜23:00 JST）自動チェックし、新着があればこのページに追記されます。内容はニュース見出し・RSSフィードを機械的に取得したもので、日本語訳と「影響」欄はClaudeが見出しを読んで付した所感です。マクロイベントの「結果」欄も報道に基づく要約であり、正確な数値等は一次情報源でご確認ください。いずれも自動生成された参考情報であり、投資助言ではありません。投資判断はご自身の責任で行ってください。
+  </footer>
+</div>
+
+<script>
+  function escapeAttr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  }
+
+  function fmtTime(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "";
+    return d.toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function fmtDay(iso) {
+    if (!iso) return "日付不明";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "日付不明";
+    return d.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short" });
+  }
+
+  const TYPE_LABEL = {
+    figure_mention: "要人発言",
+    macro_news: "地政学・マクロニュース",
+    macro_event_result: "マクロイベント結果",
+  };
+
+  function entryCard(e) {
+    const type = e.type || "macro_news";
+    const title = e.title_ja || e.title || "";
+    const hasOriginal = e.title_ja && e.title && e.title_ja !== e.title;
+    const tip = hasOriginal ? ` title="${escapeAttr(e.title)}"` : "";
+    const titleHtml = e.link
+      ? `<a href="${escapeAttr(e.link)}" target="_blank" rel="noopener"${tip}>${title}</a>`
+      : `<span${tip}>${title}</span>`;
+    const result = e.result_note ? `<div class="entry-result">${e.result_note}</div>` : "";
+    const impact = e.impact_note ? `<div class="entry-impact">${e.impact_note}</div>` : "";
+    const tickers = (e.related_tickers || []).map((t) => `<span class="tk">${t}</span>`).join("");
+
+    return `<div class="entry type-${type}">
+      <div class="entry-head">
+        <span class="entry-time">${fmtTime(e.timestamp)}</span>
+        <span class="type-badge ${type}">${TYPE_LABEL[type] || type}</span>
+      </div>
+      <p class="entry-title">${titleHtml}</p>
+      ${result}
+      ${impact}
+      ${tickers ? `<div class="entry-tickers">${tickers}</div>` : ""}
+    </div>`;
+  }
+
+  function render(data) {
+    const entries = (data.entries || []).slice().sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+    document.getElementById("updatedChip").textContent = entries.length
+      ? `最新: ${fmtDay(entries[0].timestamp)} ${fmtTime(entries[0].timestamp)}`
+      : "更新なし";
+
+    const feed = document.getElementById("feed");
+    if (!entries.length) {
+      feed.innerHTML = `<div class="empty-state">まだ通知はありません。毎時のチェックで新着があれば表示されます。</div>`;
+      return;
+    }
+
+    const groups = [];
+    let currentDay = null;
+    let currentList = null;
+    for (const e of entries) {
+      const day = fmtDay(e.timestamp);
+      if (day !== currentDay) {
+        currentDay = day;
+        currentList = [];
+        groups.push({ day, items: currentList });
+      }
+      currentList.push(e);
+    }
+
+    feed.innerHTML = groups.map((g) => `
+      <div class="day-group">
+        <h2 class="day-label">${g.day}</h2>
+        ${g.items.map(entryCard).join("")}
+      </div>
+    `).join("");
+  }
+
+  fetch("timely_data.json")
+    .then((r) => r.json())
+    .then(render)
+    .catch((err) => {
+      document.getElementById("feed").innerHTML = `<div class="empty-state">データの読み込みに失敗しました: ${err}</div>`;
+    });
+</script>

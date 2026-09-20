@@ -1,0 +1,3654 @@
+{
+ "macro_news": [
+  {
+   "title": "ETF Oasis at Future Proof: Tuesday Highlights"
+  },
+  {
+   "title": "S&P 500, Nasdaq, Dow End Higher As Drop In Oil Prices Allays Inflationary Concerns — NVDA, MCD, CRWV, LMT, AMZN In Focus"
+  },
+  {
+   "title": "Fed Rate Hike in October or December? Benzinga Viewers Say This is More Likely"
+  },
+  {
+   "title": "Trump's Inflation Approval Slumps to 19%: What Do Prediction Markets Say About the Midterms?"
+  },
+  {
+   "title": "Gold price today, Thursday, September 17, 2026: Gold prices relatively stable following Fed rate increase"
+  },
+  {
+   "title": "Rocket Lab (RKLB) Completes $1.94 Billion Equity Offering"
+  },
+  {
+   "title": "AngloGold Ashanti (AU) Surpasses Market Returns: Some Facts Worth Knowing"
+  },
+  {
+   "title": "Agnico Eagle Mines (AEM) Outpaces Stock Market Gains: What You Should Know"
+  },
+  {
+   "title": "When will mortgage rates go down? For now, rates are following the Fed"
+  },
+  {
+   "title": "Home contract signings drop 4.7% from last year amid higher mortgage rates"
+  },
+  {
+   "title": "Gold price today, Thursday, September 17, 2026: Gold prices relatively stable following Fed rate increase"
+  },
+  {
+   "title": "Dow Jones Futures Fall After S&P 500, Nasdaq Rebound Above Key Level; Moderna, AMD, SpaceX Flash Buy Signals"
+  }
+ ],
+ "markets": {
+  "jp": {
+   "bullish": [
+    {
+     "ticker": "5301.T",
+     "name": "東海カーボン",
+     "sector": "窯業",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 2080.0,
+      "short_term": {
+       "score": 0.595,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.227,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.709,
+        "bollinger_position": 0.817,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.948,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 0.978,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.665,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.948,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.665
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.332,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.486,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.762,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の消却に関するお知らせ",
+       "published_at": "2026-08-24 15:30:00"
+      },
+      {
+       "title": "2026年12月期第2四半期決算説明会資料",
+       "published_at": "2026-08-06 09:00:00"
+      },
+      {
+       "title": "人事異動に関するお知らせ",
+       "published_at": "2026-08-05 15:30:00"
+      },
+      {
+       "title": "第2四半期（中間期）連結業績予想と実績値との差異及び通期連結業績予想の修正に関するお知らせ",
+       "published_at": "2026-08-05 15:30:00"
+      },
+      {
+       "title": "2026年12月期第２四半期（中間期）決算短信〔日本基準〕(連結)",
+       "published_at": "2026-08-05 15:30:00"
+      },
+      {
+       "title": "コミットメント型自己株式取得（FCSR）における事後調整完了のお知らせ",
+       "published_at": "2026-08-04 17:00:00"
+      },
+      {
+       "title": "令和８年熊本地震の影響に関するお知らせ（第２報）",
+       "published_at": "2026-07-30 17:30:00"
+      },
+      {
+       "title": "令和８年熊本地震の影響に関するお知らせ",
+       "published_at": "2026-07-29 13:00:00"
+      }
+     ]
+    },
+    {
+     "ticker": "9433.T",
+     "name": "KDDI",
+     "sector": "通信",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 3109.0,
+      "short_term": {
+       "score": 0.499,
+       "label": "やや強気",
+       "details": {
+        "rsi14": 0.213,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.277,
+        "bollinger_position": 0.978,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.857,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 0.73,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.506,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.911,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 0.957,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.506
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.264,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.422,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.736,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-09-09 15:30:00"
+      },
+      {
+       "title": "業績連動型株式報酬制度の継続に伴う自己株式処分に関するお知らせ",
+       "published_at": "2026-08-07 15:45:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-08-07 15:45:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算短信〔IFRS〕（連結）",
+       "published_at": "2026-08-07 15:45:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算説明会資料",
+       "published_at": "2026-08-07 15:45:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算詳細資料（データブック）",
+       "published_at": "2026-08-07 15:45:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-07-06 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "6178.T",
+     "name": "日本郵政",
+     "sector": "サービス",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 2539.5,
+      "short_term": {
+       "score": 0.54,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.126,
+        "stochastic": 0.3,
+        "macd_momentum": 0.937,
+        "price_vs_sma5": 0.311,
+        "bollinger_position": 0.598,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.772,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 0.774,
+        "price_vs_sma25": 0.813,
+        "macd_trend": 0.91,
+        "adx_trend": 0.309,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.894,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.309
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.293,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.362,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.725,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2027年３月期第１四半期決算短信〔日本基準〕(連結)",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "2027年3月期 第1四半期 決算説明資料",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "2027年3月期 第1四半期 日本郵便（連結）の概況",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "自己株式立会外買付取引（ToSTNeT-3）による自己株式の取得結果及び取得終了に関するお知らせ",
+       "published_at": "2026-05-27 10:30:00"
+      },
+      {
+       "title": "自己株式立会外買付取引（ToSTNeT-3）による自己株式の買付けに関するお知らせ",
+       "published_at": "2026-05-26 17:00:00"
+      },
+      {
+       "title": "2026年３月期 決算短信〔日本基準〕（連結）",
+       "published_at": "2026-05-15 15:30:00"
+      },
+      {
+       "title": "2026年３月期 決算説明資料",
+       "published_at": "2026-05-15 15:30:00"
+      },
+      {
+       "title": "日本郵便（連結）の概況 2026年３月期決算",
+       "published_at": "2026-05-15 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "8766.T",
+     "name": "東京海上ホールディングス",
+     "sector": "保険",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 8298.0,
+      "short_term": {
+       "score": 0.522,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.188,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.413,
+        "bollinger_position": 0.899,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.726,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 0.266,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.48,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.92,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.48
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.28,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.33,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.743,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-09-08 11:00:00"
+      },
+      {
+       "title": "株式分割、株主優待制度の導入、株式分割に伴う定款の一部変更、配当予想の修正および自己株式取得に係る事項の変更に関するお知らせ",
+       "published_at": "2026-08-25 15:30:00"
+      },
+      {
+       "title": "2027年3月期 第1四半期決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-08-12 15:30:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算参考資料",
+       "published_at": "2026-08-12 15:30:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ（2026年5月20日開催の取締役会決議分）",
+       "published_at": "2026-08-04 11:00:00"
+      },
+      {
+       "title": "自己株式の取得状況および取得終了に関するお知らせ（2026年3月23日開催の取締役会決議分）",
+       "published_at": "2026-08-04 11:00:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ（2026年5月20日開催の取締役会決議分）",
+       "published_at": "2026-07-07 11:00:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ（2026年3月23日開催の取締役会決議分）",
+       "published_at": "2026-07-07 11:00:00"
+      }
+     ]
+    },
+    {
+     "ticker": "9434.T",
+     "name": "ソフトバンク",
+     "sector": "通信",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 251.60000610351562,
+      "short_term": {
+       "score": 0.365,
+       "label": "やや強気",
+       "details": {
+        "rsi14": -0.5,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.149,
+        "bollinger_position": 0.938,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.956,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 0.97,
+        "macd_trend": 1.0,
+        "adx_trend": 0.738,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.843,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 0.62,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.738
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.171,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": 0.491,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.689,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "(開示事項の経過)連結子会社(LINE MAN CORPORATION PTE. LTD.)の株式取得の完了時期の変更に関するお知らせ",
+       "published_at": "2026-08-28 15:30:00"
+      },
+      {
+       "title": "2027年３月期 第１四半期決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-08-04 15:30:00"
+      },
+      {
+       "title": "新株予約権(ストックオプション)の発行内容確定に関するお知らせ",
+       "published_at": "2026-07-17 18:00:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての自己株式処分の払込完了に関するお知らせ",
+       "published_at": "2026-07-17 18:00:00"
+      },
+      {
+       "title": "支配株主等に関する事項について",
+       "published_at": "2026-06-29 15:30:00"
+      },
+      {
+       "title": "新株予約権(ストックオプション)の発行に関するお知らせ",
+       "published_at": "2026-06-23 16:30:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての自己株式の処分に関するお知らせ",
+       "published_at": "2026-06-23 16:30:00"
+      },
+      {
+       "title": "当社の子会社によるT&amp;Dフィナンシャル生命保険株式会社の株式の取得(子会社化)に関するお知らせ",
+       "published_at": "2026-06-04 16:00:00"
+      }
+     ]
+    },
+    {
+     "ticker": "8001.T",
+     "name": "伊藤忠商事",
+     "sector": "商社",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 2370.0,
+      "short_term": {
+       "score": 0.402,
+       "label": "やや強気",
+       "details": {
+        "rsi14": -0.5,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.347,
+        "bollinger_position": 0.823,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.989,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.921,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.695,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 0.05,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.921
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.196,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": 0.514,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.585,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の公開買付けの結果並びに市場買付の開始に関するお知らせ",
+       "published_at": "2026-09-02 08:30:00"
+      },
+      {
+       "title": "株式会社電通総研の株式（証券コード：4812）に対する公開買付けの開始予定に関するお知らせ",
+       "published_at": "2026-08-31 08:30:00"
+      },
+      {
+       "title": "一部報道について",
+       "published_at": "2026-08-28 08:32:00"
+      },
+      {
+       "title": "2027年３月期第１四半期決算短信（監査法人による期中レビューの完了）",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "2027年3月期 第1四半期決算短信〔IFRS〕（連結）",
+       "published_at": "2026-08-03 15:30:00"
+      },
+      {
+       "title": "自己株式の取得並びに自己株式の公開買付け及び市場買付けに関するお知らせ",
+       "published_at": "2026-08-03 15:30:00"
+      },
+      {
+       "title": "東京センチュリー米国子会社を通じたAviation Capital Group LLCへの出資参画および東京センチュリーが発行する社債型種類株式の引受に関する基本合意のお知らせ",
+       "published_at": "2026-08-03 15:30:00"
+      },
+      {
+       "title": "一部報道について",
+       "published_at": "2026-08-03 08:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "2871.T",
+     "name": "ニチレイ",
+     "sector": "食品",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 2228.0,
+      "short_term": {
+       "score": 0.578,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.118,
+        "stochastic": 0.3,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.214,
+        "bollinger_position": 0.986,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.582,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 0.236,
+        "price_vs_sma25": 0.605,
+        "macd_trend": 1.0,
+        "adx_trend": 0.29,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.891,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.29
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.32,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.229,
+       "label": "中立"
+      },
+      "long_term": {
+       "score": 0.722,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2026年12月期 第１四半期決算短信〔日本基準〕（連結）",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "2026年12月期 第１四半期決算説明会資料",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての新株式の発行の払込完了に関するお知らせ",
+       "published_at": "2026-07-23 15:30:00"
+      },
+      {
+       "title": "当社グループでのシステム障害発生について（続報）",
+       "published_at": "2026-07-22 11:40:00"
+      },
+      {
+       "title": "当社グループでのシステム障害発生について",
+       "published_at": "2026-07-16 09:05:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての新株式の発行に関するお知らせ",
+       "published_at": "2026-06-24 15:30:00"
+      },
+      {
+       "title": "株主優待制度の基準日変更に関するお知らせ",
+       "published_at": "2026-06-24 15:30:00"
+      },
+      {
+       "title": "定款一部変更に関するお知らせ",
+       "published_at": "2026-05-19 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "1721.T",
+     "name": "コムシスホールディングス",
+     "sector": "建設",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 5648.0,
+      "short_term": {
+       "score": 0.599,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.181,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.658,
+        "bollinger_position": 1.0,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.64,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 0.149,
+        "price_vs_sma25": 0.909,
+        "macd_trend": 1.0,
+        "adx_trend": 0.271,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.824,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 0.793,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.271
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.334,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.27,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.675,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-09-03 16:00:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算短信〔日本基準〕（連結）（公認会計士等による期中レビューの完了）",
+       "published_at": "2026-08-14 15:00:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算短信〔日本基準〕（連結)",
+       "published_at": "2026-08-07 15:00:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算短信補足説明資料",
+       "published_at": "2026-08-07 15:00:00"
+      },
+      {
+       "title": "連結子会社の商号変更に関するお知らせ",
+       "published_at": "2026-08-07 15:00:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-08-05 16:00:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての自己株式の処分の払込完了に関するお知らせ",
+       "published_at": "2026-07-24 17:00:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-07-03 16:00:00"
+      }
+     ]
+    },
+    {
+     "ticker": "9432.T",
+     "name": "NTT",
+     "sector": "通信",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 180.0,
+      "short_term": {
+       "score": 0.352,
+       "label": "やや強気",
+       "details": {
+        "rsi14": -0.5,
+        "stochastic": -0.5,
+        "macd_momentum": 0.847,
+        "price_vs_sma5": 0.243,
+        "bollinger_position": 0.885,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.928,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 0.782,
+        "adx_trend": 0.805,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.759,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 0.313,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.805
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.161,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": 0.472,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.63,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-09-01 15:30:00"
+      },
+      {
+       "title": "2026年度 第1四半期決算短信〔IFRS〕（連結）",
+       "published_at": "2026-08-06 13:30:00"
+      },
+      {
+       "title": "2026年度 第1四半期決算補足資料",
+       "published_at": "2026-08-06 13:30:00"
+      },
+      {
+       "title": "2026年度 第1四半期決算概要",
+       "published_at": "2026-08-06 13:30:00"
+      },
+      {
+       "title": "当社および当社子会社の取締役等に対する業績連動型株式報酬制度の一部改定に伴う追加拠出に関するお知らせ",
+       "published_at": "2026-08-06 13:30:00"
+      },
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-08-03 15:30:00"
+      },
+      {
+       "title": "2025年度決算短信〔IFRS〕（連結）",
+       "published_at": "2026-05-08 13:00:00"
+      },
+      {
+       "title": "2025年度 決算補足資料",
+       "published_at": "2026-05-08 13:00:00"
+      }
+     ]
+    },
+    {
+     "ticker": "5020.T",
+     "name": "ENEOSホールディングス",
+     "sector": "石油",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 1459.5,
+      "short_term": {
+       "score": 0.423,
+       "label": "やや強気",
+       "details": {
+        "rsi14": 0.139,
+        "stochastic": 0.3,
+        "macd_momentum": 0.4,
+        "price_vs_sma5": 0.224,
+        "bollinger_position": 0.687,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.932,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.507,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.669,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 0.171,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.507
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.211,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": 0.474,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.567,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の取得状況および取得終了に関するお知らせ",
+       "published_at": "2026-09-16 15:30:00"
+      },
+      {
+       "title": "自己株式の取得状況（途中経過）に関するお知らせ",
+       "published_at": "2026-09-01 15:30:00"
+      },
+      {
+       "title": "2027年3月期　第1四半期決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-08-07 13:00:00"
+      },
+      {
+       "title": "2026年度 第１四半期決算 説明資料",
+       "published_at": "2026-08-07 13:00:00"
+      },
+      {
+       "title": "TPC Holdings, Inc.の買収に関するお知らせ",
+       "published_at": "2026-08-07 13:00:00"
+      },
+      {
+       "title": "自己株式の取得状況（途中経過）に関するお知らせ",
+       "published_at": "2026-08-03 15:30:00"
+      },
+      {
+       "title": "自己株式の取得状況（途中経過）に関するお知らせ",
+       "published_at": "2026-07-01 15:30:00"
+      },
+      {
+       "title": "ＪＸ金属株式会社による自己株式の公開買付けへの応募結果に関するお知らせ",
+       "published_at": "2026-06-18 15:30:00"
+      }
+     ]
+    }
+   ],
+   "bearish": [
+    {
+     "ticker": "7532.T",
+     "name": "パン・パシフィック・インターナショナルホールディングス",
+     "sector": "小売業",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 726.7000122070312,
+      "short_term": {
+       "score": -0.266,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": -0.231,
+        "stochastic": 0.5,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": -0.004,
+        "bollinger_position": -0.657,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.956,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.681,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.951,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.681
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.271,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.847,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.567,
+       "label": "弱気（下落優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "月次販売高状況のお知らせ",
+       "published_at": "2026-09-10 15:30:00"
+      },
+      {
+       "title": "取締役候補の選任及び代表取締役の異動に関するお知らせ",
+       "published_at": "2026-08-28 15:30:00"
+      },
+      {
+       "title": "2026年6月期決算短信〔日本基準〕（連結）",
+       "published_at": "2026-08-18 15:30:00"
+      },
+      {
+       "title": "2026年６月期剰余金の配当（増配）及び2027年６月期配当予想に関するお知らせ",
+       "published_at": "2026-08-18 15:30:00"
+      },
+      {
+       "title": "月次販売高状況のお知らせ",
+       "published_at": "2026-08-10 15:30:00"
+      },
+      {
+       "title": "株式交換による1株に満たない端数の処理に伴う自己株式の買取りに関するお知らせ（会社法第234条第４項及び第５項の規定に基づく自己株式の買取り）",
+       "published_at": "2026-07-22 15:30:00"
+      },
+      {
+       "title": "上場廃止となった子会社（株式会社Ｏｌｙｍｐｉｃグループ）に関する決算開示について",
+       "published_at": "2026-07-14 15:30:00"
+      },
+      {
+       "title": "月次販売高状況のお知らせ",
+       "published_at": "2026-07-10 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "4755.T",
+     "name": "楽天",
+     "sector": "サービス",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 714.2999877929688,
+      "short_term": {
+       "score": -0.312,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": -0.14,
+        "stochastic": 0.5,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": -0.228,
+        "bollinger_position": -0.646,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.752,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.446,
+        "price_vs_sma25": -0.999,
+        "macd_trend": -1.0,
+        "adx_trend": -0.315,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.895,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.315
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.303,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.704,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.528,
+       "label": "弱気（下落優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2026年12月期 第２四半期（中間期）決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-08-10 15:30:00"
+      },
+      {
+       "title": "減損損失等の計上についてのお知らせ",
+       "published_at": "2026-08-10 15:30:00"
+      },
+      {
+       "title": "連結子会社（楽天証券株式会社）の決算について",
+       "published_at": "2026-07-30 16:00:00"
+      },
+      {
+       "title": "当社子会社取締役並びに当社及び当社子会社の執行役員及び従業員に対するストックオプション（新株予約権）の付与について",
+       "published_at": "2026-07-16 17:00:00"
+      },
+      {
+       "title": "楽天銀行株式会社の株式交付による楽天カード株式会社、楽天証券ホールディングス株式会社の子会社化等による楽天銀行を含む楽天グループのフィンテック事業再編",
+       "published_at": "2026-05-20 16:30:00"
+      },
+      {
+       "title": "昨日の一部報道について",
+       "published_at": "2026-05-18 08:30:00"
+      },
+      {
+       "title": "2026年12月期 第１四半期決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-05-14 15:30:00"
+      },
+      {
+       "title": "（訂正）連結子会社（楽天証券株式会社）の決算について",
+       "published_at": "2026-04-28 19:10:00"
+      }
+     ]
+    },
+    {
+     "ticker": "7741.T",
+     "name": "HOYA",
+     "sector": "精密機器",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 22655.0,
+      "short_term": {
+       "score": -0.223,
+       "label": "中立",
+       "details": {
+        "rsi14": -0.234,
+        "stochastic": 0.5,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": 0.139,
+        "bollinger_position": -0.619,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.857,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.75,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.465,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.789,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -0.581,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.465
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.241,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": -0.778,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.454,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "自己株式の取得状況に関するお知らせ",
+       "published_at": "2026-09-01 15:00:00"
+      },
+      {
+       "title": "業績連動型株式報酬及び業績非連動型株式報酬としての自己株式の処分の払込完了に関するお知らせ",
+       "published_at": "2026-08-25 15:30:00"
+      },
+      {
+       "title": "業績連動型株式報酬制度及び業績非連動型株式報酬制度に基づく自己株式の処分に関するお知らせ",
+       "published_at": "2026-07-31 16:00:00"
+      },
+      {
+       "title": "医療用内視鏡事業の戦略的オプション検討開始のお知らせ",
+       "published_at": "2026-07-31 13:30:00"
+      },
+      {
+       "title": "自己株式取得に係る事項の決定に関するお知らせ",
+       "published_at": "2026-07-31 13:30:00"
+      },
+      {
+       "title": "2027年3月期 第１四半期連結決算短信 補足資料（ＩＦＲＳ）",
+       "published_at": "2026-07-31 13:30:00"
+      },
+      {
+       "title": "2027年３月期 第１四半期決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-07-31 13:30:00"
+      },
+      {
+       "title": "2027年3月期 第１四半期 決算説明会プレゼンテーション資料",
+       "published_at": "2026-07-31 13:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "5706.T",
+     "name": "三井金属鉱業",
+     "sector": "非鉄・金属",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 21235.0,
+      "short_term": {
+       "score": -0.593,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "rsi14": 0.5,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -1.0,
+        "bollinger_position": -0.944,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.939,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.555,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.316,
+       "label": "やや弱気",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.555
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.5,
+       "label": "弱気（下落優勢）"
+      },
+      "mid_term": {
+       "score": -0.835,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.122,
+       "label": "中立"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2027年3月期 第1四半期決算短信〔日本基準〕(連結)",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "2027年3月期 第1四半期決算説明資料",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "株式分割および株式分割に伴う定款の一部変更ならびに配当予想の修正に関するお知らせ",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての新株式の発行の払込完了に関するお知らせ",
+       "published_at": "2026-08-07 15:30:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての新株式の発行に関するお知らせ",
+       "published_at": "2026-07-14 16:00:00"
+      },
+      {
+       "title": "投資単位の引下げに関する考え方および方針等について",
+       "published_at": "2026-06-29 15:30:00"
+      },
+      {
+       "title": "（訂正）「2026年3月期 決算説明資料」の一部訂正に関するお知らせ",
+       "published_at": "2026-05-19 12:15:00"
+      },
+      {
+       "title": "2026年3月期 決算短信[日本基準](連結)",
+       "published_at": "2026-05-13 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "6146.T",
+     "name": "ディスコ",
+     "sector": "精密機器",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 50590.0,
+      "short_term": {
+       "score": -0.341,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": -0.223,
+        "stochastic": 0.5,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": -0.269,
+        "bollinger_position": -0.695,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.933,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.516,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.422,
+       "label": "やや弱気",
+       "details": {
+        "sma75_vs_sma200": 0.636,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.516
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.324,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.831,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.197,
+       "label": "中立"
+      }
+     },
+     "headlines": [
+      {
+       "title": "譲渡制限付株式報酬としての新株式の発行の払込完了に関するお知らせ",
+       "published_at": "2026-08-07 16:00:00"
+      },
+      {
+       "title": "当社執行役に対するストックオプション（新株予約権）の発行内容確定に関するお知らせ",
+       "published_at": "2026-08-07 16:00:00"
+      },
+      {
+       "title": "2027年3月期第1四半期決算短信〔日本基準〕（連結）",
+       "published_at": "2026-07-23 16:00:00"
+      },
+      {
+       "title": "2027年3月期第1四半期業績予想値と実績値との差異ならびに第2四半期業績予想および配当予想に関するお知らせ",
+       "published_at": "2026-07-23 16:00:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬としての新株式の発行に関するお知らせ",
+       "published_at": "2026-07-23 16:00:00"
+      },
+      {
+       "title": "当社執行役に対するストックオプション（新株予約権）の募集事項に関するお知らせ",
+       "published_at": "2026-07-23 16:00:00"
+      },
+      {
+       "title": "2027年3月期 第1四半期 個別売上高および出荷額の速報値に関するお知らせ",
+       "published_at": "2026-07-06 16:00:00"
+      },
+      {
+       "title": "投資単位の引下げに関する考え方及び方針等について",
+       "published_at": "2026-06-19 16:00:00"
+      }
+     ]
+    },
+    {
+     "ticker": "4519.T",
+     "name": "中外製薬",
+     "sector": "医薬品",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 6684.0,
+      "short_term": {
+       "score": -0.024,
+       "label": "中立",
+       "details": {
+        "rsi14": -0.033,
+        "stochastic": 0.3,
+        "macd_momentum": -0.34,
+        "price_vs_sma5": 0.588,
+        "bollinger_position": -0.115,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.692,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.945,
+        "price_vs_sma25": -0.274,
+        "macd_trend": -0.914,
+        "adx_trend": -0.46,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.917,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.46
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.102,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": -0.662,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.543,
+       "label": "弱気（下落優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2026年12月期 第2四半期（中間期）決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-07-24 16:00:00"
+      },
+      {
+       "title": "2026年12月期第2四半期(中間期)連結決算〔IFRS〕補足資料",
+       "published_at": "2026-07-24 16:00:00"
+      },
+      {
+       "title": "エフ・ホフマン・ラ・ロシュの2026年中間決算発表について",
+       "published_at": "2026-07-23 14:00:00"
+      },
+      {
+       "title": "2026年12月期第１四半期決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-04-24 17:00:00"
+      },
+      {
+       "title": "2026年12月期第1四半期連結決算〔IFRS〕　補足資料",
+       "published_at": "2026-04-24 17:00:00"
+      },
+      {
+       "title": "信託型株式報酬制度の導入に伴う株式取得の詳細決定に関するお知らせ",
+       "published_at": "2026-04-24 17:00:00"
+      },
+      {
+       "title": "エフ・ホフマン・ラ・ロシュの 2026 年第 1 四半期の販売実績について",
+       "published_at": "2026-04-23 14:00:00"
+      },
+      {
+       "title": "支配株主等に関する事項について",
+       "published_at": "2026-03-31 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "4151.T",
+     "name": "協和キリン",
+     "sector": "医薬品",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 2262.5,
+      "short_term": {
+       "score": -0.145,
+       "label": "中立",
+       "details": {
+        "rsi14": -0.159,
+        "stochastic": 0.5,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": 0.312,
+        "bollinger_position": -0.454,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.791,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.445,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.598,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.559,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": 0.232,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.598
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.186,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": -0.732,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.293,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2026年12月期 第２四半期（中間期）決算短信〔IFRS〕（連結）",
+       "published_at": "2026-08-03 15:30:00"
+      },
+      {
+       "title": "決算短信補足資料 -2026年12月期 第2四半期（中間期）決算-",
+       "published_at": "2026-08-03 15:30:00"
+      },
+      {
+       "title": "2026年12月期 第1四半期決算短信〔IFRS〕（連結）",
+       "published_at": "2026-05-07 15:30:00"
+      },
+      {
+       "title": "決算短信 補足資料 －2026年12月期 第1四半期－",
+       "published_at": "2026-05-07 15:30:00"
+      },
+      {
+       "title": "支配株主等に関する事項について",
+       "published_at": "2026-03-30 16:00:00"
+      },
+      {
+       "title": "譲渡制限付株式報酬及び業績連動型株式報酬としての自己株式の処分に関するお知らせ",
+       "published_at": "2026-03-19 17:00:00"
+      },
+      {
+       "title": "(訂正・数値データ訂正)「2025年12月期 決算短信〔IFRS〕（連結）」の一部訂正について",
+       "published_at": "2026-03-09 18:20:00"
+      },
+      {
+       "title": "（再訂正）「決算短信補足資料 -2025年12月期 -」の一部訂正について",
+       "published_at": "2026-03-09 18:20:00"
+      }
+     ]
+    },
+    {
+     "ticker": "7731.T",
+     "name": "ニコン",
+     "sector": "精密機器",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 1734.0,
+      "short_term": {
+       "score": -0.214,
+       "label": "中立",
+       "details": {
+        "rsi14": -0.214,
+        "stochastic": 0.3,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": 0.227,
+        "bollinger_position": -0.545,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.945,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.601,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.355,
+       "label": "やや弱気",
+       "details": {
+        "sma75_vs_sma200": 0.897,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.601
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.235,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": -0.839,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.15,
+       "label": "中立"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2027年３月期第１四半期決算短信〔ＩＦＲＳ〕（連結）",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "2027年3月期 第1四半期決算関係データ〔IFRS〕",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "業績連動型株式報酬としての自己株式の処分の払込完了に関するお知らせ",
+       "published_at": "2026-06-17 17:00:00"
+      },
+      {
+       "title": "業績連動型株式報酬としての自己株式の処分に関するお知らせ",
+       "published_at": "2026-05-18 15:30:00"
+      },
+      {
+       "title": "取締役（監査等委員であるものを除く）に対する株式報酬制度改定に関するお知らせ",
+       "published_at": "2026-05-18 15:30:00"
+      },
+      {
+       "title": "2026年３月期決算短信〔ＩＦＲＳ〕(連結)",
+       "published_at": "2026-05-08 15:30:00"
+      },
+      {
+       "title": "2026年3月期 決算関係データ〔IFRS〕",
+       "published_at": "2026-05-08 15:30:00"
+      },
+      {
+       "title": "精機事業における一時費用（固定資産の減損損失および棚卸資産の評価損）の計上に関するお知らせ",
+       "published_at": "2026-04-30 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "8267.T",
+     "name": "イオン",
+     "sector": "小売業",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 1348.0,
+      "short_term": {
+       "score": -0.224,
+       "label": "中立",
+       "details": {
+        "rsi14": -0.04,
+        "stochastic": 0.3,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": 0.042,
+        "bollinger_position": -0.426,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.402,
+       "label": "やや弱気",
+       "details": {
+        "sma25_vs_sma75": 0.035,
+        "price_vs_sma25": -0.271,
+        "macd_trend": -1.0,
+        "adx_trend": -0.191,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.876,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.191
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.242,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": -0.459,
+       "label": "やや弱気"
+      },
+      "long_term": {
+       "score": -0.514,
+       "label": "弱気（下落優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "イオン（株）8月度連結営業概況",
+       "published_at": "2026-09-10 15:30:00"
+      },
+      {
+       "title": "イオン（株）7月度連結営業概況",
+       "published_at": "2026-08-10 16:00:00"
+      },
+      {
+       "title": "イオンモール熊本の爆発事故について",
+       "published_at": "2026-07-30 17:15:00"
+      },
+      {
+       "title": "令和８年熊本地震に伴う連結業績影響について",
+       "published_at": "2026-07-30 14:00:00"
+      },
+      {
+       "title": "イオン（株）6月度連結営業概況",
+       "published_at": "2026-07-10 15:30:00"
+      },
+      {
+       "title": "2027年２月期　第１四半期決算説明会資料",
+       "published_at": "2026-07-10 15:30:00"
+      },
+      {
+       "title": "2027年２月期　第１四半期決算短信〔日本基準〕（連結）",
+       "published_at": "2026-07-10 15:30:00"
+      },
+      {
+       "title": "2027年２月期　第１四半期決算補足資料（第102期）　",
+       "published_at": "2026-07-10 15:30:00"
+      }
+     ]
+    },
+    {
+     "ticker": "8804.T",
+     "name": "東京建物",
+     "sector": "不動産",
+     "fundamentals_source": "TDnet",
+     "technical": {
+      "price": 3317.0,
+      "short_term": {
+       "score": -0.217,
+       "label": "中立",
+       "details": {
+        "rsi14": -0.058,
+        "stochastic": 0.3,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": 0.095,
+        "bollinger_position": -0.461,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.39,
+       "label": "やや弱気",
+       "details": {
+        "sma25_vs_sma75": 0.171,
+        "price_vs_sma25": -0.31,
+        "macd_trend": -1.0,
+        "adx_trend": -0.298,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.617,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -0.86,
+        "price_vs_sma200": -0.995,
+        "ichimoku_cloud": 0.0,
+        "adx_trend": -0.298
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.237,
+       "label": "中立"
+      },
+      "mid_term": {
+       "score": -0.451,
+       "label": "やや弱気"
+      },
+      "long_term": {
+       "score": -0.333,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2026年12月期 第２四半期（中間期）決算短信〔日本基準〕（連結）",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "2026年12月期第2四半期（中間期） 決算補足説明資料",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "2026年12月期第2四半期（中間期） 決算ハイライト",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "通期業績予想及び配当予想の修正に関するお知らせ",
+       "published_at": "2026-08-06 15:30:00"
+      },
+      {
+       "title": "2026年12月期 第１四半期決算短信〔日本基準〕（連結）",
+       "published_at": "2026-05-13 15:30:00"
+      },
+      {
+       "title": "2026年12月期第1四半期 決算補足説明資料",
+       "published_at": "2026-05-13 15:30:00"
+      },
+      {
+       "title": "株式給付信託（BBT）への追加拠出に関するお知らせ",
+       "published_at": "2026-05-13 15:30:00"
+      },
+      {
+       "title": "固定資産の取得に関するお知らせ",
+       "published_at": "2026-03-24 15:30:00"
+      }
+     ]
+    }
+   ]
+  },
+  "us": {
+   "bullish": [
+    {
+     "ticker": "SWKS",
+     "name": "Skyworks Solutions",
+     "sector": "情報技術",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 91.31999969482422,
+      "short_term": {
+       "score": 0.689,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.222,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 1.0,
+        "bollinger_position": 0.947,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.94,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.568,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.934,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.568
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.427,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.572,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.897,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Qualcomm Just Rallied 18% in a Month: Take Profits, or Buy More?",
+       "published_at": "2026-09-17T19:22:33Z"
+      },
+      {
+       "title": "3 Reasons SWKS is Risky and 1 Stock to Buy Instead",
+       "published_at": "2026-09-17T16:42:17Z"
+      },
+      {
+       "title": "1 Momentum  Stock with Competitive Advantages and 2 We Avoid",
+       "published_at": "2026-09-17T08:42:17Z"
+      },
+      {
+       "title": "Company News for Sep 16, 2026",
+       "published_at": "2026-09-16T13:11:00Z"
+      },
+      {
+       "title": "Qorvo (QRVO) Stock Looks Overvalued As Its 37% Rally Extends",
+       "published_at": "2026-09-16T11:12:41Z"
+      },
+      {
+       "title": "US Equity Markets End Lower as 10-Year Treasury Yield Climbs to Highest Since 2007, Oil Jumps",
+       "published_at": "2026-09-15T20:42:46Z"
+      },
+      {
+       "title": "Nvidia, Coinbase, Skyworks, Axon, Tesla, Applied Aerospace, and More Stocks That Explain Today’s Market",
+       "published_at": "2026-09-15T20:28:00Z"
+      },
+      {
+       "title": "Skyworks Solutions Stock Snaps Back From AI Selloff to Lead the S&P 500",
+       "published_at": "2026-09-15T18:48:00Z"
+      }
+     ]
+    },
+    {
+     "ticker": "MPC",
+     "name": "Marathon Petroleum",
+     "sector": "エネルギー",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 421.9599914550781,
+      "short_term": {
+       "score": 0.511,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": -0.5,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.693,
+        "bollinger_position": 0.946,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.997,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.977,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.997,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.977
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.303,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.611,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.941,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Marathon Petroleum (MPC) Exceeds Market Returns: Some Facts to Consider",
+       "published_at": "2026-09-17T21:45:05Z"
+      },
+      {
+       "title": "Think It’s Too Late to Buy Marathon and Valero? Here’s Why Analysts Say Wait Instead",
+       "published_at": "2026-09-17T13:15:50Z"
+      },
+      {
+       "title": "Valero Energy Corporation (VLO) Hit a 52 Week High, Can the Run Continue?",
+       "published_at": "2026-09-17T13:15:02Z"
+      },
+      {
+       "title": "5 Relative Price Strength Stocks to Buy Amid Rising Rates",
+       "published_at": "2026-09-17T12:41:00Z"
+      },
+      {
+       "title": "Bank of England holds rates at 3.75% as U.K. inflation hits 3.1%",
+       "published_at": "2026-09-17T11:32:40Z"
+      },
+      {
+       "title": "XOM Keeps Climbing. Should You Climb On?",
+       "published_at": "2026-09-16T23:29:22Z"
+      },
+      {
+       "title": "This ETF Should Rise as Interest Rates Go Up. Is It Too Late to Get In on the Fun Now?",
+       "published_at": "2026-09-16T06:00:00Z"
+      },
+      {
+       "title": "Stocks to Watch Recap: UBS, Vera Bradley, Dave & Buster’s, Coinbase",
+       "published_at": "2026-09-15T21:25:47Z"
+      }
+     ]
+    },
+    {
+     "ticker": "PSX",
+     "name": "Phillips 66",
+     "sector": "エネルギー",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 274.2099914550781,
+      "short_term": {
+       "score": 0.515,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": -0.5,
+        "stochastic": -0.5,
+        "macd_momentum": 0.885,
+        "price_vs_sma5": 0.769,
+        "bollinger_position": 1.0,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.953,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 0.836,
+        "adx_trend": 0.907,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.986,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.907
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.306,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.581,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.933,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Phillips 66: Resilient Refining Meets Midstream Stability",
+       "published_at": "2026-09-17T16:21:00Z"
+      },
+      {
+       "title": "5 Relative Price Strength Stocks to Buy Amid Rising Rates",
+       "published_at": "2026-09-17T12:41:00Z"
+      },
+      {
+       "title": "Phillips 66 (PSX) Faces Bayway Labor Questions, Is The Stock Now Too Expensive?",
+       "published_at": "2026-09-16T02:11:46Z"
+      },
+      {
+       "title": "Phillips 66 (PSX) Rises As Market Takes a Dip: Key Facts",
+       "published_at": "2026-09-15T22:15:04Z"
+      },
+      {
+       "title": "Sunoco Stock Breaks Out; Oil Prices Rise With No Clear End To Hormuz Closure",
+       "published_at": "2026-09-15T18:19:37Z"
+      },
+      {
+       "title": "What Does the Future Hold for Valero Energy's Refining Business?",
+       "published_at": "2026-09-15T15:47:00Z"
+      },
+      {
+       "title": "Global Fuel Squeeze Triggers U.S. Refiners Stocks Rally",
+       "published_at": "2026-09-14T22:00:00Z"
+      },
+      {
+       "title": "HF Sinclair Rises 113.9% in a Year: Should You Buy, Hold or Sell?",
+       "published_at": "2026-09-14T16:43:00Z"
+      }
+     ]
+    },
+    {
+     "ticker": "DELL",
+     "name": "Dell Technologies",
+     "sector": "情報技術",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 588.4000244140625,
+      "short_term": {
+       "score": 0.68,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.197,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 1.0,
+        "bollinger_position": 0.904,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.913,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.371,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.903,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.371
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.421,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.553,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.875,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Should You Buy HP Stock For The Shares It Keeps Retiring?",
+       "published_at": "2026-09-17T20:20:44Z"
+      },
+      {
+       "title": "Dell Gains Nearly 4% Today as 45-Watt Inference Expands Its Server Menu",
+       "published_at": "2026-09-17T18:44:32Z"
+      },
+      {
+       "title": "Is Cisco Stock Priced For Orders That Are Not Yet Revenue?",
+       "published_at": "2026-09-17T18:22:58Z"
+      },
+      {
+       "title": "Lenovo, MemryX Partnership to Expand Sovereign Edge AI in Saudi Arabia",
+       "published_at": "2026-09-17T18:13:00Z"
+      },
+      {
+       "title": "Dell’s AI Backlog Surge Positions Stock for $600+ as Server Revenue Doubles",
+       "published_at": "2026-09-17T17:00:11Z"
+      },
+      {
+       "title": "Did NetApp Borrow Its Record Quarter From The Rest Of The Year?",
+       "published_at": "2026-09-17T15:08:55Z"
+      },
+      {
+       "title": "AI Server Stocks Rally as the Hardware Bid Broadens: Hewlett Packard Enterprise Jumps 9%, Super Micro Climbs 6%, Dell Rises 3%",
+       "published_at": "2026-09-17T14:53:46Z"
+      },
+      {
+       "title": "A $2.75 Billion Reason Why Micron Stock In Focus",
+       "published_at": "2026-09-17T12:02:58Z"
+      }
+     ]
+    },
+    {
+     "ticker": "CRWD",
+     "name": "CrowdStrike",
+     "sector": "情報技術",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 245.6999969482422,
+      "short_term": {
+       "score": 0.664,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.185,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.97,
+        "bollinger_position": 0.852,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.918,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.406,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.909,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.406
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.41,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.556,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.879,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Salesforce CEO warns AI companies not to repeat this costly mistake",
+       "published_at": "2026-09-17T22:17:00Z"
+      },
+      {
+       "title": "Jim Cramer Prefers Palo Alto (PANW) Over SentinelOne (S)",
+       "published_at": "2026-09-17T22:03:30Z"
+      },
+      {
+       "title": "Jim Cramer Highlights CrowdStrike (CRWD) as AI Security Concerns Lift Cybersecurity Stocks",
+       "published_at": "2026-09-17T21:58:12Z"
+      },
+      {
+       "title": "2 Cybersecurity Stocks That Will Rule 2027",
+       "published_at": "2026-09-17T17:31:00Z"
+      },
+      {
+       "title": "Jim Cramer delivers unmistakable 2026 must-buy call on AI stock",
+       "published_at": "2026-09-17T14:07:00Z"
+      },
+      {
+       "title": "Semiconductor Stocks Just Tumbled. This Tech ETF Soared 6% Instead. Here's Why.",
+       "published_at": "2026-09-17T13:50:00Z"
+      },
+      {
+       "title": "Is CrowdStrike Holdings (CRWD) Priced For Perfection On Sales?",
+       "published_at": "2026-09-16T20:10:38Z"
+      },
+      {
+       "title": "Okta Just Rallied 28% in a Month and Cybersecurity Stocks Are Red-Hot Now. Is $200 Coming Soon?",
+       "published_at": "2026-09-16T19:06:03Z"
+      }
+     ]
+    },
+    {
+     "ticker": "VLO",
+     "name": "Valero Energy",
+     "sector": "エネルギー",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 412.5299987792969,
+      "short_term": {
+       "score": 0.534,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": -0.5,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.77,
+        "bollinger_position": 0.969,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.979,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.85,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.977,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.85
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.319,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.599,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.927,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Top Analyst Reports for Applied Materials, Philip Morris & Valero Energy",
+       "published_at": "2026-09-17T20:32:00Z"
+      },
+      {
+       "title": "Equinor Eyes LNG Expansion Amid Global Supply Disruptions",
+       "published_at": "2026-09-17T16:46:00Z"
+      },
+      {
+       "title": "Surging Earnings Estimates Signal Upside for Valero Energy (VLO) Stock",
+       "published_at": "2026-09-17T16:20:01Z"
+      },
+      {
+       "title": "Think It’s Too Late to Buy Marathon and Valero? Here’s Why Analysts Say Wait Instead",
+       "published_at": "2026-09-17T13:15:50Z"
+      },
+      {
+       "title": "Valero Energy Corporation (VLO) Hit a 52 Week High, Can the Run Continue?",
+       "published_at": "2026-09-17T13:15:02Z"
+      },
+      {
+       "title": "XOM Keeps Climbing. Should You Climb On?",
+       "published_at": "2026-09-16T23:29:22Z"
+      },
+      {
+       "title": "Valero Energy (VLO) Rises As Market Takes a Dip: Key Facts",
+       "published_at": "2026-09-16T22:00:06Z"
+      },
+      {
+       "title": "Valero Energy (VLO) is a Great Momentum Stock: Should You Buy?",
+       "published_at": "2026-09-16T16:00:03Z"
+      }
+     ]
+    },
+    {
+     "ticker": "RVTY",
+     "name": "Revvity",
+     "sector": "ヘルスケア",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 146.72999572753906,
+      "short_term": {
+       "score": 0.6,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": -0.5,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 1.0,
+        "bollinger_position": 1.0,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.945,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.604,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.939,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.604
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.365,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.575,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.9,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Strength Seen in Revvity (RVTY): Can Its 9.1% Jump Turn into More Strength?",
+       "published_at": "2026-09-16T09:14:00Z"
+      },
+      {
+       "title": "Q2 Rundown: Revvity (NYSE:RVTY) Vs Other Research Tools & Consumables Stocks",
+       "published_at": "2026-09-15T13:35:31Z"
+      },
+      {
+       "title": "3 Healthcare Stocks That Fall Short",
+       "published_at": "2026-09-14T15:23:30Z"
+      },
+      {
+       "title": "Revvity to Acquire Human Cell Design to Boost Metabolic Discovery",
+       "published_at": "2026-09-11T15:19:00Z"
+      },
+      {
+       "title": "Is Revvity Stock a Buy as Growth Improves but Valuation Stays Rich?",
+       "published_at": "2026-09-04T11:49:00Z"
+      },
+      {
+       "title": "Revvity (RVTY) Stock Looks Fair On Cash Flow Yet Pricey On Earnings",
+       "published_at": "2026-09-03T02:14:16Z"
+      },
+      {
+       "title": "Revvity (RVTY) Margins Story Faces A Valuation Test Following Its Zacks Upgrade",
+       "published_at": "2026-09-02T11:06:27Z"
+      },
+      {
+       "title": "3 Hyped Up  Stocks We Find Risky",
+       "published_at": "2026-09-01T19:30:20Z"
+      }
+     ]
+    },
+    {
+     "ticker": "HPE",
+     "name": "Hewlett Packard Enterprise",
+     "sector": "情報技術",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 61.040000915527344,
+      "short_term": {
+       "score": 0.674,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.118,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.969,
+        "bollinger_position": 1.0,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.898,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.261,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.886,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.261
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.417,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.542,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.863,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Is Cisco Stock Priced For Orders That Are Not Yet Revenue?",
+       "published_at": "2026-09-17T18:22:58Z"
+      },
+      {
+       "title": "Dell’s AI Backlog Surge Positions Stock for $600+ as Server Revenue Doubles",
+       "published_at": "2026-09-17T17:00:11Z"
+      },
+      {
+       "title": "Did NetApp Borrow Its Record Quarter From The Rest Of The Year?",
+       "published_at": "2026-09-17T15:08:55Z"
+      },
+      {
+       "title": "AI Server Stocks Rally as the Hardware Bid Broadens: Hewlett Packard Enterprise Jumps 9%, Super Micro Climbs 6%, Dell Rises 3%",
+       "published_at": "2026-09-17T14:53:46Z"
+      },
+      {
+       "title": "SanDisk Stock Looks Cheap, But Can It Keep Earning This Much?",
+       "published_at": "2026-09-17T14:36:03Z"
+      },
+      {
+       "title": "Can NetApp's Buccaneers Partnership Boost Its AI and Cloud Growth?",
+       "published_at": "2026-09-17T13:44:00Z"
+      },
+      {
+       "title": "Are Computer and Technology Stocks Lagging  Hewlett Packard (HPE) This Year?",
+       "published_at": "2026-09-17T13:40:03Z"
+      },
+      {
+       "title": "Did AI Servers Really Quadruple Dell Stock?",
+       "published_at": "2026-09-17T01:01:09Z"
+      }
+     ]
+    },
+    {
+     "ticker": "WAT",
+     "name": "Waters Corporation",
+     "sector": "ヘルスケア",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 429.7200012207031,
+      "short_term": {
+       "score": 0.592,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.194,
+        "stochastic": -0.5,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.622,
+        "bollinger_position": 1.0,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.896,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 0.881,
+        "macd_trend": 1.0,
+        "adx_trend": 0.483,
+        "volume_confirmation": 1.0
+       }
+      },
+      "long_term": {
+       "score": 0.921,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.483
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.359,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.541,
+       "label": "強気（上昇優勢）"
+      },
+      "long_term": {
+       "score": 0.887,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "2 Cash-Producing Stocks to Consider Right Now and 1 We Question",
+       "published_at": "2026-09-17T10:34:17Z"
+      },
+      {
+       "title": "1 S&P 500 Stock Worth Your Attention and 2 We Avoid",
+       "published_at": "2026-09-15T09:00:30Z"
+      },
+      {
+       "title": "Waters (WAT) Stock Could Be A Bargain On Cash Flow Yet Fully Priced On Sales",
+       "published_at": "2026-09-04T11:11:55Z"
+      },
+      {
+       "title": "Waters (WAT) Raised Guidance, Is The Stock Still Cheap?",
+       "published_at": "2026-09-04T03:09:03Z"
+      },
+      {
+       "title": "Leadership Shift And Upgraded Outlook Could Be A Game Changer For Waters (WAT)",
+       "published_at": "2026-09-04T00:20:18Z"
+      },
+      {
+       "title": "Why Is Waters (WAT) Up 3.1% Since Last Earnings Report?",
+       "published_at": "2026-09-03T15:30:27Z"
+      },
+      {
+       "title": "Is Wall Street Bullish or Bearish on Waters Corporation Stock?",
+       "published_at": "2026-08-28T07:02:54Z"
+      },
+      {
+       "title": "Research Tools & Consumables Stocks Q2 Highlights: Waters Corporation (NYSE:WAT)",
+       "published_at": "2026-08-26T18:03:13Z"
+      }
+     ]
+    },
+    {
+     "ticker": "HPQ",
+     "name": "HP Inc.",
+     "sector": "情報技術",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 34.65999984741211,
+      "short_term": {
+       "score": 0.582,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "rsi14": 0.162,
+        "stochastic": 0.3,
+        "macd_momentum": 1.0,
+        "price_vs_sma5": 0.307,
+        "bollinger_position": 0.789,
+        "volume_confirmation": 1.0
+       }
+      },
+      "mid_term": {
+       "score": 0.812,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma25_vs_sma75": 1.0,
+        "price_vs_sma25": 1.0,
+        "macd_trend": 1.0,
+        "adx_trend": 0.61,
+        "volume_confirmation": -0.3
+       }
+      },
+      "long_term": {
+       "score": 0.94,
+       "label": "強気（上昇優勢）",
+       "details": {
+        "sma75_vs_sma200": 1.0,
+        "price_vs_sma200": 1.0,
+        "ichimoku_cloud": 1.0,
+        "adx_trend": 0.61
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": 0.352,
+       "label": "やや強気"
+      },
+      "mid_term": {
+       "score": 0.482,
+       "label": "やや強気"
+      },
+      "long_term": {
+       "score": 0.901,
+       "label": "強気（上昇優勢）"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Top strategist thinks the Federal Reserve interest rate hike won't fix this huge earnings risk",
+       "published_at": "2026-09-17T12:16:19Z"
+      },
+      {
+       "title": "Should You Buy HP Stock For The Shares It Keeps Retiring?",
+       "published_at": "2026-09-17T20:20:44Z"
+      },
+      {
+       "title": "Lenovo, MemryX Partnership to Expand Sovereign Edge AI in Saudi Arabia",
+       "published_at": "2026-09-17T18:13:00Z"
+      },
+      {
+       "title": "What Makes HP (HPQ) a Strong Momentum Stock: Buy Now?",
+       "published_at": "2026-09-17T16:00:02Z"
+      },
+      {
+       "title": "5 Relative Price Strength Stocks to Buy Amid Rising Rates",
+       "published_at": "2026-09-17T12:41:00Z"
+      },
+      {
+       "title": "Did AI Servers Really Quadruple Dell Stock?",
+       "published_at": "2026-09-17T01:01:09Z"
+      },
+      {
+       "title": "What Happens To Apple Stock If Its Margin Keeps Slipping?",
+       "published_at": "2026-09-16T17:31:33Z"
+      },
+      {
+       "title": "New Strong Buy Stocks for September 16th",
+       "published_at": "2026-09-16T08:12:00Z"
+      }
+     ]
+    }
+   ],
+   "bearish": [
+    {
+     "ticker": "BLDR",
+     "name": "Builders FirstSource",
+     "sector": "資本財",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 57.68000030517578,
+      "short_term": {
+       "score": -0.577,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "rsi14": -0.225,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.653,
+        "bollinger_position": -0.794,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.927,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.472,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.919,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.472
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.459,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.735,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.401,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Builders FirstSource (BLDR) Stock Falls Amid Market Uptick: What Investors Need to Know",
+       "published_at": "2026-09-17T21:50:02Z"
+      },
+      {
+       "title": "Armstrong World Industries Makes Ceiling Tiles. Its Stock Is Anything but Boring.",
+       "published_at": "2026-09-17T14:42:00Z"
+      },
+      {
+       "title": "Owens Corning Stock Rises 17% in Six Months: Can the Upside Continue?",
+       "published_at": "2026-09-17T14:25:00Z"
+      },
+      {
+       "title": "Builders FirstSource Stock: Is BLDR Underperforming the Industrials Sector?",
+       "published_at": "2026-09-17T09:37:40Z"
+      },
+      {
+       "title": "Is Lowe's Cheap Because Nobody Noticed Its Growth?",
+       "published_at": "2026-09-16T23:45:50Z"
+      },
+      {
+       "title": "Three Stocks Are Joining the S&P 500. Will They Actually Improve VOO’s Returns?",
+       "published_at": "2026-09-16T15:55:32Z"
+      },
+      {
+       "title": "Does Flat Sales And Rising Capital Intensity Change The Bull Case For Builders FirstSource (BLDR)?",
+       "published_at": "2026-09-16T10:10:34Z"
+      },
+      {
+       "title": "3 Out-of-Favor Stocks We’re Skeptical Of",
+       "published_at": "2026-09-14T14:35:30Z"
+      }
+     ]
+    },
+    {
+     "ticker": "ROL",
+     "name": "Rollins, Inc.",
+     "sector": "資本財",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 33.0,
+      "short_term": {
+       "score": -0.501,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "rsi14": 0.5,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.627,
+        "bollinger_position": -1.0,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.949,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.634,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.944,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.634
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.406,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.751,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.418,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Is Rollins Stock Underperforming the Dow?",
+       "published_at": "2026-09-16T11:27:57Z"
+      },
+      {
+       "title": "5 Dividend Stocks Hiding in Boring Businesses Customers Cannot Live Without",
+       "published_at": "2026-09-13T15:01:31Z"
+      },
+      {
+       "title": "These 5 Boring Stocks Are Quietly Crushing the Market and Making Investors Rich",
+       "published_at": "2026-09-12T12:13:59Z"
+      },
+      {
+       "title": "1 Mid-Cap Stock with Exciting Potential and 2 We Ignore",
+       "published_at": "2026-09-08T18:07:18Z"
+      },
+      {
+       "title": "1 of Wall Street’s Favorite Stocks with Solid Fundamentals and 2 Facing Headwinds",
+       "published_at": "2026-09-03T09:03:18Z"
+      },
+      {
+       "title": "2 Reasons to Like ROL and 1 to Stay Skeptical",
+       "published_at": "2026-08-26T13:55:13Z"
+      },
+      {
+       "title": "1 Stock Under $50 to Consider Right Now and 2 We Question",
+       "published_at": "2026-08-24T11:45:36Z"
+      },
+      {
+       "title": "Why Is Rollins (ROL) Down 7.8% Since Last Earnings Report?",
+       "published_at": "2026-08-21T15:30:11Z"
+      }
+     ]
+    },
+    {
+     "ticker": "WYNN",
+     "name": "Wynn Resorts",
+     "sector": "一般消費財",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 82.95999908447266,
+      "short_term": {
+       "score": -0.5,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": 0.5,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.678,
+        "bollinger_position": -0.892,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.918,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.861,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.684,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.951,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.684
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.405,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.729,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.423,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "3 Reasons WYNN is Risky and 1 Stock to Buy Instead",
+       "published_at": "2026-09-15T19:19:31Z"
+      },
+      {
+       "title": "Are Options Traders Betting on a Big Move in Wynn Resorts Stock?",
+       "published_at": "2026-09-11T13:41:00Z"
+      },
+      {
+       "title": "Wynn Resorts Subsidiaries Launch $900 Million Private Offering of Senior Notes Due 2035",
+       "published_at": "2026-09-10T13:54:13Z"
+      },
+      {
+       "title": "3 Consumer Stocks We Steer Clear Of",
+       "published_at": "2026-09-09T16:02:38Z"
+      },
+      {
+       "title": "3 S&P 500 Stocks That Fall Short",
+       "published_at": "2026-09-08T19:27:18Z"
+      },
+      {
+       "title": "Wynn Resorts (WYNN) Doubles Its Profit But Cracks Are Showing",
+       "published_at": "2026-09-06T13:27:04Z"
+      },
+      {
+       "title": "Why Is Wynn (WYNN) Down 9.5% Since Last Earnings Report?",
+       "published_at": "2026-09-03T15:30:28Z"
+      },
+      {
+       "title": "Wynn Resorts (WYNN) Beat Expectations, Is The Stock Trading At A Discount?",
+       "published_at": "2026-09-01T19:09:16Z"
+      }
+     ]
+    },
+    {
+     "ticker": "LVS",
+     "name": "Las Vegas Sands",
+     "sector": "一般消費財",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 40.66999816894531,
+      "short_term": {
+       "score": -0.442,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": 0.5,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.469,
+        "bollinger_position": -0.876,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.903,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.795,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.703,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.954,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.703
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.364,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.719,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.425,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Is Las Vegas Sands Stock Underperforming the Nasdaq?",
+       "published_at": "2026-09-11T13:41:32Z"
+      },
+      {
+       "title": "MGM Stock Slips 14% in 3 Months: Is the Pullback a Buying Opportunity?",
+       "published_at": "2026-09-10T14:05:00Z"
+      },
+      {
+       "title": "Airlines, Cruises, Casinos: Are Things Actually Looking Up?",
+       "published_at": "2026-09-03T13:40:24Z"
+      },
+      {
+       "title": "Las Vegas Sands (LVS) Down 0.1% Since Last Earnings Report: Can It Rebound?",
+       "published_at": "2026-08-21T15:30:06Z"
+      },
+      {
+       "title": "Is Las Vegas Sands (LVS) Below Fair Value On Its Earnings Miss?",
+       "published_at": "2026-08-15T10:12:06Z"
+      },
+      {
+       "title": "Monolithic Power Systems and Las Vegas Sands have been highlighted as Zacks Bull and Bear of the Day",
+       "published_at": "2026-08-14T09:28:00Z"
+      },
+      {
+       "title": "Bear of the Day: Las Vegas Sands (LVS)",
+       "published_at": "2026-08-14T09:00:00Z"
+      },
+      {
+       "title": "WYNN's Q2 Beat Puts Macau Strength and Margin Pressure in Focus",
+       "published_at": "2026-08-11T15:00:00Z"
+      }
+     ]
+    },
+    {
+     "ticker": "MLM",
+     "name": "Martin Marietta Materials",
+     "sector": "素材",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 494.44000244140625,
+      "short_term": {
+       "score": -0.473,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": -0.161,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.292,
+        "bollinger_position": -0.798,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.917,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -0.963,
+        "macd_trend": -1.0,
+        "adx_trend": -0.474,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.919,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.474
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.386,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.728,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.401,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Armstrong World Industries Makes Ceiling Tiles. Its Stock Is Anything but Boring.",
+       "published_at": "2026-09-17T14:42:00Z"
+      },
+      {
+       "title": "From Fashion to Concrete: J.P. Morgan Says Buy These 2 Stocks",
+       "published_at": "2026-09-13T18:00:00Z"
+      },
+      {
+       "title": "How Is Martin Marietta Materials' Stock Performance Compared to Other Building Material Stocks?",
+       "published_at": "2026-09-11T15:47:29Z"
+      },
+      {
+       "title": "1 S&P 500 Stock on Our Buy List and 2 Facing Challenges",
+       "published_at": "2026-09-09T13:54:38Z"
+      },
+      {
+       "title": "Uber initiated, Thermo Fisher upgraded: Wall Street's top analyst calls",
+       "published_at": "2026-09-09T13:51:16Z"
+      },
+      {
+       "title": "Here Are Tuesday’s Top Wall Street Analyst Research Calls: Abercrombie & Fitch, Affirm Holdings, Eagle Materials, Klarna Group, Martin Marietta Materials, Oklo, Qualcomm, Robinhood Markets, Ulta Beauty, and More",
+       "published_at": "2026-09-09T12:06:43Z"
+      },
+      {
+       "title": "Chip, Drug Makers to Drive Non-Residential Construction Rebound, UBS Says",
+       "published_at": "2026-09-08T21:14:12Z"
+      },
+      {
+       "title": "Andvari Associates Strategic Investment in Martin Marietta Materials (MLM)",
+       "published_at": "2026-09-03T14:17:42Z"
+      }
+     ]
+    },
+    {
+     "ticker": "NRG",
+     "name": "NRG Energy",
+     "sector": "公益事業",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 106.2300033569336,
+      "short_term": {
+       "score": -0.494,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": -0.141,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.383,
+        "bollinger_position": -0.797,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.914,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.377,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.904,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.377
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.401,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.726,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.39,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "NRG Energy (NRG) Stock Sinks As Market Gains: Here's Why",
+       "published_at": "2026-09-17T21:50:04Z"
+      },
+      {
+       "title": "The Nuclear Stock Boom Could Keep Decaying",
+       "published_at": "2026-09-17T10:34:00Z"
+      },
+      {
+       "title": "Clearway Energy (CWEN) Dips More Than Broader Market: What You Should Know",
+       "published_at": "2026-09-15T22:15:04Z"
+      },
+      {
+       "title": "Vistra’s Price Has Edged Downward Throught 2026: One Analyst Says It’s Due to Double Soon.",
+       "published_at": "2026-09-14T11:49:06Z"
+      },
+      {
+       "title": "NRG Energy (NRG) Laps the Stock Market: Here's Why",
+       "published_at": "2026-09-11T21:50:03Z"
+      },
+      {
+       "title": "Can CEG's Expanding Generation Portfolio Drive Long-Term Growth?",
+       "published_at": "2026-09-11T16:40:00Z"
+      },
+      {
+       "title": "NRG Energy, Inc. (NRG) is Attracting Investor Attention: Here is What You Should Know",
+       "published_at": "2026-09-10T13:00:02Z"
+      },
+      {
+       "title": "Should You Buy Vistra Stock For Its Shrinking Share Count?",
+       "published_at": "2026-09-10T02:42:26Z"
+      }
+     ]
+    },
+    {
+     "ticker": "MCD",
+     "name": "McDonald's",
+     "sector": "一般消費財",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 248.47999572753906,
+      "short_term": {
+       "score": -0.476,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": -0.209,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.277,
+        "bollinger_position": -0.806,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.798,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.554,
+        "price_vs_sma25": -0.934,
+        "macd_trend": -1.0,
+        "adx_trend": -0.561,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.932,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.561
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.388,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.645,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.41,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Why Has McDonald's Gone Quiet On Its Low-Income Customer?",
+       "published_at": "2026-09-17T21:26:52Z"
+      },
+      {
+       "title": "MCD Stock Fades After 0.7% Pop On Value-Menu Revamp Report",
+       "published_at": "2026-09-17T20:54:19Z"
+      },
+      {
+       "title": "McDonald’s said to plan value strategy overhaul to revive US sales growth",
+       "published_at": "2026-09-17T19:51:42Z"
+      },
+      {
+       "title": "McDonald’s CEO Admits Execution Failure as K-Shape Economy Splits Consumer Base",
+       "published_at": "2026-09-17T17:14:35Z"
+      },
+      {
+       "title": "One of These 3 Companies Is One Year From Becoming a Dividend King. Here Is Which One",
+       "published_at": "2026-09-17T17:05:37Z"
+      },
+      {
+       "title": "Chili’s Gearing Up for Battle With Taco Bell",
+       "published_at": "2026-09-17T15:45:29Z"
+      },
+      {
+       "title": "BROS Trades at 38.45X P/E: Should Investors Buy, Sell or Hold?",
+       "published_at": "2026-09-17T14:57:00Z"
+      },
+      {
+       "title": "Can Starbucks' 600-650 New Stores Strengthen Its Global Growth?",
+       "published_at": "2026-09-17T14:49:00Z"
+      }
+     ]
+    },
+    {
+     "ticker": "CRH",
+     "name": "CRH plc",
+     "sector": "素材",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 86.69999694824219,
+      "short_term": {
+       "score": -0.337,
+       "label": "やや弱気",
+       "details": {
+        "rsi14": -0.202,
+        "stochastic": 0.5,
+        "macd_momentum": -0.4,
+        "price_vs_sma5": -0.233,
+        "bollinger_position": -0.756,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.955,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -1.0,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.674,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.95,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.674
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.291,
+       "label": "やや弱気"
+      },
+      "mid_term": {
+       "score": -0.755,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.422,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "CRH (CRH) Suffers a Larger Drop Than the General Market: Key Insights",
+       "published_at": "2026-09-16T22:00:04Z"
+      },
+      {
+       "title": "Here's Why CRH (CRH) Fell More Than Broader Market",
+       "published_at": "2026-09-10T22:00:04Z"
+      },
+      {
+       "title": "Arcosa Shareholders Approve $8.5B CRH Deal. Does the Vote De-Risk a First-Quarter 2027 Closing?",
+       "published_at": "2026-09-10T17:40:08Z"
+      },
+      {
+       "title": "Chip, Drug Makers to Drive Non-Residential Construction Rebound, UBS Says",
+       "published_at": "2026-09-08T21:14:12Z"
+      },
+      {
+       "title": "2 ‘Perfect 10’ Stocks Wall Street Is Betting On",
+       "published_at": "2026-08-30T18:00:00Z"
+      },
+      {
+       "title": "Dycom Q2 Earnings & Revenues Top Estimates on Strong Fiber Demand",
+       "published_at": "2026-08-26T16:29:00Z"
+      },
+      {
+       "title": "Dycom to Report Q2 Earnings: Here's What to Expect This Season",
+       "published_at": "2026-08-21T15:21:00Z"
+      },
+      {
+       "title": "Toll Brothers Beats Q3 Earnings & Revenue Estimates on Higher Pricing",
+       "published_at": "2026-08-19T15:37:00Z"
+      }
+     ]
+    },
+    {
+     "ticker": "TMUS",
+     "name": "T-Mobile US",
+     "sector": "通信サービス",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 166.4499969482422,
+      "short_term": {
+       "score": -0.692,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "rsi14": -0.189,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -1.0,
+        "bollinger_position": -1.0,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.618,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.009,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.217,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.879,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -1.0,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.217
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.539,
+       "label": "弱気（下落優勢）"
+      },
+      "mid_term": {
+       "score": -0.519,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.373,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "Why your cell phone bill is getting so expensive — and how that helped convince the Fed to raise rates",
+       "published_at": "2026-09-17T10:00:00Z"
+      },
+      {
+       "title": "Apple iPhone 18 Pro Sales Helped By Carrier Promotions",
+       "published_at": "2026-09-17T20:07:24Z"
+      },
+      {
+       "title": "Apple's iPhone 18 lineup keeps Bank of America bullish",
+       "published_at": "2026-09-17T19:13:00Z"
+      },
+      {
+       "title": "T-Mobile adds monthly fee to a new iPhone feature for customers",
+       "published_at": "2026-09-17T17:47:00Z"
+      },
+      {
+       "title": "Renewed Industry Competition Sparks T-Mobile US’s (TMUS) Sell-Off",
+       "published_at": "2026-09-17T14:07:51Z"
+      },
+      {
+       "title": "US official says upcoming spectrum auctions could generate more than $100 billion",
+       "published_at": "2026-09-17T01:58:10Z"
+      },
+      {
+       "title": "T Mobile US (TMUS) Sets Up A Long Term CFO Succession Plan",
+       "published_at": "2026-09-16T23:14:00Z"
+      },
+      {
+       "title": "What Does AT&T Stock Do To Your Money When The Market Falls?",
+       "published_at": "2026-09-16T18:50:36Z"
+      }
+     ]
+    },
+    {
+     "ticker": "BA",
+     "name": "Boeing",
+     "sector": "資本財",
+     "fundamentals_source": "Yahoo Finance News",
+     "technical": {
+      "price": 197.0,
+      "short_term": {
+       "score": -0.66,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "rsi14": -0.222,
+        "stochastic": 0.5,
+        "macd_momentum": -1.0,
+        "price_vs_sma5": -0.862,
+        "bollinger_position": -1.0,
+        "volume_confirmation": -1.0
+       }
+      },
+      "mid_term": {
+       "score": -0.797,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma25_vs_sma75": -0.498,
+        "price_vs_sma25": -1.0,
+        "macd_trend": -1.0,
+        "adx_trend": -0.531,
+        "volume_confirmation": -1.0
+       }
+      },
+      "long_term": {
+       "score": -0.71,
+       "label": "弱気（下落優勢）",
+       "details": {
+        "sma75_vs_sma200": -0.292,
+        "price_vs_sma200": -1.0,
+        "ichimoku_cloud": -1.0,
+        "adx_trend": -0.531
+       }
+      }
+     },
+     "combined": {
+      "short_term": {
+       "score": -0.517,
+       "label": "弱気（下落優勢）"
+      },
+      "mid_term": {
+       "score": -0.644,
+       "label": "弱気（下落優勢）"
+      },
+      "long_term": {
+       "score": -0.254,
+       "label": "やや弱気"
+      }
+     },
+     "headlines": [
+      {
+       "title": "TD Bank Targets 100 U.S. Branches as AML Remediation Continues",
+       "published_at": "2026-09-17T23:02:22Z"
+      },
+      {
+       "title": "Boeing (BA) Stock Sinks As Market Gains: What You Should Know",
+       "published_at": "2026-09-17T21:45:07Z"
+      },
+      {
+       "title": "“Delayed Isn’t as Good”: Why Boeing’s $10 Billion Cash Flow Target Just Got More Expensive",
+       "published_at": "2026-09-17T16:50:42Z"
+      },
+      {
+       "title": "Boeing (BA)’s $8.4 Billion Supplier Buyback Keeps Turning Up New Costs",
+       "published_at": "2026-09-17T14:43:56Z"
+      },
+      {
+       "title": "Boeing CEO Kelly Ortberg warns 737 Max production ramp is delayed",
+       "published_at": "2026-09-17T12:23:29Z"
+      },
+      {
+       "title": "Update: Market Chatter: US, Vietnam Firms Set to Announce Deals During To Lam Visit",
+       "published_at": "2026-09-17T11:33:10Z"
+      },
+      {
+       "title": "Boeing (BA) Lands Up To Four Freighter Orders And A New Cargo Lease",
+       "published_at": "2026-09-17T05:14:54Z"
+      },
+      {
+       "title": "Jim Cramer Sees Boeing (BA) Rising If Oil Peaks",
+       "published_at": "2026-09-16T22:46:15Z"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}
