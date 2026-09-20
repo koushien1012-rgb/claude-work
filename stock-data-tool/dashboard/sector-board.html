@@ -1,0 +1,375 @@
+<title>セクター相場ボード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --surface: #ffffff;
+    --surface-2: #efe8d8;
+    --ink: #1d1a15;
+    --ink-muted: #746b58;
+    --ink-faint: #9a9280;
+    --hairline: #e2d9c4;
+    --accent: #a97a1f;
+    --accent-ink: #ffffff;
+    --bull: #2f7d54;
+    --bull-soft: #d9ecdf;
+    --bear: #b2452c;
+    --bear-soft: #f3ddd4;
+    --neutral: #8a8270;
+    --neutral-soft: #ece6d6;
+    --shadow: 0 1px 2px rgba(30, 24, 10, 0.06), 0 8px 24px -16px rgba(30, 24, 10, 0.35);
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161a;
+      --surface: #1b1e24;
+      --surface-2: #22262e;
+      --ink: #eeece4;
+      --ink-muted: #9a9a8f;
+      --ink-faint: #6c6a60;
+      --hairline: #2c2f37;
+      --accent: #dcae51;
+      --accent-ink: #1a1305;
+      --bull: #5cb787;
+      --bull-soft: #1c3327;
+      --bear: #de7259;
+      --bear-soft: #3a241e;
+      --neutral: #8f9299;
+      --neutral-soft: #2a2d33;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #14161a;
+    --surface: #1b1e24;
+    --surface-2: #22262e;
+    --ink: #eeece4;
+    --ink-muted: #9a9a8f;
+    --ink-faint: #6c6a60;
+    --hairline: #2c2f37;
+    --accent: #dcae51;
+    --accent-ink: #1a1305;
+    --bull: #5cb787;
+    --bull-soft: #1c3327;
+    --bear: #de7259;
+    --bear-soft: #3a241e;
+    --neutral: #8f9299;
+    --neutral-soft: #2a2d33;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 20px 64px;
+  }
+
+  header.masthead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 20px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    margin: 0 0 4px;
+    text-wrap: balance;
+    letter-spacing: 0.02em;
+  }
+  .masthead .sub { color: var(--ink-muted); font-size: 0.88rem; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--hairline);
+    color: var(--ink-muted);
+    background: var(--surface);
+  }
+  .back-link {
+    display: inline-block;
+    margin: 14px 18px 24px 0;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .tab-btn {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    padding: 8px 18px;
+    border: none;
+    background: none;
+    color: var(--ink-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel[hidden] { display: none; }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .cat-card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+  }
+  .cat-title {
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 500;
+    margin: 0 0 12px;
+    color: var(--accent);
+  }
+  .cat-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .cat-col-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .pick {
+    display: block;
+    padding: 6px 0;
+    border-top: 1px solid var(--hairline);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .pick:first-child { border-top: none; }
+  .pick:hover { color: var(--accent); }
+  .pick-ticker { font-family: var(--font-mono); font-weight: 600; font-size: 0.85rem; }
+  .pick-name {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--ink-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pick-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+  .pick-meta .label.bull-strong, .pick-meta .label.bull { color: var(--bull); }
+  .pick-meta .label.bear-strong, .pick-meta .label.bear { color: var(--bear); }
+  .pick-meta .label.neutral { color: var(--neutral); }
+  .empty-pick { font-size: 0.76rem; color: var(--ink-faint); padding: 6px 0; }
+
+  .sector-market-block { margin-bottom: 28px; }
+  .sector-market-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 14px;
+  }
+
+  footer.note {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline);
+    color: var(--ink-faint);
+    font-size: 0.76rem;
+    line-height: 1.7;
+  }
+  .empty-state { padding: 40px 18px; text-align: center; color: var(--ink-faint); font-size: 0.85rem; }
+</style>
+
+<div class="page">
+  <header class="masthead">
+    <div>
+      <h1>セクター相場ボード</h1>
+      <div class="sub">為替・金利・景気・地政学リスクへの感応度、業種別の時価総額上位銘柄</div>
+    </div>
+    <span class="chip" id="updatedChip"></span>
+  </header>
+
+  <a class="back-link" href="https://claude.ai/code/artifact/aae8bc26-18de-4aaf-964b-9ef16ccbd3f7" target="_blank" rel="noopener">📈 相場ボードを見る ↗</a>
+  <a class="back-link" href="https://claude.ai/artifact/SVTLnAFhLZmHkJuRdne8GX" target="_blank" rel="noopener">⚡ タイムリー通知を見る ↗</a>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="macro">マクロ別</button>
+    <button class="tab-btn" data-tab="sector">業種別</button>
+  </div>
+
+  <div class="tab-panel" id="panel-macro">
+    <div class="cat-grid" id="categoryGrid"></div>
+  </div>
+
+  <div class="tab-panel" id="panel-sector" hidden>
+    <div class="sector-market-block">
+      <h2 class="sector-market-title">日本株</h2>
+      <div class="cat-grid" id="sectorGridJp"></div>
+    </div>
+    <div class="sector-market-block">
+      <h2 class="sector-market-title">米国株</h2>
+      <div class="cat-grid" id="sectorGridUs"></div>
+    </div>
+  </div>
+
+  <footer class="note">
+    「マクロ別」は業種をもとに、為替・金利・景気サイクル・地政学リスク・原油価格の各局面で相対的に強含みやすいとされる業種の目安を機械的にマッピングしたものです（一般的な傾向であり、個別銘柄の実際の値動きを保証するものではありません）。各カテゴリ・業種内は時価総額の大きい順に最大2銘柄を掲載しています。短期/中期/長期の見通しラベルは「相場ボード」と同じテクニカルスコアです。いずれも自動生成された参考情報であり、投資助言ではありません。投資判断はご自身の責任で行ってください。
+  </footer>
+</div>
+
+<script>
+  function fmtNum(n, digits = 2) {
+    if (n === null || n === undefined || Number.isNaN(n)) return "—";
+    return Number(n).toLocaleString("ja-JP", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  }
+
+  function fmtCap(n, ticker) {
+    if (n === null || n === undefined) return "—";
+    const isJp = String(ticker).endsWith(".T");
+    if (isJp) {
+      const oku = n / 1e8;
+      return `${fmtNum(oku, 0)}億円`;
+    }
+    const billion = n / 1e9;
+    return `$${fmtNum(billion, 1)}B`;
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "";
+    return d.toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function companyName(item) {
+    return item.name_ja || item.name || "";
+  }
+
+  function chartUrl(ticker) {
+    if (ticker.endsWith(".T")) {
+      return `https://finance.yahoo.co.jp/quote/${encodeURIComponent(ticker)}/chart`;
+    }
+    return `https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/chart`;
+  }
+
+  const LABEL_CLASS = {
+    "強気（上昇優勢）": "bull-strong",
+    "やや強気": "bull",
+    "中立": "neutral",
+    "やや弱気": "bear",
+    "弱気（下落優勢）": "bear-strong",
+  };
+
+  function pickRow(item) {
+    const cls = LABEL_CLASS[item.short_term && item.short_term.label] || "neutral";
+    return `<a class="pick" href="${chartUrl(item.ticker)}" target="_blank" rel="noopener">
+      <span class="pick-ticker">${item.ticker}</span>
+      <span class="pick-name">${companyName(item)}</span>
+      <span class="pick-meta">
+        <span>${fmtCap(item.market_cap, item.ticker)}</span>
+        <span class="label ${cls}">${(item.short_term && item.short_term.label) || "—"}</span>
+      </span>
+    </a>`;
+  }
+
+  function pickColumn(label, picks) {
+    const body = (picks && picks.length)
+      ? picks.map(pickRow).join("")
+      : `<div class="empty-pick">該当なし</div>`;
+    return `<div>
+      <div class="cat-col-label">${label}</div>
+      ${body}
+    </div>`;
+  }
+
+  function categoryCard(cat) {
+    return `<div class="cat-card">
+      <h3 class="cat-title">${cat.label}</h3>
+      <div class="cat-cols">
+        ${pickColumn("日本株", cat.jp)}
+        ${pickColumn("米国株", cat.us)}
+      </div>
+    </div>`;
+  }
+
+  function sectorCard(group) {
+    return `<div class="cat-card">
+      <h3 class="cat-title">${group.sector}</h3>
+      <div class="cat-cols" style="grid-template-columns: 1fr;">
+        ${pickColumn("時価総額上位", group.picks)}
+      </div>
+    </div>`;
+  }
+
+  function render(data) {
+    document.getElementById("updatedChip").textContent = `更新: ${fmtDate(data.generated_at)}`;
+
+    const catGrid = document.getElementById("categoryGrid");
+    catGrid.innerHTML = (data.categories || []).map(categoryCard).join("")
+      || `<div class="empty-state">データがありません</div>`;
+
+    const jpGrid = document.getElementById("sectorGridJp");
+    jpGrid.innerHTML = ((data.sectors && data.sectors.jp) || []).map(sectorCard).join("")
+      || `<div class="empty-state">データがありません</div>`;
+
+    const usGrid = document.getElementById("sectorGridUs");
+    usGrid.innerHTML = ((data.sectors && data.sectors.us) || []).map(sectorCard).join("")
+      || `<div class="empty-state">データがありません</div>`;
+  }
+
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("panel-macro").hidden = btn.dataset.tab !== "macro";
+      document.getElementById("panel-sector").hidden = btn.dataset.tab !== "sector";
+    });
+  });
+
+  fetch("sector_board_data.json")
+    .then((r) => r.json())
+    .then(render)
+    .catch((err) => {
+      document.getElementById("categoryGrid").innerHTML = `<div class="empty-state">データの読み込みに失敗しました: ${err}</div>`;
+    });
+</script>
