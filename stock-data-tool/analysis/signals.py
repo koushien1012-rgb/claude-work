@@ -97,6 +97,33 @@ def _score_ichimoku(price: float, senkou_a: float, senkou_b: float) -> float:
     return 0.0
 
 
+def _score_dow_trend(trend: str, confirmed: bool) -> float:
+    if trend == "up":
+        return 1.0 if confirmed else 0.5
+    if trend == "down":
+        return -1.0 if confirmed else -0.5
+    return 0.0
+
+
+def _score_wyckoff_phase(phase: str) -> float:
+    return {
+        "markup": 1.0, "accumulation": 0.5,
+        "distribution": -0.5, "markdown": -1.0, "undefined": 0.0,
+    }.get(phase, 0.0)
+
+
+def _score_candlestick(direction: int) -> float:
+    return float(direction) * 0.6
+
+
+def _score_fibonacci(fib: dict) -> float:
+    return float(fib.get("score", 0.0))
+
+
+def _score_volume_profile(price_vs_poc: float) -> float:
+    return float(np.clip(price_vs_poc * 10, -1, 1))
+
+
 def _label(score: float) -> str:
     if score >= 0.5:
         return "強気（上昇優勢）"
@@ -121,6 +148,8 @@ SHORT_TERM_WEIGHTS = {
     "stochastic": 1.0,
     "bollinger_position": 1.0,
     "volume_confirmation": 1.0,
+    "candlestick_pattern": 1.0,
+    "fibonacci_position": 1.0,
 }
 MID_TERM_WEIGHTS = {
     "sma25_vs_sma75": 2.0,
@@ -128,12 +157,16 @@ MID_TERM_WEIGHTS = {
     "macd_trend": 1.5,
     "adx_trend": 1.0,
     "volume_confirmation": 0.75,
+    "dow_trend_daily": 2.0,
+    "wyckoff_phase": 1.5,
 }
 LONG_TERM_WEIGHTS = {
     "sma75_vs_sma200": 2.0,
     "price_vs_sma200": 2.0,
     "ichimoku_cloud": 1.5,
     "adx_trend": 1.0,
+    "dow_trend_weekly": 2.0,
+    "volume_profile_position": 1.0,
 }
 
 
@@ -155,6 +188,12 @@ def outlook(indicators: dict, df: pd.DataFrame) -> dict:
     bb_row = indicators["bollinger"].iloc[-1]
     adx_row = indicators["adx"].iloc[-1]
     ichi_row = indicators["ichimoku"].iloc[-1]
+    dow_daily = indicators["dow_daily"]
+    dow_weekly = indicators["dow_weekly"]
+    wyckoff_phase = indicators["wyckoff"]["phase"]
+    candlestick_direction = indicators["candlestick"]["direction"]
+    fibonacci_detail = indicators["fibonacci"]
+    volume_profile_detail = indicators["volume_profile"]
 
     volume_short = _score_volume_confirmation(df["close"], indicators["obv"], window=10)
     volume_mid = _score_volume_confirmation(df["close"], indicators["obv"], window=25)
@@ -166,6 +205,8 @@ def outlook(indicators: dict, df: pd.DataFrame) -> dict:
         "price_vs_sma5": _score_price_vs_ma(price, sma_row["sma5"]),
         "bollinger_position": _score_bollinger(price, bb_row["upper"], bb_row["mid"], bb_row["lower"]),
         "volume_confirmation": volume_short,
+        "candlestick_pattern": _score_candlestick(candlestick_direction),
+        "fibonacci_position": _score_fibonacci(fibonacci_detail),
     }
     mid_scores = {
         "sma25_vs_sma75": _score_ma_cross(sma_row["sma25"], sma_row["sma75"]),
@@ -173,12 +214,16 @@ def outlook(indicators: dict, df: pd.DataFrame) -> dict:
         "macd_trend": _score_macd_trend(macd_row["macd"], macd_row["signal"], price),
         "adx_trend": _score_adx_trend(adx_row["+DI"], adx_row["-DI"], adx_row["ADX"]),
         "volume_confirmation": volume_mid,
+        "dow_trend_daily": _score_dow_trend(dow_daily["trend"], dow_daily["confirmed_by_volume"]),
+        "wyckoff_phase": _score_wyckoff_phase(wyckoff_phase),
     }
     long_scores = {
         "sma75_vs_sma200": _score_ma_cross(sma_row["sma75"], sma_row["sma200"]),
         "price_vs_sma200": _score_price_vs_ma(price, sma_row["sma200"]),
         "ichimoku_cloud": _score_ichimoku(price, ichi_row["senkou_a"], ichi_row["senkou_b"]),
         "adx_trend": _score_adx_trend(adx_row["+DI"], adx_row["-DI"], adx_row["ADX"]),
+        "dow_trend_weekly": _score_dow_trend(dow_weekly["trend"], dow_weekly["confirmed_by_volume"]),
+        "volume_profile_position": _score_volume_profile(volume_profile_detail["price_vs_poc"]),
     }
 
     return {
