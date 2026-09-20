@@ -76,6 +76,16 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* motion: page entrance + reveal on details open. Kept subtle (Disney's
+     "slow in / slow out" — quick ease-out, no linear or bouncy overshoot on
+     data reveals) and skipped entirely for prefers-reduced-motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    body { animation: fadeIn 420ms ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    @keyframes revealIn { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
+  }
+
   .page {
     max-width: 1180px;
     margin: 0 auto;
@@ -244,13 +254,34 @@
     border-radius: 999px;
     padding: 4px 10px;
   }
+  .chart-link { transition: background 120ms ease-out, color 120ms ease-out; }
   .chart-link:hover { background: var(--accent); color: var(--accent-ink); }
   .row summary::-webkit-details-marker { display: none; }
+  .row summary { transition: background 120ms ease-out; }
   .row summary:hover { background: var(--surface-2); }
+  @media (prefers-reduced-motion: no-preference) {
+    .row[open] > .detail { animation: revealIn 220ms ease-out; }
+  }
   .rank {
     font-family: var(--font-mono);
     color: var(--ink-faint);
     font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .badge-new {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-radius: 4px;
+    padding: 1px 4px;
+    line-height: 1.4;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .badge-new { animation: popIn 280ms cubic-bezier(0.34, 1.56, 0.64, 1); }
   }
   .name-block { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
   .ticker {
@@ -267,6 +298,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .sparkline { display: block; margin-top: 2px; }
   .price {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
@@ -288,9 +320,15 @@
   .gauge-fill {
     position: absolute;
     top: 0; bottom: 0;
+    width: 0;
     background: var(--bull);
   }
   .gauge-fill.neg { background: var(--bear); }
+  @media (prefers-reduced-motion: no-preference) {
+    .gauge-fill {
+      transition: width 650ms cubic-bezier(0.22, 1, 0.36, 1) 60ms, left 650ms cubic-bezier(0.22, 1, 0.36, 1) 60ms;
+    }
+  }
 
   .detail {
     padding: 4px 18px 18px 58px;
@@ -353,6 +391,16 @@
   }
   .hint a { color: var(--accent); }
 
+  .insight-line {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 0 0 10px;
+    padding: 8px 12px;
+    background: var(--surface-2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
   .tech-extra { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
   .tech-extra-row { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dashed var(--hairline); padding-bottom: 4px; }
   .tech-extra-row .term { color: var(--ink-muted); }
@@ -379,6 +427,29 @@
     text-decoration: none;
   }
   .back-link:hover { text-decoration: underline; }
+
+  .today-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    font-size: 0.84rem;
+  }
+  .today-summary .ts-label {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .today-summary .ts-item { font-family: var(--font-mono); font-size: 0.78rem; }
+  .today-summary .ts-item .tk-in { color: var(--bull); }
+  .today-summary .ts-item .tk-out { color: var(--ink-faint); text-decoration: line-through; }
 
   .context-grid {
     display: grid;
@@ -597,6 +668,8 @@
   <a class="back-link" href="https://claude.ai/artifact/SVTLnAFhLZmHkJuRdne8GX" target="_blank" rel="noopener">⚡ タイムリー通知を見る ↗</a>
   <a class="back-link" href="https://claude.ai/artifact/ENesyoDoLBEcd4W2MtQ7pY" target="_blank" rel="noopener">🧭 セクター相場ボードを見る ↗</a>
 
+  <div id="todaySummary"></div>
+
   <section class="context-grid">
     <div class="context-card">
       <h2 class="context-title">マクロイベント（45日以内）</h2>
@@ -708,16 +781,100 @@
     return item.name_ja || item.name || "";
   }
 
+  // Per-viewer "what changed since I last looked" state. Best-effort only:
+  // wrapped in try/catch so a private window, blocked storage, or a fresh
+  // browser profile just means no diff is shown, never a broken page.
+  const LAST_SEEN_KEY = "soubaBoard:lastSeenTop10:v1";
+
+  function loadLastSeen() {
+    try {
+      const raw = localStorage.getItem(LAST_SEEN_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function saveLastSeen(state) {
+    try {
+      localStorage.setItem(LAST_SEEN_KEY, JSON.stringify(state));
+    } catch (err) {
+      // storage unavailable (private window, quota, etc.) -- nothing to do
+    }
+  }
+
+  function sparkline(ohlcv) {
+    if (!ohlcv || ohlcv.length < 2) return "";
+    const closes = ohlcv.map((b) => b.close);
+    const min = Math.min(...closes), max = Math.max(...closes);
+    const range = max - min || 1;
+    const w = 60, h = 20, pad = 2;
+    const points = closes.map((c, i) => {
+      const x = pad + (i / (closes.length - 1)) * (w - pad * 2);
+      const y = pad + (1 - (c - min) / range) * (h - pad * 2);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+    const up = closes[closes.length - 1] >= closes[0];
+    return `<svg class="sparkline" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points="${points}" fill="none" stroke="${up ? "var(--bull)" : "var(--bear)"}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  }
+
+  const TREND_PHRASE = { up: "上昇トレンド", down: "下降トレンド", sideways: "方向感の乏しいレンジ" };
+  const WYCKOFF_PHRASE = {
+    markup: "ワイコフ的には上昇（マークアップ）局面",
+    accumulation: "ワイコフ的には蓄積局面",
+    distribution: "ワイコフ的には分配局面",
+    markdown: "ワイコフ的には下降（マークダウン）局面",
+  };
+  const PATTERN_PHRASE = {
+    bullish_engulfing: "直近では強気の包み足が出現",
+    bearish_engulfing: "直近では弱気の包み足が出現",
+    hammer: "直近でハンマー（下ヒゲ）が出現",
+    shooting_star: "直近で上ヒゲの長い足が出現",
+    doji: "直近で迷いを示す十字線が出現",
+  };
+
+  function insightLine(t) {
+    const dow = t.dow_theory || {};
+    const dowDaily = dow.daily || {};
+    const wyckoff = t.wyckoff_phase || {};
+    const candle = t.candlestick_pattern || {};
+
+    const trend = TREND_PHRASE[dowDaily.trend];
+    if (!trend) return "";
+    const volNote = dowDaily.confirmed_by_volume ? "（出来高の裏付けあり）" : "";
+    const phase = WYCKOFF_PHRASE[wyckoff.phase];
+    const pattern = PATTERN_PHRASE[candle.pattern];
+
+    let text = `日足は${trend}${volNote}`;
+    if (phase) text += `、${phase}`;
+    text += "。";
+    if (pattern) text += `${pattern}。`;
+    return `<p class="insight-line">${text}</p>`;
+  }
+
   function gauge(term, score) {
     const pct = Math.min(Math.abs(score), 1) * 50;
     const isNeg = score < 0;
     const left = isNeg ? 50 - pct : 50;
+    // width/left start unset (CSS default 0) and are applied a frame later by
+    // animateGauges() so the fill genuinely transitions in, rather than
+    // appearing pre-filled (a style set in the same paint as insertion never animates).
     return `<div class="gauge">
       <span class="gauge-label">${term}</span>
       <div class="gauge-track">
-        <div class="gauge-fill ${isNeg ? "neg" : ""}" style="left:${left}%; width:${pct}%;"></div>
+        <div class="gauge-fill ${isNeg ? "neg" : ""}" data-left="${left}" data-width="${pct}" style="left:${left}%;"></div>
       </div>
     </div>`;
+  }
+
+  function animateGauges() {
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".gauge-fill[data-width]").forEach((el) => {
+        el.style.width = `${el.dataset.width}%`;
+      });
+    });
   }
 
   function scoreCard(term, obj) {
@@ -762,6 +919,7 @@
 
     return `<div class="detail-section">
       <h3>ダウ理論・ワイコフ・パターン分析</h3>
+      ${insightLine(t)}
       <div class="tech-extra">
         <div class="tech-extra-row"><span class="term">日足トレンド</span><span>${dowDaily.trend || "—"}${dowDaily.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
         <div class="tech-extra-row"><span class="term">週足トレンド</span><span>${dowWeekly.trend || "—"}${dowWeekly.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
@@ -867,7 +1025,7 @@
     return tags.length ? `<div class="meta-row">${tags.join("")}</div>` : "";
   }
 
-  function row(rank, item) {
+  function row(rank, item, isNew) {
     const t = item.technical;
     const headlines = (item.fundamentals_raw || []).slice(0, 6).map((h) => {
       const text = h.title_ja || h.title || "";
@@ -882,10 +1040,11 @@
 
     return `<details class="row">
       <summary>
-        <span class="rank">${String(rank).padStart(2, "0")}</span>
+        <span class="rank">${String(rank).padStart(2, "0")}${isNew ? `<span class="badge-new">NEW</span>` : ""}</span>
         <span class="name-block">
           <span class="ticker">${item.ticker}</span>
           <span class="company">${companyName(item)}</span>
+          ${item.chart ? sparkline(item.chart.ohlcv) : ""}
         </span>
         <span class="price">${item.price_source === "moomoo_realtime" ? "⚡" : ""}${fmtNum(item.price)}</span>
         <span class="gauges">
@@ -956,14 +1115,61 @@
     `;
   }
 
-  function renderBoard(listId, countId, items) {
+  function renderBoard(listId, countId, items, newTickerSet) {
     const list = document.getElementById(listId);
     document.getElementById(countId).textContent = `${items.length}銘柄`;
     if (!items.length) {
       list.innerHTML = `<div class="empty-state">対象銘柄がありません</div>`;
       return;
     }
-    list.innerHTML = items.map((item, i) => row(i + 1, item)).join("");
+    list.innerHTML = items.map((item, i) => row(i + 1, item, !!(newTickerSet && newTickerSet.has(item.ticker)))).join("");
+  }
+
+  // Diffs today's top-10 lists against the viewer's own last visit (stored in
+  // localStorage, never sent anywhere). First-ever visit has no baseline, so
+  // it renders nothing rather than marking every row "NEW".
+  const BOARD_KEYS = [
+    ["jp", "bullish", "日本株・気配上位"], ["jp", "bearish", "日本株・気配下位"],
+    ["us", "bullish", "米国株・気配上位"], ["us", "bearish", "米国株・気配下位"],
+  ];
+
+  function diffAndPersist(markets) {
+    const previous = loadLastSeen();
+    const current = {};
+    const newSets = {};
+    const changeSummary = [];
+
+    for (const [market, dir, label] of BOARD_KEYS) {
+      const items = (markets[market] && markets[market][dir]) || [];
+      const tickers = items.map((it) => it.ticker);
+      current[`${market}_${dir}`] = tickers;
+
+      const prevTickers = previous ? (previous[`${market}_${dir}`] || []) : null;
+      const newSet = new Set(prevTickers ? tickers.filter((t) => !prevTickers.includes(t)) : []);
+      newSets[`${market}_${dir}`] = newSet;
+
+      if (prevTickers) {
+        const dropped = prevTickers.filter((t) => !tickers.includes(t));
+        if (newSet.size || dropped.length) {
+          changeSummary.push({ label, added: [...newSet], dropped });
+        }
+      }
+    }
+
+    saveLastSeen(current);
+    return { newSets, changeSummary, isFirstVisit: !previous };
+  }
+
+  function renderTodaySummary(changeSummary) {
+    const el = document.getElementById("todaySummary");
+    const items = changeSummary.filter((c) => c.added.length || c.dropped.length);
+    if (!items.length) { el.innerHTML = ""; return; }
+    el.innerHTML = `<span class="ts-label">前回訪問からの変化</span>` + items.map((c) => {
+      const parts = [];
+      if (c.added.length) parts.push(`<span class="tk-in">+${c.added.join(" +")}</span>`);
+      if (c.dropped.length) parts.push(`<span class="tk-out">${c.dropped.join(" ")}</span>`);
+      return `<span class="ts-item">${c.label}: ${parts.join(" ")}</span>`;
+    }).join("");
   }
 
   function renderMacroEvents(events) {
@@ -1064,10 +1270,14 @@
       renderWatchlistAlerts(data.watchlist_alerts);
       renderFigureMentions(data.figure_mentions);
       renderMacroNews(data.macro_news);
-      renderBoard("bullListJp", "bullCountJp", jp.bullish || []);
-      renderBoard("bearListJp", "bearCountJp", jp.bearish || []);
-      renderBoard("bullListUs", "bullCountUs", us.bullish || []);
-      renderBoard("bearListUs", "bearCountUs", us.bearish || []);
+
+      const { newSets, changeSummary } = diffAndPersist(markets);
+      renderTodaySummary(changeSummary);
+      renderBoard("bullListJp", "bullCountJp", jp.bullish || [], newSets.jp_bullish);
+      renderBoard("bearListJp", "bearCountJp", jp.bearish || [], newSets.jp_bearish);
+      renderBoard("bullListUs", "bullCountUs", us.bullish || [], newSets.us_bullish);
+      renderBoard("bearListUs", "bearCountUs", us.bearish || [], newSets.us_bearish);
+      animateGauges();
     })
     .catch((err) => {
       document.getElementById("bullListJp").innerHTML = `<div class="empty-state">データの読み込みに失敗しました: ${err}</div>`;

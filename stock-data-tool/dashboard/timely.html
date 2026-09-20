@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <title>タイムリー通知</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,6 +76,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    body { animation: fadeIn 420ms ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
+  }
+
   .page {
     max-width: 760px;
     margin: 0 auto;
@@ -137,10 +144,45 @@
     box-shadow: var(--shadow);
     padding: 12px 16px;
     margin-bottom: 10px;
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+  }
+  .entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(30, 24, 10, 0.08), 0 12px 28px -14px rgba(30, 24, 10, 0.4);
   }
   .entry.type-figure_mention { border-left-color: var(--accent); }
   .entry.type-macro_news { border-left-color: var(--neutral); }
   .entry.type-macro_event_result { border-left-color: var(--bear); }
+  .entry.is-new { background: var(--surface-2); }
+  .badge-new {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-right: 6px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .badge-new { animation: popIn 280ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  }
+
+  .today-tally {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .today-tally .tally-chip {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+    color: var(--ink-muted);
+  }
 
   .entry-head {
     display: flex;
@@ -232,6 +274,8 @@
   <a class="back-link" href="https://claude.ai/code/artifact/aae8bc26-18de-4aaf-964b-9ef16ccbd3f7" target="_blank" rel="noopener">📈 相場ボードを見る ↗</a>
   <a class="back-link" href="https://claude.ai/artifact/ENesyoDoLBEcd4W2MtQ7pY" target="_blank" rel="noopener">🧭 セクター相場ボードを見る ↗</a>
 
+  <div id="todayTally" class="today-tally"></div>
+
   <div id="feed"></div>
 
   <footer class="note">
@@ -264,7 +308,18 @@
     macro_event_result: "マクロイベント結果",
   };
 
-  function entryCard(e) {
+  // Per-viewer "seen since last visit" marker, stored only in this browser.
+  const LAST_VISIT_KEY = "timely:lastVisitAt:v1";
+
+  function loadLastVisit() {
+    try { return localStorage.getItem(LAST_VISIT_KEY); } catch (err) { return null; }
+  }
+
+  function saveLastVisit(iso) {
+    try { localStorage.setItem(LAST_VISIT_KEY, iso); } catch (err) { /* storage unavailable */ }
+  }
+
+  function entryCard(e, isNew) {
     const type = e.type || "macro_news";
     const title = e.title_ja || e.title || "";
     const hasOriginal = e.title_ja && e.title && e.title_ja !== e.title;
@@ -276,9 +331,9 @@
     const impact = e.impact_note ? `<div class="entry-impact">${e.impact_note}</div>` : "";
     const tickers = (e.related_tickers || []).map((t) => `<span class="tk">${t}</span>`).join("");
 
-    return `<div class="entry type-${type}">
+    return `<div class="entry type-${type}${isNew ? " is-new" : ""}">
       <div class="entry-head">
-        <span class="entry-time">${fmtTime(e.timestamp)}</span>
+        <span class="entry-time">${isNew ? `<span class="badge-new">NEW</span>` : ""}${fmtTime(e.timestamp)}</span>
         <span class="type-badge ${type}">${TYPE_LABEL[type] || type}</span>
       </div>
       <p class="entry-title">${titleHtml}</p>
@@ -288,17 +343,34 @@
     </div>`;
   }
 
+  function renderTally(entries) {
+    const el = document.getElementById("todayTally");
+    if (!entries.length) { el.innerHTML = ""; return; }
+    const counts = {};
+    for (const e of entries) {
+      const type = e.type || "macro_news";
+      counts[type] = (counts[type] || 0) + 1;
+    }
+    el.innerHTML = Object.entries(counts)
+      .map(([type, n]) => `<span class="tally-chip">${TYPE_LABEL[type] || type} ${n}件</span>`)
+      .join("");
+  }
+
   function render(data) {
     const entries = (data.entries || []).slice().sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
     document.getElementById("updatedChip").textContent = entries.length
       ? `最新: ${fmtDay(entries[0].timestamp)} ${fmtTime(entries[0].timestamp)}`
       : "更新なし";
 
+    renderTally(entries);
+
     const feed = document.getElementById("feed");
     if (!entries.length) {
       feed.innerHTML = `<div class="empty-state">まだ通知はありません。毎時のチェックで新着があれば表示されます。</div>`;
       return;
     }
+
+    const lastVisit = loadLastVisit();
 
     const groups = [];
     let currentDay = null;
@@ -316,9 +388,11 @@
     feed.innerHTML = groups.map((g) => `
       <div class="day-group">
         <h2 class="day-label">${g.day}</h2>
-        ${g.items.map(entryCard).join("")}
+        ${g.items.map((e) => entryCard(e, !!(lastVisit && e.timestamp > lastVisit))).join("")}
       </div>
     `).join("");
+
+    if (entries[0] && entries[0].timestamp) saveLastVisit(entries[0].timestamp);
   }
 
   fetch("timely_data.json")

@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <title>セクター相場ボード</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,6 +76,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    body { animation: fadeIn 420ms ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  }
+
   .page {
     max-width: 1180px;
     margin: 0 auto;
@@ -149,13 +155,33 @@
     border-radius: 12px;
     box-shadow: var(--shadow);
     padding: 16px 18px;
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+  }
+  .cat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(30, 24, 10, 0.08), 0 12px 28px -14px rgba(30, 24, 10, 0.4);
   }
   .cat-title {
     font-family: var(--font-display);
     font-size: 1.02rem;
     font-weight: 500;
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     color: var(--accent);
+  }
+  .tilt-bar {
+    display: flex;
+    height: 5px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: var(--neutral-soft);
+  }
+  .tilt-bar span { display: block; height: 100%; }
+  .tilt-bar .t-bull { background: var(--bull); }
+  .tilt-bar .t-bear { background: var(--bear); }
+  .tilt-bar .t-neutral { background: var(--neutral); }
+  @media (prefers-reduced-motion: no-preference) {
+    .tilt-bar span { transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1); }
   }
   .cat-cols {
     display: grid;
@@ -172,13 +198,16 @@
   }
   .pick {
     display: block;
-    padding: 6px 0;
+    padding: 6px 4px;
+    margin: 0 -4px;
     border-top: 1px solid var(--hairline);
+    border-radius: 6px;
     text-decoration: none;
     color: var(--ink);
+    transition: color 120ms ease-out, background 120ms ease-out;
   }
   .pick:first-child { border-top: none; }
-  .pick:hover { color: var(--accent); }
+  .pick:hover { color: var(--accent); background: var(--surface-2); }
   .pick-ticker { font-family: var(--font-mono); font-weight: 600; font-size: 0.85rem; }
   .pick-name {
     display: block;
@@ -322,9 +351,28 @@
     </div>`;
   }
 
+  function tiltBar(picks) {
+    if (!picks || !picks.length) return "";
+    let bull = 0, bear = 0, neutral = 0;
+    for (const p of picks) {
+      const cls = LABEL_CLASS[p.short_term && p.short_term.label] || "neutral";
+      if (cls === "bull-strong" || cls === "bull") bull++;
+      else if (cls === "bear-strong" || cls === "bear") bear++;
+      else neutral++;
+    }
+    const total = bull + bear + neutral;
+    const bullPct = (bull / total) * 100, bearPct = (bear / total) * 100, neutralPct = (neutral / total) * 100;
+    return `<div class="tilt-bar" title="強気${bull}・中立${neutral}・弱気${bear}">
+      <span class="t-bull" style="width:${bullPct}%"></span>
+      <span class="t-neutral" style="width:${neutralPct}%"></span>
+      <span class="t-bear" style="width:${bearPct}%"></span>
+    </div>`;
+  }
+
   function categoryCard(cat) {
     return `<div class="cat-card">
       <h3 class="cat-title">${cat.label}</h3>
+      ${tiltBar([...(cat.jp || []), ...(cat.us || [])])}
       <div class="cat-cols">
         ${pickColumn("日本株", cat.jp)}
         ${pickColumn("米国株", cat.us)}
@@ -335,6 +383,7 @@
   function sectorCard(group) {
     return `<div class="cat-card">
       <h3 class="cat-title">${group.sector}</h3>
+      ${tiltBar(group.picks)}
       <div class="cat-cols" style="grid-template-columns: 1fr;">
         ${pickColumn("時価総額上位", group.picks)}
       </div>
