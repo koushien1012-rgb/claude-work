@@ -5,12 +5,16 @@ import time
 from datetime import date, datetime
 from pathlib import Path
 
-from analysis import generate_report, save_report
+from analysis import build_chart_data, generate_report, save_report
 from macro import get_figure_mentions, get_macro_news, get_macro_snapshot, get_upcoming_events
-from screener import check_watchlist_alerts, get_nikkei225_info, get_sp500_info, scan_universe, top_signals
-from stock_data import get_us_realtime_snapshot
+from screener import (
+    check_watchlist_alerts, get_nikkei225_info, get_sp500_info,
+    refine_candidates, scan_universe, top_signals,
+)
+from stock_data import get_daily, get_us_realtime_snapshot
 
 TOP_N = 10
+CANDIDATE_POOL_N = 40
 WATCHLIST_PATH = Path("watchlist.json")
 
 
@@ -24,7 +28,8 @@ def _sanitize(obj):
     return obj
 
 
-def _ticker_entry(ticker: str, report: dict) -> dict:
+def _ticker_entry(ticker: str, report: dict, entry_timeframe: dict | None = None,
+                   chart: dict | None = None) -> dict:
     return {
         "ticker": ticker,
         "name": report.get("name") or "",
@@ -42,6 +47,8 @@ def _ticker_entry(ticker: str, report: dict) -> dict:
         "fundamentals_source": report["fundamentals_source"],
         "fundamentals_raw": report["fundamentals_raw"],
         "claude_judgment": None,
+        "entry_timeframe": entry_timeframe,
+        "chart": chart,
     }
 
 
@@ -49,7 +56,8 @@ def _build_market_block(scan_df, bullish, bearish, name_map, reports_out, realti
     scan_lookup = scan_df.set_index("ticker")
     entries = {"bullish": [], "bearish": []}
     for key, df in (("bullish", bullish), ("bearish", bearish)):
-        for ticker in df["ticker"]:
+        for _, cand_row in df.iterrows():
+            ticker = cand_row["ticker"]
             try:
                 row = scan_lookup.loc[ticker]
                 report = generate_report(
@@ -62,7 +70,19 @@ def _build_market_block(scan_df, bullish, bearish, name_map, reports_out, realti
                 )
                 save_report(report, f"output/reports/{ticker.replace('.', '_')}.md")
                 reports_out[ticker] = report
-                entries[key].append(_ticker_entry(ticker, report))
+
+                entry_timeframe = cand_row.get("entry_timeframe")
+                tech = report["technical"]
+                # Note: generate_report() already fetched 2y daily data internally; fetching again here
+                # is a small, deliberate duplication kept for simplicity since this only runs for the
+                # final ~40 candidates (not the full 700-ticker universe).
+                price_df_source = get_daily(ticker, source="yfinance", period="2y")
+                chart = build_chart_data(
+                    price_df_source, tech["dow_theory"]["daily"]["last_swings"],
+                    tech["fibonacci_position"]["levels"], tech["candlestick_pattern"], tech["wyckoff_phase"],
+                )
+
+                entries[key].append(_ticker_entry(ticker, report, entry_timeframe, chart))
             except Exception as exc:
                 print(f"failed to build report for {ticker}: {exc}")
     return entries
@@ -98,8 +118,16 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     scan_df.to_csv(out_dir / "full_scan.csv", index=False)
 
-    jp_bull, jp_bear = top_signals(jp_scan_df, n=TOP_N)
-    us_bull, us_bear = top_signals(us_scan_df, n=TOP_N)
+    jp_bull_pool, jp_bear_pool = top_signals(jp_scan_df, n=CANDIDATE_POOL_N)
+    us_bull_pool, us_bear_pool = top_signals(us_scan_df, n=CANDIDATE_POOL_N)
+
+    jp_daily_trends = jp_scan_df.set_index("ticker")["dow_daily_trend"].to_dict()
+    us_daily_trends = us_scan_df.set_index("ticker")["dow_daily_trend"].to_dict()
+
+    jp_bull = refine_candidates(jp_bull_pool, jp_daily_trends, n=TOP_N, ascending=False)
+    jp_bear = refine_candidates(jp_bear_pool, jp_daily_trends, n=TOP_N, ascending=True)
+    us_bull = refine_candidates(us_bull_pool, us_daily_trends, n=TOP_N, ascending=False)
+    us_bear = refine_candidates(us_bear_pool, us_daily_trends, n=TOP_N, ascending=True)
 
     us_picked_tickers = list(us_bull["ticker"]) + list(us_bear["ticker"])
     realtime_map = get_us_realtime_snapshot(us_picked_tickers)

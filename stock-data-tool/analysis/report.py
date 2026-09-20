@@ -26,7 +26,8 @@ def generate_report(ticker: str, news_limit: int = 8, name: str | None = None,
                      relative_strength_20d: float | None = None,
                      realtime: dict | None = None) -> dict:
     df = get_daily(ticker, source="yfinance", period="2y")
-    stock_outlook = outlook(compute_indicators(df), df)
+    indicators = compute_indicators(df)
+    stock_outlook = outlook(indicators, df)
 
     price = stock_outlook["price"]
     price_source = "yfinance"
@@ -59,7 +60,14 @@ def generate_report(ticker: str, news_limit: int = 8, name: str | None = None,
         "price": price,
         "price_source": price_source,
         "intraday_change_pct": intraday_change_pct,
-        "technical": stock_outlook,
+        "technical": {
+            **stock_outlook,
+            "dow_theory": {"daily": indicators["dow_daily"], "weekly": indicators["dow_weekly"]},
+            "wyckoff_phase": indicators["wyckoff"],
+            "candlestick_pattern": indicators["candlestick"],
+            "fibonacci_position": indicators["fibonacci"],
+            "volume_profile": indicators["volume_profile"],
+        },
         "macro_index": {"name": index_name, "outlook": index_outlook},
         "combined_technical_macro": combined,
         "fundamentals_source": fundamentals_source,
