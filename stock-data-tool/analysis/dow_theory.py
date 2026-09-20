@@ -40,8 +40,14 @@ def volume_confirms_trend(df: pd.DataFrame, trend: str, window: int = 10) -> boo
     return bool(vol_chg > 0)
 
 
-def analyze(df: pd.DataFrame, window: int = 5) -> dict:
-    swings = find_swings(df, window=window)
+def analyze(df: pd.DataFrame, window: int = 5, swings: list[dict] | None = None) -> dict:
+    """Classify the Dow-theory trend for df.
+
+    Pass `swings` when the caller has already run find_swings(df, window=window) so the
+    (relatively expensive) fractal scan is not repeated; leave it None for standalone use.
+    """
+    if swings is None:
+        swings = find_swings(df, window=window)
     trend = classify_trend(swings)
     confirmed = volume_confirms_trend(df, trend)
     return {"trend": trend, "last_swings": swings[-6:], "confirmed_by_volume": confirmed}

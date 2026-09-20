@@ -1,6 +1,8 @@
 import pandas as pd
 
-_LEVELS = [0.236, 0.382, 0.5, 0.618, 0.786, 1.0]
+# 0.0 (the swing high itself) is included so that a price sitting at the high is labelled
+# "0.000" rather than being snapped to 0.236, which reads like a shallow retracement.
+_LEVELS = [0.0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0]
 
 
 def compute_levels(swing_high: float, swing_low: float) -> dict[float, float]:

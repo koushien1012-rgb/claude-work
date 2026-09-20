@@ -1,9 +1,10 @@
+import json
 from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
 
-from generate_daily_watchlist import _build_market_block
+from generate_daily_watchlist import _build_market_block, _sanitize
 
 
 def _fake_ohlcv_df(n=30):
@@ -17,6 +18,13 @@ def _fake_ohlcv_df(n=30):
 
 
 def _fake_report(ticker: str) -> dict:
+    """Mirrors the real report["technical"] schema.
+
+    Field names/types match analysis/fibonacci.evaluate(), analysis/candlestick.detect_pattern()
+    and analysis/volume_profile.compute_profile() -- notably fibonacci levels are keyed by
+    float, the zone field is "price_zone" (not "position"), candlestick direction is always an
+    int in {-1, 0, 1} (never None), and volume_profile carries "price_vs_poc" and "value_area".
+    """
     swings = [{"date": pd.Timestamp("2024-01-05"), "price": 101.0, "type": "low"}]
     return {
         "ticker": ticker,
@@ -38,9 +46,10 @@ def _fake_report(ticker: str) -> dict:
                 "weekly": {"trend": "uptrend", "last_swings": [], "confirmed_by_volume": False},
             },
             "wyckoff_phase": {"phase": "markup", "since": None},
-            "candlestick_pattern": {"pattern": None, "direction": None},
-            "fibonacci_position": {"levels": {"0.618": 95.0}, "position": "between", "score": 0.5},
-            "volume_profile": {"poc": 100.0},
+            "candlestick_pattern": {"pattern": None, "direction": 0, "bar_index": None},
+            "fibonacci_position": {"levels": {0.0: 101.0, 0.5: 98.0, 0.618: 95.0},
+                                   "price_zone": "0.500", "score": 0.5},
+            "volume_profile": {"poc": 100.0, "value_area": (98.0, 102.0), "price_vs_poc": 0.0},
         },
         "macro_index": {"name": "sp500", "outlook": {}},
         "combined_technical_macro": {},
@@ -107,6 +116,36 @@ def test_build_market_block_threads_entry_timeframe_and_chart():
     assert set(reports_out.keys()) == {"AAA", "BBB"}
 
 
+def test_build_market_block_feeds_real_build_chart_data():
+    # build_chart_data is deliberately NOT mocked here: the other tests only prove the
+    # arguments are forwarded, not that the real function can actually consume them.
+    scan_df, bullish, bearish, name_map = _make_frames()
+    price_df = _fake_ohlcv_df()
+
+    with patch("generate_daily_watchlist.generate_report", side_effect=lambda t, **kw: _fake_report(t)), \
+         patch("generate_daily_watchlist.save_report"), \
+         patch("generate_daily_watchlist.get_daily", return_value=price_df):
+        reports_out = {}
+        entries = _build_market_block(scan_df, bullish, bearish, name_map, reports_out)
+
+    assert len(entries["bullish"]) == 2
+    for entry in entries["bullish"]:
+        chart = entry["chart"]
+        # A None chart here would mean the real function raised and was swallowed by the
+        # chart-build try/except -- exactly the integration bug the mocks used to hide.
+        assert chart is not None, f"real build_chart_data failed for {entry['ticker']}"
+        assert set(chart.keys()) == {"ohlcv", "annotations"}
+        assert len(chart["ohlcv"]) >= 1
+        assert set(chart["ohlcv"][0].keys()) == {"date", "open", "high", "low", "close", "volume"}
+        annotations = chart["annotations"]
+        assert set(annotations.keys()) == {
+            "swings", "fibonacci_levels", "wyckoff_zones", "candlestick_markers",
+        }
+        # The fixture's single in-window swing and its three fibonacci levels survive the trip.
+        assert len(annotations["swings"]) == 1
+        assert len(annotations["fibonacci_levels"]) == 3
+
+
 def test_build_market_block_keeps_ticker_when_chart_build_fails():
     scan_df, bullish, bearish, name_map = _make_frames()
     price_df = _fake_ohlcv_df()
@@ -159,3 +198,21 @@ def test_build_market_block_partial_chart_failure_only_drops_chart_for_failing_t
     assert by_ticker["AAA"]["chart"] is None
     assert by_ticker["BBB"]["chart"] is sentinel_chart
     assert set(reports_out.keys()) == {"AAA", "BBB"}
+
+
+def test_sanitize_recurses_into_tuples():
+    # volume_profile's "value_area" is a tuple; without a tuple branch a NaN inside it
+    # slipped past _sanitize and blew up json.dumps(allow_nan=False).
+    result = _sanitize((float("nan"), 1.0))
+    assert result == [None, 1.0]
+    assert isinstance(result, list)
+
+
+def test_sanitize_handles_nan_in_nested_volume_profile_tuple():
+    profile = {"volume_profile": {"poc": 100.0, "value_area": (float("nan"), 102.0),
+                                  "price_vs_poc": float("inf")}}
+    cleaned = _sanitize(profile)
+    assert cleaned["volume_profile"]["value_area"] == [None, 102.0]
+    assert cleaned["volume_profile"]["price_vs_poc"] is None
+    # The whole point: the sanitized structure is now strict-JSON serializable.
+    assert json.dumps(cleaned, allow_nan=False)

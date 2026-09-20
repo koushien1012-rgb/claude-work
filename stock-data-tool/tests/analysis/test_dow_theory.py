@@ -46,3 +46,11 @@ def test_analyze_returns_expected_shape():
     assert result["trend"] == "up"
     assert isinstance(result["confirmed_by_volume"], bool)
     assert len(result["last_swings"]) <= 6
+
+
+def test_analyze_with_precomputed_swings_matches_self_computed():
+    # compute_indicators() passes its already-computed daily_swings into analyze() to avoid
+    # a redundant find_swings() scan; that optimization is only valid if the results match.
+    df = _make_trending_df(60, direction=1)
+    precomputed = find_swings(df, window=5)
+    assert analyze(df, window=5, swings=precomputed) == analyze(df, window=5)

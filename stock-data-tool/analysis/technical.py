@@ -124,7 +124,8 @@ def compute_indicators(df: pd.DataFrame) -> dict:
         "obv": obv(df),
         "adx": adx(df),
         "ichimoku": ichimoku(df),
-        "dow_daily": dow_theory.analyze(df, window=5),
+        # Reuse daily_swings instead of letting analyze() re-run the identical find_swings scan.
+        "dow_daily": dow_theory.analyze(df, window=5, swings=daily_swings),
         "dow_weekly": dow_weekly,
         "wyckoff": wyckoff.compute_phase(df),
         "candlestick": candlestick.detect_pattern(df),

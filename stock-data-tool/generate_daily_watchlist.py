@@ -23,7 +23,10 @@ def _sanitize(obj):
         return None if (math.isnan(obj) or math.isinf(obj)) else obj
     if isinstance(obj, dict):
         return {k: _sanitize(v) for k, v in obj.items()}
-    if isinstance(obj, list):
+    if isinstance(obj, (list, tuple)):
+        # Tuples (e.g. volume_profile's "value_area") must recurse too, otherwise a NaN
+        # inside one reaches json.dumps(allow_nan=False) unsanitized. json serializes
+        # tuples as arrays anyway, so returning a list here loses nothing.
         return [_sanitize(v) for v in obj]
     return obj
 

@@ -7,7 +7,17 @@ def test_compute_levels_between_high_and_low():
     levels = compute_levels(swing_high=110, swing_low=90)
     assert levels[0.5] == 100.0
     assert levels[1.0] == 90.0
-    assert levels[0.0] if 0.0 in levels else True  # 0.0 not required in level set
+    # 0.0 is the swing high itself and is part of the level set.
+    assert levels[0.0] == 110.0
+
+
+def test_evaluate_labels_price_at_the_swing_high_as_zero_level():
+    # Without 0.0 in _LEVELS this snapped to "0.236", which misreads as a shallow
+    # retracement when the price is in fact sitting right at the high.
+    swings = [{"type": "low", "price": 90}, {"type": "high", "price": 110}]
+    df = pd.DataFrame({"close": [110.0]})
+    result = evaluate(df, swings)
+    assert result["price_zone"] == "0.000"
 
 
 def test_evaluate_scores_midpoint_highest():
