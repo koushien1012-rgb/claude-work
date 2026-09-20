@@ -72,15 +72,20 @@ def _build_market_block(scan_df, bullish, bearish, name_map, reports_out, realti
                 reports_out[ticker] = report
 
                 entry_timeframe = cand_row.get("entry_timeframe")
-                tech = report["technical"]
-                # Note: generate_report() already fetched 2y daily data internally; fetching again here
-                # is a small, deliberate duplication kept for simplicity since this only runs for the
-                # final ~40 candidates (not the full 700-ticker universe).
-                price_df_source = get_daily(ticker, source="yfinance", period="2y")
-                chart = build_chart_data(
-                    price_df_source, tech["dow_theory"]["daily"]["last_swings"],
-                    tech["fibonacci_position"]["levels"], tech["candlestick_pattern"], tech["wyckoff_phase"],
-                )
+                chart = None
+                try:
+                    tech = report["technical"]
+                    # Note: generate_report() already fetched 2y daily data internally; fetching again
+                    # here is a small, deliberate duplication kept for simplicity since this only runs
+                    # for the final ~40 candidates (not the full 700-ticker universe).
+                    price_df_source = get_daily(ticker, source="yfinance", period="2y")
+                    chart = build_chart_data(
+                        price_df_source, tech["dow_theory"]["daily"]["last_swings"],
+                        tech["fibonacci_position"]["levels"], tech["candlestick_pattern"],
+                        tech["wyckoff_phase"],
+                    )
+                except Exception as chart_exc:
+                    print(f"failed to build chart for {ticker}: {chart_exc}")
 
                 entries[key].append(_ticker_entry(ticker, report, entry_timeframe, chart))
             except Exception as exc:
