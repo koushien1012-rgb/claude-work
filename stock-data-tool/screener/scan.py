@@ -35,7 +35,8 @@ def scan_universe(tickers: list[str], name_map: dict | None = None, sector_map: 
                 df = _normalize_ohlcv(df.dropna(how="all"))
                 if len(df) < 60:
                     continue
-                result = outlook(compute_indicators(df), df)
+                indicators = compute_indicators(df)
+                result = outlook(indicators, df)
                 scores = [result["short_term"]["score"], result["mid_term"]["score"], result["long_term"]["score"]]
                 rows.append({
                     "ticker": ticker,
@@ -47,6 +48,7 @@ def scan_universe(tickers: list[str], name_map: dict | None = None, sector_map: 
                     "long_score": result["long_term"]["score"],
                     "avg_score": round(sum(scores) / len(scores), 3),
                     "return_20d": _return_pct(df["close"], 20),
+                    "dow_daily_trend": indicators["dow_daily"]["trend"],
                 })
             except Exception:
                 continue
