@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <title>相場ボード</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -809,6 +810,9 @@
 
     const volumeSeries = api.addHistogramSeries({ priceScaleId: "", priceFormat: { type: "volume" } });
     volumeSeries.setData(chart.ohlcv.map((b) => ({ time: b.date, value: b.volume })));
+    // Confine the overlay volume histogram to the bottom 20% of the pane instead of
+    // letting it scale across the full chart height and obscure the candles.
+    api.priceScale("").applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } });
 
     (chart.annotations.fibonacci_levels || []).forEach((lvl) => {
       series.createPriceLine({ price: lvl.price, color: "#a97a1f", lineWidth: 1, lineStyle: 2, title: `Fib ${lvl.level}` });
