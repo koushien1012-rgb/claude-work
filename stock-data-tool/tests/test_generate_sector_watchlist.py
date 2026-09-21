@@ -1,4 +1,6 @@
+import json
 import math
+from unittest.mock import patch
 
 import pytest
 
@@ -103,3 +105,112 @@ def test_sanitize_converts_nan_and_inf_to_none():
     assert _sanitize(float("nan")) is None
     assert _sanitize(float("inf")) is None
     assert _sanitize({"a": [1.0, float("nan")], "b": (2.0, float("inf"))}) == {"a": [1.0, None], "b": [2.0, None]}
+
+
+def _fake_report(ticker, name=None, **kwargs):
+    if ticker == "FAIL_ME":
+        raise RuntimeError("network error")
+    return {
+        "ticker": ticker, "name": name or ticker, "price": 100.0, "price_source": "yfinance",
+        "technical": {"short_term": {"score": 0.1}, "mid_term": {"score": 0.1}, "long_term": {"score": 0.1}},
+        "fundamentals_source": "TDnet", "fundamentals_raw": [],
+    }
+
+
+def test_save_and_load_snapshot_roundtrip(tmp_path):
+    import generate_sector_watchlist as mod
+
+    history_dir = tmp_path / "history"
+    mod.save_snapshot(history_dir, "2026-09-20", {"SPCX": 0.1, "MU": 0.3})
+
+    loaded = mod.load_previous_snapshot(history_dir, today="2026-09-21")
+    assert loaded == {"SPCX": 0.1, "MU": 0.3}
+
+
+def test_load_previous_snapshot_returns_none_when_no_history(tmp_path):
+    import generate_sector_watchlist as mod
+
+    assert mod.load_previous_snapshot(tmp_path / "does-not-exist", today="2026-09-21") is None
+
+
+def test_load_previous_snapshot_picks_latest_before_today(tmp_path):
+    import generate_sector_watchlist as mod
+
+    history_dir = tmp_path / "history"
+    mod.save_snapshot(history_dir, "2026-09-18", {"SPCX": 0.05})
+    mod.save_snapshot(history_dir, "2026-09-20", {"SPCX": 0.10})
+    # a same-day-or-future file (defensive: should not happen in practice) must never be picked
+    mod.save_snapshot(history_dir, "2026-09-21", {"SPCX": 0.99})
+
+    loaded = mod.load_previous_snapshot(history_dir, today="2026-09-21")
+    assert loaded == {"SPCX": 0.10}  # 09-20, the latest strictly before today, not 09-21 itself
+
+
+def test_main_writes_dashboard_json(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+
+    small_sectors = {"宇宙": {"us": ["SPCX"], "jp": ["7011.T"]}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report):
+        mod.main()
+
+    out_path = tmp_path / "dashboard" / "sector_watchlist_data.json"
+    assert out_path.exists()
+    data = json.loads(out_path.read_text(encoding="utf-8"))
+    assert "generated_at" in data
+    assert data["sectors"][0]["name"] == "宇宙"
+    assert data["sectors"][0]["us"][0]["ticker"] == "SPCX"
+    assert data["sectors"][0]["jp"][0]["ticker"] == "7011.T"
+
+
+def test_main_skips_failing_ticker_and_continues(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+
+    small_sectors = {"宇宙": {"us": ["SPCX", "FAIL_ME"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report):
+        mod.main()
+
+    data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
+    tickers = [e["ticker"] for e in data["sectors"][0]["us"]]
+    assert tickers == ["SPCX"]  # FAIL_ME skipped, SPCX still present
+
+
+def test_main_leaves_score_change_none_on_first_run(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+
+    small_sectors = {"宇宙": {"us": ["SPCX"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report):
+        mod.main()  # no prior snapshot exists yet in this tmp_path
+
+    data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
+    assert data["sectors"][0]["us"][0]["score_change"] is None
+
+
+def test_main_computes_score_change_from_prior_snapshot(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+    mod.save_snapshot(tmp_path / "output" / "sector_watchlist_history", "2026-09-20", {"SPCX": 0.0})
+
+    small_sectors = {"宇宙": {"us": ["SPCX"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report), \
+         patch.object(mod, "date") as mock_date:
+        mock_date.today.return_value.isoformat.return_value = "2026-09-21"
+        mod.main()
+
+    data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
+    # _fake_report gives avg_score (0.1+0.1+0.1)/3 = 0.1; prior snapshot was 0.0 -> change is +0.1
+    assert data["sectors"][0]["us"][0]["score_change"] == 0.1

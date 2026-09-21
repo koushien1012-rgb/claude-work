@@ -1,4 +1,9 @@
+import json
 import math
+from datetime import date, datetime
+from pathlib import Path
+
+from analysis import generate_report
 
 SECTOR_TICKERS: dict[str, dict[str, list[str]]] = {
     "宇宙": {
@@ -86,3 +91,62 @@ def _sanitize(obj):
     if isinstance(obj, (list, tuple)):
         return [_sanitize(v) for v in obj]
     return obj
+
+
+def load_previous_snapshot(history_dir: Path, today: str) -> dict | None:
+    if not history_dir.exists():
+        return None
+    candidates = sorted(p.stem for p in history_dir.glob("*.json") if p.stem < today)
+    if not candidates:
+        return None
+    latest = candidates[-1]
+    return json.loads((history_dir / f"{latest}.json").read_text(encoding="utf-8"))
+
+
+def save_snapshot(history_dir: Path, today: str, snapshot: dict) -> None:
+    history_dir.mkdir(parents=True, exist_ok=True)
+    (history_dir / f"{today}.json").write_text(
+        json.dumps(_sanitize(snapshot), ensure_ascii=False, allow_nan=False), encoding="utf-8"
+    )
+
+
+def main():
+    today = date.today().isoformat()
+    history_dir = Path("output/sector_watchlist_history")
+    previous = load_previous_snapshot(history_dir, today)
+
+    tickers = dedupe_tickers(SECTOR_TICKERS)
+    reports_by_ticker = {}
+    snapshot = {}
+    for item in tickers:
+        ticker = item["ticker"]
+        try:
+            report = generate_report(ticker, name=NAME_MAP.get(ticker))
+            reports_by_ticker[ticker] = report
+            snapshot[ticker] = _avg_score(report["technical"])
+        except Exception as exc:
+            print(f"failed to build report for {ticker}: {exc}")
+
+    save_snapshot(history_dir, today, snapshot)
+
+    score_changes = {}
+    if previous:
+        for ticker, avg in snapshot.items():
+            if ticker in previous:
+                score_changes[ticker] = round(avg - previous[ticker], 4)
+
+    payload = {
+        "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "sectors": build_sector_payload(SECTOR_TICKERS, reports_by_ticker, score_changes),
+    }
+
+    out_path = Path("dashboard/sector_watchlist_data.json")
+    out_path.write_text(
+        json.dumps(_sanitize(payload), ensure_ascii=False, indent=2, default=str, allow_nan=False),
+        encoding="utf-8",
+    )
+    print(f"wrote {out_path} ({len(reports_by_ticker)}/{len(tickers)} tickers)")
+
+
+if __name__ == "__main__":
+    main()
