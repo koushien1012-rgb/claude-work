@@ -240,10 +240,13 @@
     font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--accent);
+    text-decoration: none;
     border: 1px solid var(--accent);
     border-radius: 999px;
     padding: 1px 7px;
+    transition: background 120ms ease-out, color 120ms ease-out;
   }
+  .entry-tickers .tk:hover { background: var(--accent); color: var(--accent-ink); }
 
   footer.note {
     margin-top: 32px;
@@ -288,6 +291,11 @@
     return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
   }
 
+  function chartUrl(ticker) {
+    const code = ticker.endsWith(".T") ? `${ticker.slice(0, -2)}-JP` : `${ticker}-US`;
+    return `https://www.moomoo.com/ja/stock/${encodeURIComponent(code)}`;
+  }
+
   function fmtTime(iso) {
     if (!iso) return "";
     const d = new Date(iso);
@@ -329,7 +337,9 @@
       : `<span${tip}>${title}</span>`;
     const result = e.result_note ? `<div class="entry-result">${e.result_note}</div>` : "";
     const impact = e.impact_note ? `<div class="entry-impact">${e.impact_note}</div>` : "";
-    const tickers = (e.related_tickers || []).map((t) => `<span class="tk">${t}</span>`).join("");
+    const tickers = (e.related_tickers || [])
+      .map((t) => `<a class="tk" href="${escapeAttr(chartUrl(t))}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${t}</a>`)
+      .join("");
 
     return `<div class="entry type-${type}${isNew ? " is-new" : ""}">
       <div class="entry-head">
