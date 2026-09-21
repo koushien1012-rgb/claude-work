@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 宇宙・防衛・船舶・メモリ半導体の4セクター、日米合計30ユニーク銘柄を対象にした固定ウォッチリストの専用ダッシュボードを新設し、毎日1回自動更新する。
+**Goal:** 宇宙・防衛・船舶・メモリ半導体の4セクター、日米合計30ユニーク銘柄を対象にした固定ウォッチリストの専用ダッシュボードを新設し、毎日1回自動更新する。セクター内ランキング・強気/弱気ティルトバー・セクター健全度（均等加重平均）は表示層（JS）で算出し、日次のスコア変化は`generate_sector_watchlist.py`側でスナップショットを保存して算出する。
 
-**Architecture:** `generate_sector_watchlist.py`（新規）が既存の`analysis.generate_report()`をそのまま呼び出して固定銘柄リストを分析し、`dashboard/sector_watchlist_data.json`に直接書き出す。`dashboard/sector-watchlist.html`（新規）が相場ボードと同じ見た目・コンポーネント（ゲージアニメーション・見立て文・moomooチャートリンク）でこれを表示する。Claude Codeのスケジュールタスクが毎日スクリプトを起動する。
+**Architecture:** `generate_sector_watchlist.py`（新規）が既存の`analysis.generate_report()`をそのまま呼び出して固定銘柄リストを分析し、`output/sector_watchlist_history/{日付}.json`に軽量スナップショット（ティッカー→avg_score）を保存しつつ前回分と比較、`dashboard/sector_watchlist_data.json`に結果を直接書き出す。`dashboard/sector-watchlist.html`（新規）が相場ボードと同じ見た目・コンポーネント（ゲージアニメーション・見立て文・moomooチャートリンク）でこれを表示し、ランキング・ティルトバー・セクター健全度・スコア変化バッジはJS側で算出する。Claude Codeのスケジュールタスクが毎日スクリプトを起動する。
 
 **Tech Stack:** Python 3.12 / pandas（既存の`analysis`パッケージ経由）、pytest、バニラJS/CSS（既存ダッシュボード群と同じ単一HTMLファイル方式）
 
@@ -16,6 +16,8 @@
 - Claude APIによる追加の判断コメント生成は行わない（追加課金を避けるため、ユーザーが明示的に見送りを選択）
 - 複数セクターに属する銘柄（7011.T, 7013.T）は、レポート取得は1回のみ行い、表示側で該当する全セクションに複製する
 - 出力は`dashboard/sector_watchlist_data.json`に直接書き出す（相場ボード等の手動コピー運用とは異なる）
+- セクター内ランキング・ティルトバー・セクター健全度は表示層（JS）で算出する。Python側に新規の集計ロジックは追加しない（`avg_score`算出と日次スナップショットの保存・比較を除く）
+- 4セクターは均等加重とする（セクターごとに重みを変える設定は持たない）
 - 全ての作業は`stock-data-tool/`ディレクトリを起点に行う
 
 ## Review Focus
@@ -25,6 +27,7 @@
 - `technical`配下の一部フィールド（`dow_theory`・`wyckoff_phase`等）が欠落していてもJS側が例外を出さないこと（`|| {}`の防御的フォールバックを各所に入れる。このボードは`chart`/`entry_timeframe`フィールド自体を持たない設計のため、それらは該当なし）
 - JSON書き出し時にNaN等の非JSON準拠値が混入して書き込み自体が失敗しないこと（`_sanitize()`の既存パターンを踏襲）
 - 空の`fundamentals_raw`（ニュース・開示情報が0件）の銘柄で見出し一覧が壊れずに「材料なし」表示になること
+- 初回実行（前回スナップショットが存在しない）時に、`score_change`が全銘柄で`null`になり、UI側で変化バッジが表示されない（エラーにもならない）こと
 
 ---
 
@@ -37,8 +40,9 @@
 **Interfaces:**
 - Produces: `SECTOR_TICKERS: dict[str, dict[str, list[str]]]`（セクター名 → 市場（"us"/"jp"） → ティッカーリスト）
 - Produces: `dedupe_tickers(sector_tickers: dict) -> list[dict]`（`[{"ticker": str, "market": "us"|"jp"}, ...]`、ユニーク）
-- Produces: `build_sector_payload(sector_tickers: dict, reports_by_ticker: dict) -> list[dict]`（`[{"name": str, "us": [entry, ...], "jp": [entry, ...]}, ...]`）
-- Produces: `_build_entry(ticker: str, report: dict) -> dict`
+- Produces: `_avg_score(technical: dict) -> float`（short/mid/long termスコアの単純平均。Task 2のスナップショット算出でも使う）
+- Produces: `build_sector_payload(sector_tickers: dict, reports_by_ticker: dict, score_changes: dict | None = None) -> list[dict]`（`[{"name": str, "us": [entry, ...], "jp": [entry, ...]}, ...]`）
+- Produces: `_build_entry(ticker: str, report: dict, score_change: float | None = None) -> dict`
 - Produces: `_sanitize(obj)`（`generate_daily_watchlist.py`と同じNaN/Inf処理）
 
 - [ ] **Step 1: 失敗するテストを書く**
@@ -50,6 +54,7 @@ import math
 
 from generate_sector_watchlist import (
     SECTOR_TICKERS,
+    _avg_score,
     _build_entry,
     _sanitize,
     build_sector_payload,
@@ -88,6 +93,23 @@ def test_build_entry_shapes_report_for_dashboard():
     assert entry["price"] == 3879.0
     assert entry["technical"] == report["technical"]
     assert entry["fundamentals_raw"] == report["fundamentals_raw"]
+    assert entry["score_change"] is None  # default when no prior snapshot is passed
+
+
+def test_build_entry_includes_score_change_when_provided():
+    report = {
+        "ticker": "MU", "name": "Micron", "price": 1015.8, "price_source": "yfinance",
+        "technical": {}, "fundamentals_source": "Yahoo Finance News", "fundamentals_raw": [],
+    }
+    entry = _build_entry("MU", report, score_change=0.042)
+    assert entry["score_change"] == 0.042
+
+
+def test_avg_score_averages_the_three_terms():
+    technical = {
+        "short_term": {"score": 0.3}, "mid_term": {"score": 0.6}, "long_term": {"score": -0.3},
+    }
+    assert _avg_score(technical) == 0.2
 
 
 def test_build_sector_payload_duplicates_multi_sector_ticker():
@@ -107,6 +129,16 @@ def test_build_sector_payload_duplicates_multi_sector_ticker():
     assert payload[1]["name"] == "防衛"
     assert payload[1]["jp"][0]["ticker"] == "7011.T"
     assert payload[0]["us"] == []
+
+
+def test_build_sector_payload_passes_score_change_through():
+    sector_tickers = {"宇宙": {"us": ["SPCX"], "jp": []}}
+    report = {
+        "ticker": "SPCX", "name": "SpaceX", "price": 152.71, "price_source": "yfinance",
+        "technical": {}, "fundamentals_source": "Yahoo Finance News", "fundamentals_raw": [],
+    }
+    payload = build_sector_payload(sector_tickers, {"SPCX": report}, score_changes={"SPCX": -0.05})
+    assert payload[0]["us"][0]["score_change"] == -0.05
 
 
 def test_build_sector_payload_skips_ticker_missing_from_reports():
@@ -177,7 +209,12 @@ def dedupe_tickers(sector_tickers: dict) -> list[dict]:
     return result
 
 
-def _build_entry(ticker: str, report: dict) -> dict:
+def _avg_score(technical: dict) -> float:
+    scores = [technical["short_term"]["score"], technical["mid_term"]["score"], technical["long_term"]["score"]]
+    return sum(scores) / len(scores)
+
+
+def _build_entry(ticker: str, report: dict, score_change: float | None = None) -> dict:
     return {
         "ticker": ticker,
         "name": report.get("name") or "",
@@ -187,16 +224,18 @@ def _build_entry(ticker: str, report: dict) -> dict:
         "technical": report["technical"],
         "fundamentals_source": report.get("fundamentals_source"),
         "fundamentals_raw": report.get("fundamentals_raw") or [],
+        "score_change": score_change,
     }
 
 
-def build_sector_payload(sector_tickers: dict, reports_by_ticker: dict) -> list[dict]:
+def build_sector_payload(sector_tickers: dict, reports_by_ticker: dict, score_changes: dict | None = None) -> list[dict]:
+    score_changes = score_changes or {}
     payload = []
     for sector, markets in sector_tickers.items():
         section = {"name": sector}
         for market, tickers in markets.items():
             section[market] = [
-                _build_entry(ticker, reports_by_ticker[ticker])
+                _build_entry(ticker, reports_by_ticker[ticker], score_changes.get(ticker))
                 for ticker in tickers
                 if ticker in reports_by_ticker
             ]
@@ -219,7 +258,7 @@ Add `import math` at the top of the file (needed by `_sanitize`).
 - [ ] **Step 4: テストを実行し成功を確認**
 
 Run: `pytest tests/test_generate_sector_watchlist.py -v`
-Expected: PASS（6件全て）
+Expected: PASS（9件全て）
 
 - [ ] **Step 5: コミット**
 
@@ -237,9 +276,11 @@ git commit -m "feat: add sector watchlist ticker list and payload-building logic
 - Test: `tests/test_generate_sector_watchlist.py`（Task 1のファイルに追記）
 
 **Interfaces:**
-- Consumes: Task 1の`SECTOR_TICKERS`, `NAME_MAP`, `dedupe_tickers()`, `build_sector_payload()`, `_sanitize()`
+- Consumes: Task 1の`SECTOR_TICKERS`, `NAME_MAP`, `dedupe_tickers()`, `build_sector_payload()`, `_build_entry()`, `_avg_score()`, `_sanitize()`
 - Consumes: `analysis.generate_report(ticker, name=None) -> dict`（既存関数、シグネチャは`analysis/report.py`を参照）
-- Produces: `main()` — `dashboard/sector_watchlist_data.json`を書き出す。副作用のためテストは`generate_report`をモックして検証する
+- Produces: `load_previous_snapshot(history_dir: Path, today: str) -> dict | None`（`today`より前の日付で最新のスナップショットファイルを`{ticker: avg_score}`として返す。存在しなければ`None`）
+- Produces: `save_snapshot(history_dir: Path, today: str, snapshot: dict) -> None`
+- Produces: `main()` — `output/sector_watchlist_history/{today}.json`にスナップショットを保存し、前回分と比較して`dashboard/sector_watchlist_data.json`を書き出す。副作用のためテストは`generate_report`と日付・ディレクトリをモック/一時ディレクトリで検証する
 
 - [ ] **Step 1: 失敗するテストを書く**
 
@@ -256,9 +297,38 @@ def _fake_report(ticker, name=None, **kwargs):
         raise RuntimeError("network error")
     return {
         "ticker": ticker, "name": name or ticker, "price": 100.0, "price_source": "yfinance",
-        "technical": {"short_term": {"score": 0.1, "label": "中立"}},
+        "technical": {"short_term": {"score": 0.1}, "mid_term": {"score": 0.1}, "long_term": {"score": 0.1}},
         "fundamentals_source": "TDnet", "fundamentals_raw": [],
     }
+
+
+def test_save_and_load_snapshot_roundtrip(tmp_path):
+    import generate_sector_watchlist as mod
+
+    history_dir = tmp_path / "history"
+    mod.save_snapshot(history_dir, "2026-09-20", {"SPCX": 0.1, "MU": 0.3})
+
+    loaded = mod.load_previous_snapshot(history_dir, today="2026-09-21")
+    assert loaded == {"SPCX": 0.1, "MU": 0.3}
+
+
+def test_load_previous_snapshot_returns_none_when_no_history(tmp_path):
+    import generate_sector_watchlist as mod
+
+    assert mod.load_previous_snapshot(tmp_path / "does-not-exist", today="2026-09-21") is None
+
+
+def test_load_previous_snapshot_picks_latest_before_today(tmp_path):
+    import generate_sector_watchlist as mod
+
+    history_dir = tmp_path / "history"
+    mod.save_snapshot(history_dir, "2026-09-18", {"SPCX": 0.05})
+    mod.save_snapshot(history_dir, "2026-09-20", {"SPCX": 0.10})
+    # a same-day-or-future file (defensive: should not happen in practice) must never be picked
+    mod.save_snapshot(history_dir, "2026-09-21", {"SPCX": 0.99})
+
+    loaded = mod.load_previous_snapshot(history_dir, today="2026-09-21")
+    assert loaded == {"SPCX": 0.10}  # 09-20, the latest strictly before today, not 09-21 itself
 
 
 def test_main_writes_dashboard_json(tmp_path, monkeypatch):
@@ -295,21 +365,55 @@ def test_main_skips_failing_ticker_and_continues(tmp_path, monkeypatch):
     data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
     tickers = [e["ticker"] for e in data["sectors"][0]["us"]]
     assert tickers == ["SPCX"]  # FAIL_ME skipped, SPCX still present
+
+
+def test_main_leaves_score_change_none_on_first_run(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+
+    small_sectors = {"宇宙": {"us": ["SPCX"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report):
+        mod.main()  # no prior snapshot exists yet in this tmp_path
+
+    data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
+    assert data["sectors"][0]["us"][0]["score_change"] is None
+
+
+def test_main_computes_score_change_from_prior_snapshot(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+    mod.save_snapshot(tmp_path / "output" / "sector_watchlist_history", "2026-09-20", {"SPCX": 0.0})
+
+    small_sectors = {"宇宙": {"us": ["SPCX"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report), \
+         patch.object(mod, "date") as mock_date:
+        mock_date.today.return_value.isoformat.return_value = "2026-09-21"
+        mod.main()
+
+    data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
+    # _fake_report gives avg_score (0.1+0.1+0.1)/3 = 0.1; prior snapshot was 0.0 -> change is +0.1
+    assert data["sectors"][0]["us"][0]["score_change"] == 0.1
 ```
 
 - [ ] **Step 2: テストを実行し失敗を確認**
 
-Run: `pytest tests/test_generate_sector_watchlist.py -k main -v`
-Expected: FAIL（`AttributeError: module 'generate_sector_watchlist' has no attribute 'main'`）
+Run: `pytest tests/test_generate_sector_watchlist.py -k "snapshot or main" -v`
+Expected: FAIL（`AttributeError: module 'generate_sector_watchlist' has no attribute 'save_snapshot'`）
 
-- [ ] **Step 3: main()を実装**
+- [ ] **Step 3: スナップショット関数とmain()を実装**
 
 `generate_sector_watchlist.py`の先頭に追加のimport:
 
 ```python
 import json
 import math
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 from analysis import generate_report
@@ -320,19 +424,51 @@ from analysis import generate_report
 ファイル末尾に追記:
 
 ```python
+def load_previous_snapshot(history_dir: Path, today: str) -> dict | None:
+    if not history_dir.exists():
+        return None
+    candidates = sorted(p.stem for p in history_dir.glob("*.json") if p.stem < today)
+    if not candidates:
+        return None
+    latest = candidates[-1]
+    return json.loads((history_dir / f"{latest}.json").read_text(encoding="utf-8"))
+
+
+def save_snapshot(history_dir: Path, today: str, snapshot: dict) -> None:
+    history_dir.mkdir(parents=True, exist_ok=True)
+    (history_dir / f"{today}.json").write_text(
+        json.dumps(_sanitize(snapshot), ensure_ascii=False, allow_nan=False), encoding="utf-8"
+    )
+
+
 def main():
+    today = date.today().isoformat()
+    history_dir = Path("output/sector_watchlist_history")
+    previous = load_previous_snapshot(history_dir, today)
+
     tickers = dedupe_tickers(SECTOR_TICKERS)
     reports_by_ticker = {}
+    snapshot = {}
     for item in tickers:
         ticker = item["ticker"]
         try:
-            reports_by_ticker[ticker] = generate_report(ticker, name=NAME_MAP.get(ticker))
+            report = generate_report(ticker, name=NAME_MAP.get(ticker))
+            reports_by_ticker[ticker] = report
+            snapshot[ticker] = _avg_score(report["technical"])
         except Exception as exc:
             print(f"failed to build report for {ticker}: {exc}")
 
+    save_snapshot(history_dir, today, snapshot)
+
+    score_changes = {}
+    if previous:
+        for ticker, avg in snapshot.items():
+            if ticker in previous:
+                score_changes[ticker] = round(avg - previous[ticker], 4)
+
     payload = {
         "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
-        "sectors": build_sector_payload(SECTOR_TICKERS, reports_by_ticker),
+        "sectors": build_sector_payload(SECTOR_TICKERS, reports_by_ticker, score_changes),
     }
 
     out_path = Path("dashboard/sector_watchlist_data.json")
@@ -350,13 +486,13 @@ if __name__ == "__main__":
 - [ ] **Step 4: テストを実行し成功を確認**
 
 Run: `pytest tests/test_generate_sector_watchlist.py -v`
-Expected: PASS（8件全て）
+Expected: PASS（16件全て）
 
 - [ ] **Step 5: コミット**
 
 ```bash
 git add generate_sector_watchlist.py tests/test_generate_sector_watchlist.py
-git commit -m "feat: add main() orchestration for sector watchlist generation"
+git commit -m "feat: add main() orchestration and daily score-change snapshots"
 ```
 
 ---
@@ -367,18 +503,22 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
 - Create: `dashboard/sector-watchlist.html`
 
 **Interfaces:**
-- Consumes: `dashboard/sector_watchlist_data.json`（Task 2の出力。`{generated_at, sectors: [{name, us: [entry,...], jp: [entry,...]}, ...]}`、各`entry`は`{ticker, name, name_ja, price, price_source, technical, fundamentals_source, fundamentals_raw}`）
+- Consumes: `dashboard/sector_watchlist_data.json`（Task 2の出力。`{generated_at, sectors: [{name, us: [entry,...], jp: [entry,...]}, ...]}`、各`entry`は`{ticker, name, name_ja, price, price_source, technical, fundamentals_source, fundamentals_raw, score_change}`）
+- 表示層で算出: `avgScore(technical)`（セクター内ランキング・ティルトバー・セクター健全度の基礎値。short/mid/long termスコアの単純平均）
 
 このタスクに自動テストはない（プロジェクトの既存ダッシュボード群と同じくJSテストフレームワークがないため）。ローカルでブラウザ確認する。
 
-- [ ] **Step 1: index.htmlから再利用するパターンを確認する**
+- [ ] **Step 1: index.html・sector-board.htmlから再利用するパターンを確認する**
 
 `dashboard/index.html`を読み、以下の実装を参照する（コピー元）:
 - CSS変数定義（`:root`、ダークモード分岐）— `--bg`, `--surface`, `--ink`, `--bull`, `--bear`, `--accent`, `--hairline`等
 - `.gauge` / `.gauge-track` / `.gauge-fill`（アニメーション込み）のCSS
 - `.insight-line`, `.tech-extra`, `.tech-extra-row`のCSS
 - `fmtNum()`, `escapeAttr()`, `companyName()`, `gauge()`, `animateGauges()`, `scoreCard()`, `WYCKOFF_LABEL`, `TREND_PHRASE`, `WYCKOFF_PHRASE`, `PATTERN_PHRASE`, `insightLine()`, `technicalDetailSection()`のJS実装
-- `chartUrl(ticker)`（moomoo証券へのリンク生成、`analysis/report.py`ではなく`dashboard/index.html`内のJS関数）
+- `chartUrl(ticker)`（moomoo証券へのリンク生成、`dashboard/index.html`内のJS関数）
+
+`dashboard/sector-board.html`を読み、以下を参照する:
+- `.tilt-bar` / `.t-bull` / `.t-neutral` / `.t-bear`のCSSと`tiltBar()`のJS実装（強気/中立/弱気の内訳バー。本タスクでは`short_term.label`ではなく`avgScore()`ベースの閾値判定に変更する点に注意）
 
 - [ ] **Step 2: dashboard/sector-watchlist.htmlを作成**
 
@@ -447,7 +587,24 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
   .back-link:hover { text-decoration: underline; }
 
   .sector-block { margin-bottom: 30px; }
-  .sector-title { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; margin: 0 0 14px; }
+  .sector-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .sector-title { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; margin: 0; }
+  .sector-health { font-family: var(--font-mono); font-size: 0.8rem; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--hairline); }
+  .sector-health.bull { color: var(--bull); border-color: var(--bull); }
+  .sector-health.bear { color: var(--bear); border-color: var(--bear); }
+  .sector-health.neutral { color: var(--neutral); }
+  .tilt-bar { display: flex; height: 5px; border-radius: 3px; overflow: hidden; margin-bottom: 12px; background: var(--neutral-soft); }
+  .tilt-bar span { display: block; height: 100%; }
+  .tilt-bar .t-bull { background: var(--bull); }
+  .tilt-bar .t-bear { background: var(--bear); }
+  .tilt-bar .t-neutral { background: var(--neutral); }
+  @media (prefers-reduced-motion: no-preference) {
+    .tilt-bar span { transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+  }
+  .rank { font-family: var(--font-mono); color: var(--ink-faint); font-size: 0.8rem; }
+  .score-change { font-family: var(--font-mono); font-size: 0.68rem; white-space: nowrap; }
+  .score-change.pos { color: var(--bull); }
+  .score-change.neg { color: var(--bear); }
   .boards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   @media (max-width: 860px) { .boards { grid-template-columns: 1fr; } }
   .board { background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; container-type: inline-size; container-name: board; }
@@ -457,7 +614,7 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
 
   .row { border-bottom: 1px solid var(--hairline); }
   .row:last-child { border-bottom: none; }
-  .row summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto 132px auto; align-items: center; gap: 12px; padding: 12px 18px; transition: background 120ms ease-out; }
+  .row summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 22px 1fr auto 132px auto; align-items: center; gap: 12px; padding: 12px 18px; transition: background 120ms ease-out; }
   .row summary::-webkit-details-marker { display: none; }
   .row summary:hover { background: var(--surface-2); }
   @media (prefers-reduced-motion: no-preference) {
@@ -506,7 +663,7 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
   footer.note { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--hairline); color: var(--ink-faint); font-size: 0.76rem; line-height: 1.7; }
 
   @container board (max-width: 520px) {
-    .row summary { grid-template-columns: 1fr auto 92px auto; gap: 7px; padding: 10px 12px; }
+    .row summary { grid-template-columns: 16px 1fr auto 92px auto; gap: 7px; padding: 10px 12px; }
     .chart-link { padding: 4px 7px; font-size: 0; }
     .chart-link::after { content: "↗"; font-size: 0.85rem; }
     .gauge { width: 26px; }
@@ -566,6 +723,41 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
   function chartUrl(ticker) {
     const code = ticker.endsWith(".T") ? `${ticker.slice(0, -2)}-JP` : `${ticker}-US`;
     return `https://www.moomoo.com/ja/stock/${encodeURIComponent(code)}`;
+  }
+
+  function avgScore(t) {
+    return (t.short_term.score + t.mid_term.score + t.long_term.score) / 3;
+  }
+
+  function scoreChangeBadge(change) {
+    if (change === null || change === undefined) return "";
+    const cls = change >= 0 ? "pos" : "neg";
+    const sign = change >= 0 ? "+" : "";
+    return `<span class="score-change ${cls}">${sign}${change.toFixed(3)}</span>`;
+  }
+
+  function tiltBar(items) {
+    if (!items || !items.length) return "";
+    let bull = 0, bear = 0, neutral = 0;
+    for (const item of items) {
+      const avg = avgScore(item.technical);
+      if (avg >= 0.25) bull++;
+      else if (avg <= -0.25) bear++;
+      else neutral++;
+    }
+    const total = bull + bear + neutral;
+    return `<div class="tilt-bar" title="強気${bull}・中立${neutral}・弱気${bear}">
+      <span class="t-bull" style="width:${(bull / total) * 100}%"></span>
+      <span class="t-neutral" style="width:${(neutral / total) * 100}%"></span>
+      <span class="t-bear" style="width:${(bear / total) * 100}%"></span>
+    </div>`;
+  }
+
+  function sectorHealthBadge(items) {
+    if (!items || !items.length) return "";
+    const health = items.reduce((sum, item) => sum + avgScore(item.technical), 0) / items.length;
+    const cls = health >= 0.25 ? "bull" : health <= -0.25 ? "bear" : "neutral";
+    return `<span class="sector-health ${cls}">セクター健全度 ${health >= 0 ? "+" : ""}${health.toFixed(3)}</span>`;
   }
 
   function gauge(term, score) {
@@ -630,7 +822,7 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
     </div>`;
   }
 
-  function row(item) {
+  function row(item, rank) {
     const t = item.technical;
     const headlines = (item.fundamentals_raw || []).slice(0, 5).map((h) => {
       const text = h.title_ja || h.title || "";
@@ -645,11 +837,12 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
 
     return `<details class="row">
       <summary>
+        <span class="rank">${rank}</span>
         <span class="name-block">
           <span class="ticker">${item.ticker}</span>
           <span class="company">${companyName(item)}</span>
         </span>
-        <span class="price">${fmtNum(item.price)}</span>
+        <span class="price">${fmtNum(item.price)} ${scoreChangeBadge(item.score_change)}</span>
         <span class="gauges">
           ${gauge("短", t.short_term.score)}
           ${gauge("中", t.mid_term.score)}
@@ -677,14 +870,21 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
 
   function renderBoard(items) {
     if (!items || !items.length) return `<div class="empty-state">対象銘柄がありません</div>`;
-    return items.map(row).join("");
+    const sorted = [...items].sort((a, b) => avgScore(b.technical) - avgScore(a.technical));
+    return sorted.map((item, i) => row(item, i + 1)).join("");
   }
 
   function renderSectors(sectors) {
     const el = document.getElementById("sectors");
-    el.innerHTML = sectors.map((sector) => `
+    el.innerHTML = sectors.map((sector) => {
+      const allItems = [...(sector.us || []), ...(sector.jp || [])];
+      return `
       <section class="sector-block">
-        <h2 class="sector-title">${sector.name}</h2>
+        <div class="sector-head">
+          <h2 class="sector-title">${sector.name}</h2>
+          ${sectorHealthBadge(allItems)}
+        </div>
+        ${tiltBar(allItems)}
         <div class="boards">
           <section class="board">
             <div class="board-head"><h3>米国株</h3><span class="board-count">${(sector.us || []).length}銘柄</span></div>
@@ -696,7 +896,8 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
           </section>
         </div>
       </section>
-    `).join("");
+    `;
+    }).join("");
   }
 
   fetch("sector_watchlist_data.json")
@@ -736,7 +937,19 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
             "volume_profile": {"price_vs_poc": 0.02}
           },
           "fundamentals_source": "Yahoo Finance News",
-          "fundamentals_raw": [{"title": "Sample headline", "title_ja": "サンプル見出し", "published_at": "2026-09-20T10:00:00+09:00", "link": "https://example.com"}]
+          "fundamentals_raw": [{"title": "Sample headline", "title_ja": "サンプル見出し", "published_at": "2026-09-20T10:00:00+09:00", "link": "https://example.com"}],
+          "score_change": 0.042
+        },
+        {
+          "ticker": "RKLB", "name": "Rocket Lab", "name_ja": null, "price": 64.57, "price_source": "yfinance",
+          "technical": {
+            "short_term": {"score": 0.27, "label": "やや強気"},
+            "mid_term": {"score": -0.25, "label": "中立"},
+            "long_term": {"score": -0.43, "label": "やや弱気"}
+          },
+          "fundamentals_source": "Yahoo Finance News",
+          "fundamentals_raw": [],
+          "score_change": -0.018
         }
       ],
       "jp": [
@@ -753,7 +966,8 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
             "volume_profile": {}
           },
           "fundamentals_source": "TDnet",
-          "fundamentals_raw": []
+          "fundamentals_raw": [],
+          "score_change": null
         }
       ]
     }
@@ -763,7 +977,10 @@ git commit -m "feat: add main() orchestration for sector watchlist generation"
 
 `.claude/launch.json`の`dashboard`設定（`python -m http.server 8877 --directory dashboard`）でローカルサーバーを起動し、`http://localhost:8877/sector-watchlist.html`を開く。以下を確認する:
 - ヘッダーの更新日時が正しく表示される
-- 「宇宙」セクションの米国株ボードにSpaceXの行が表示され、ゲージがアニメーションで塗り込まれる
+- 「宇宙」セクションの見出しに、セクター健全度バッジとティルトバー（強気/中立/弱気の内訳）が表示される
+- 「宇宙」セクションの米国株ボードで、SPCX（avg_score = (0.17+0.47+0.06)/3 ≈ 0.233）がRKLB（avg_score ≈ -0.137）より上位（1位）に表示される（ランキング降順ソートの確認）
+- SPCXの行に緑色（上昇）の`+0.042`変化バッジ、RKLBの行に赤色（下降）の`-0.018`変化バッジが価格の隣に表示される
+- ispaceの行では変化バッジが表示されない（`score_change: null`の場合は非表示になること）
 - 行を展開すると、見立て文・テクニカル内訳・ファンダメンタルズ材料が表示される
 - 「チャート ↗」リンクが`https://www.moomoo.com/ja/stock/SPCX-US`を指している
 - 「宇宙」セクションの日本株ボードにispaceの行が表示され、展開すると「直近の材料は見つかりませんでした」（空の`fundamentals_raw`）と、週足トレンド等の欠落フィールドが「—」表示になり、例外が発生しないことを確認する
@@ -798,7 +1015,7 @@ Expected: `wrote dashboard/sector_watchlist_data.json (30/30 tickers)`のよう�
 
 - [ ] **Step 2: 生成されたJSONの中身を確認**
 
-`dashboard/sector_watchlist_data.json`を開き、4セクション分の`sectors`配列があり、各`us`/`jp`配列に該当銘柄のエントリーが入っていることを確認する。特に`7011.T`（三菱重工業）が「宇宙」「防衛」両方のセクションに現れることを確認する。
+`dashboard/sector_watchlist_data.json`を開き、4セクション分の`sectors`配列があり、各`us`/`jp`配列に該当銘柄のエントリーが入っていることを確認する。特に`7011.T`（三菱重工業）が「宇宙」「防衛」両方のセクションに現れることを確認する。また`output/sector_watchlist_history/{today}.json`が作成されていること、各エントリーの`score_change`が初回実行のため`null`になっていることを確認する（2回目以降の実行では前回との差分が入る）。
 
 - [ ] **Step 3: ブラウザで最終確認**
 
