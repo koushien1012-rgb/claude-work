@@ -1,0 +1,386 @@
+<meta charset="UTF-8">
+<title>セクター・ウォッチリストボード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --surface: #ffffff;
+    --surface-2: #efe8d8;
+    --ink: #1d1a15;
+    --ink-muted: #746b58;
+    --ink-faint: #9a9280;
+    --hairline: #e2d9c4;
+    --accent: #a97a1f;
+    --accent-ink: #ffffff;
+    --bull: #2f7d54;
+    --bull-soft: #d9ecdf;
+    --bear: #b2452c;
+    --bear-soft: #f3ddd4;
+    --neutral: #8a8270;
+    --neutral-soft: #ece6d6;
+    --shadow: 0 1px 2px rgba(30, 24, 10, 0.06), 0 8px 24px -16px rgba(30, 24, 10, 0.35);
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161a; --surface: #1b1e24; --surface-2: #22262e; --ink: #eeece4;
+      --ink-muted: #9a9a8f; --ink-faint: #6c6a60; --hairline: #2c2f37;
+      --accent: #dcae51; --accent-ink: #1a1305; --bull: #5cb787; --bull-soft: #1c3327;
+      --bear: #de7259; --bear-soft: #3a241e; --neutral: #8f9299; --neutral-soft: #2a2d33;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14161a; --surface: #1b1e24; --surface-2: #22262e; --ink: #eeece4;
+    --ink-muted: #9a9a8f; --ink-faint: #6c6a60; --hairline: #2c2f37;
+    --accent: #dcae51; --accent-ink: #1a1305; --bull: #5cb787; --bull-soft: #1c3327;
+    --bear: #de7259; --bear-soft: #3a241e; --neutral: #8f9299; --neutral-soft: #2a2d33;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  @media (prefers-reduced-motion: no-preference) {
+    body { animation: fadeIn 420ms ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    @keyframes revealIn { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+  }
+  .page { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
+  header.masthead {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+    gap: 16px; padding-bottom: 20px; margin-bottom: 28px; border-bottom: 2px solid var(--ink);
+  }
+  .masthead h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.7rem, 3vw, 2.3rem); margin: 0 0 4px; text-wrap: balance; letter-spacing: 0.02em; }
+  .masthead .sub { color: var(--ink-muted); font-size: 0.88rem; }
+  .chip { font-family: var(--font-mono); font-size: 0.75rem; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--hairline); color: var(--ink-muted); background: var(--surface); }
+  .back-link { display: inline-block; margin: 0 18px 24px 0; font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+
+  .sector-block { margin-bottom: 30px; }
+  .sector-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .sector-title { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; margin: 0; }
+  .sector-health { font-family: var(--font-mono); font-size: 0.8rem; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--hairline); }
+  .sector-health.bull { color: var(--bull); border-color: var(--bull); }
+  .sector-health.bear { color: var(--bear); border-color: var(--bear); }
+  .sector-health.neutral { color: var(--neutral); }
+  .tilt-bar { display: flex; height: 5px; border-radius: 3px; overflow: hidden; margin-bottom: 12px; background: var(--neutral-soft); }
+  .tilt-bar span { display: block; height: 100%; }
+  .tilt-bar .t-bull { background: var(--bull); }
+  .tilt-bar .t-bear { background: var(--bear); }
+  .tilt-bar .t-neutral { background: var(--neutral); }
+  @media (prefers-reduced-motion: no-preference) {
+    .tilt-bar span { transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+  }
+  .rank { font-family: var(--font-mono); color: var(--ink-faint); font-size: 0.8rem; }
+  .score-change { font-family: var(--font-mono); font-size: 0.68rem; white-space: nowrap; }
+  .score-change.pos { color: var(--bull); }
+  .score-change.neg { color: var(--bear); }
+  .boards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 860px) { .boards { grid-template-columns: 1fr; } }
+  .board { background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; container-type: inline-size; container-name: board; }
+  .board-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--hairline); background: var(--surface-2); }
+  .board-head h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; margin: 0; }
+  .board-count { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); }
+
+  .row { border-bottom: 1px solid var(--hairline); }
+  .row:last-child { border-bottom: none; }
+  .row summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 22px 1fr auto 132px auto; align-items: center; gap: 12px; padding: 12px 18px; transition: background 120ms ease-out; }
+  .row summary::-webkit-details-marker { display: none; }
+  .row summary:hover { background: var(--surface-2); }
+  @media (prefers-reduced-motion: no-preference) {
+    .row[open] > .detail { animation: revealIn 220ms ease-out; }
+  }
+  .chart-link { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); text-decoration: none; white-space: nowrap; border: 1px solid var(--accent); border-radius: 999px; padding: 4px 10px; transition: background 120ms ease-out, color 120ms ease-out; }
+  .chart-link:hover { background: var(--accent); color: var(--accent-ink); }
+  .name-block { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .ticker { font-family: var(--font-mono); font-weight: 600; font-size: 0.92rem; }
+  .company { display: block; min-width: 0; color: var(--ink-muted); font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .price { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 0.88rem; text-align: right; }
+
+  .gauges { display: flex; gap: 6px; }
+  .gauge { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 38px; }
+  .gauge-label { font-size: 0.62rem; color: var(--ink-faint); font-family: var(--font-mono); }
+  .gauge-track { position: relative; width: 100%; height: 6px; background: var(--neutral-soft); border-radius: 3px; overflow: hidden; }
+  .gauge-fill { position: absolute; top: 0; bottom: 0; width: 0; background: var(--bull); }
+  .gauge-fill.neg { background: var(--bear); }
+  @media (prefers-reduced-motion: no-preference) {
+    .gauge-fill { transition: width 650ms cubic-bezier(0.22, 1, 0.36, 1) 60ms, left 650ms cubic-bezier(0.22, 1, 0.36, 1) 60ms; }
+  }
+
+  .detail { padding: 4px 18px 18px 18px; display: grid; gap: 14px; }
+  .detail-section h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); margin: 0 0 8px; }
+  .score-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .score-card { border: 1px solid var(--hairline); border-radius: 8px; padding: 8px 10px; background: var(--surface-2); }
+  .score-card .term { font-size: 0.7rem; color: var(--ink-faint); }
+  .score-card .label { font-weight: 600; font-size: 0.85rem; margin-top: 2px; }
+  .score-card .val { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); }
+  .label.bull-strong, .label.bull { color: var(--bull); }
+  .label.bear-strong, .label.bear { color: var(--bear); }
+  .label.neutral { color: var(--neutral); }
+
+  .insight-line { font-family: var(--font-display); font-size: 0.92rem; line-height: 1.7; margin: 0 0 10px; padding: 8px 12px; background: var(--surface-2); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; }
+  .tech-extra { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
+  .tech-extra-row { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dashed var(--hairline); padding-bottom: 4px; }
+  .tech-extra-row .term { color: var(--ink-muted); }
+
+  .headline-list { display: grid; gap: 2px; }
+  .headline { display: grid; grid-template-columns: 92px 1fr; align-items: baseline; gap: 10px; font-size: 0.8rem; padding: 5px 6px; border-radius: 6px; color: var(--ink); text-decoration: none; }
+  a.headline:hover { background: var(--surface-2); }
+  div.headline { color: var(--ink); }
+  .headline time { font-family: var(--font-mono); color: var(--ink-faint); font-size: 0.72rem; }
+
+  .empty-state { padding: 40px 18px; text-align: center; color: var(--ink-faint); font-size: 0.85rem; }
+  footer.note { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--hairline); color: var(--ink-faint); font-size: 0.76rem; line-height: 1.7; }
+
+  @container board (max-width: 520px) {
+    .row summary { grid-template-columns: 16px 1fr auto 92px auto; gap: 7px; padding: 10px 12px; }
+    .chart-link { padding: 4px 7px; font-size: 0; }
+    .chart-link::after { content: "↗"; font-size: 0.85rem; }
+    .gauge { width: 26px; }
+    .gauge-label { display: none; }
+  }
+</style>
+
+<div class="page">
+  <header class="masthead">
+    <div>
+      <h1>セクター・ウォッチリストボード</h1>
+      <div class="sub">宇宙・防衛・船舶・メモリ半導体 — 日米定点観測</div>
+    </div>
+    <span class="chip" id="updatedChip"></span>
+  </header>
+
+  <a class="back-link" href="https://claude.ai/code/artifact/aae8bc26-18de-4aaf-964b-9ef16ccbd3f7" target="_blank" rel="noopener">📈 相場ボードを見る ↗</a>
+
+  <div id="sectors"></div>
+
+  <footer class="note">
+    短期・中期・長期のスコアは移動平均線を主とした複数のテクニカル指標(SMA/EMA・MACD・RSI・ストキャスティクス・ボリンジャーバンド・ADX・一目均衡表・出来高・ダウ理論・ワイコフ法・ローソク足パターン・フィボナッチ・ボリュームプロファイル)を加重平均した参考値です（+1に近いほど強気、-1に近いほど弱気）。この銘柄リストは固定のウォッチリストであり、動的なスクリーニングは行っていません。いずれも自動生成された参考情報であり、投資助言ではありません。投資判断はご自身の責任で行ってください。
+  </footer>
+</div>
+
+<script>
+  const LABEL_CLASS = {
+    "強気（上昇優勢）": "bull-strong", "やや強気": "bull", "中立": "neutral",
+    "やや弱気": "bear", "弱気（下落優勢）": "bear-strong",
+  };
+  const WYCKOFF_LABEL = { accumulation: "蓄積", markup: "上昇", distribution: "分配", markdown: "下降", undefined: "判定不能" };
+  const TREND_PHRASE = { up: "上昇トレンド", down: "下降トレンド", sideways: "方向感の乏しいレンジ" };
+  const WYCKOFF_PHRASE = {
+    markup: "ワイコフ的には上昇（マークアップ）局面", accumulation: "ワイコフ的には蓄積局面",
+    distribution: "ワイコフ的には分配局面", markdown: "ワイコフ的には下降（マークダウン）局面",
+  };
+  const PATTERN_PHRASE = {
+    bullish_engulfing: "直近では強気の包み足が出現", bearish_engulfing: "直近では弱気の包み足が出現",
+    hammer: "直近でハンマー（下ヒゲ）が出現", shooting_star: "直近で上ヒゲの長い足が出現",
+    doji: "直近で迷いを示す十字線が出現",
+  };
+
+  function fmtNum(n, digits = 2) {
+    if (n === null || n === undefined || Number.isNaN(n)) return "—";
+    return Number(n).toLocaleString("ja-JP", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  }
+  function fmtDate(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return String(iso).slice(0, 10);
+    return d.toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+  }
+  function escapeAttr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  }
+  function companyName(item) { return item.name_ja || item.name || ""; }
+  function chartUrl(ticker) {
+    const code = ticker.endsWith(".T") ? `${ticker.slice(0, -2)}-JP` : `${ticker}-US`;
+    return `https://www.moomoo.com/ja/stock/${encodeURIComponent(code)}`;
+  }
+
+  function avgScore(t) {
+    return (t.short_term.score + t.mid_term.score + t.long_term.score) / 3;
+  }
+
+  function scoreChangeBadge(change) {
+    if (change === null || change === undefined) return "";
+    const cls = change >= 0 ? "pos" : "neg";
+    const sign = change >= 0 ? "+" : "";
+    return `<span class="score-change ${cls}">${sign}${change.toFixed(3)}</span>`;
+  }
+
+  function tiltBar(items) {
+    if (!items || !items.length) return "";
+    let bull = 0, bear = 0, neutral = 0;
+    for (const item of items) {
+      const avg = avgScore(item.technical);
+      if (avg >= 0.25) bull++;
+      else if (avg <= -0.25) bear++;
+      else neutral++;
+    }
+    const total = bull + bear + neutral;
+    return `<div class="tilt-bar" title="強気${bull}・中立${neutral}・弱気${bear}">
+      <span class="t-bull" style="width:${(bull / total) * 100}%"></span>
+      <span class="t-neutral" style="width:${(neutral / total) * 100}%"></span>
+      <span class="t-bear" style="width:${(bear / total) * 100}%"></span>
+    </div>`;
+  }
+
+  function sectorHealthBadge(items) {
+    if (!items || !items.length) return "";
+    const health = items.reduce((sum, item) => sum + avgScore(item.technical), 0) / items.length;
+    const cls = health >= 0.25 ? "bull" : health <= -0.25 ? "bear" : "neutral";
+    return `<span class="sector-health ${cls}">セクター健全度 ${health >= 0 ? "+" : ""}${health.toFixed(3)}</span>`;
+  }
+
+  function gauge(term, score) {
+    const pct = Math.min(Math.abs(score), 1) * 50;
+    const isNeg = score < 0;
+    const left = isNeg ? 50 - pct : 50;
+    return `<div class="gauge">
+      <span class="gauge-label">${term}</span>
+      <div class="gauge-track">
+        <div class="gauge-fill ${isNeg ? "neg" : ""}" data-left="${left}" data-width="${pct}" style="left:${left}%;"></div>
+      </div>
+    </div>`;
+  }
+  function animateGauges() {
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".gauge-fill[data-width]").forEach((el) => { el.style.width = `${el.dataset.width}%`; });
+    });
+  }
+  function scoreCard(term, obj) {
+    const cls = LABEL_CLASS[obj.label] || "neutral";
+    return `<div class="score-card">
+      <div class="term">${term}</div>
+      <div class="label ${cls}">${obj.label}</div>
+      <div class="val">スコア ${obj.score >= 0 ? "+" : ""}${fmtNum(obj.score, 3)}</div>
+    </div>`;
+  }
+  function insightLine(t) {
+    const dow = t.dow_theory || {};
+    const dowDaily = dow.daily || {};
+    const wyckoff = t.wyckoff_phase || {};
+    const candle = t.candlestick_pattern || {};
+    const trend = TREND_PHRASE[dowDaily.trend];
+    if (!trend) return "";
+    const volNote = dowDaily.confirmed_by_volume ? "（出来高の裏付けあり）" : "";
+    const phase = WYCKOFF_PHRASE[wyckoff.phase];
+    const pattern = PATTERN_PHRASE[candle.pattern];
+    let text = `日足は${trend}${volNote}`;
+    if (phase) text += `、${phase}`;
+    text += "。";
+    if (pattern) text += `${pattern}。`;
+    return `<p class="insight-line">${text}</p>`;
+  }
+  function technicalDetailSection(t) {
+    const dow = t.dow_theory || {};
+    const dowDaily = dow.daily || {};
+    const dowWeekly = dow.weekly || {};
+    const wyckoff = t.wyckoff_phase || {};
+    const candle = t.candlestick_pattern || {};
+    const fib = t.fibonacci_position || {};
+    const volProfile = t.volume_profile || {};
+    return `<div class="detail-section">
+      <h3>ダウ理論・ワイコフ・パターン分析</h3>
+      ${insightLine(t)}
+      <div class="tech-extra">
+        <div class="tech-extra-row"><span class="term">日足トレンド</span><span>${dowDaily.trend || "—"}${dowDaily.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
+        <div class="tech-extra-row"><span class="term">週足トレンド</span><span>${dowWeekly.trend || "—"}${dowWeekly.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
+        <div class="tech-extra-row"><span class="term">ワイコフフェーズ</span><span>${WYCKOFF_LABEL[wyckoff.phase] || "—"}</span></div>
+        <div class="tech-extra-row"><span class="term">ローソク足パターン</span><span>${candle.pattern || "検出なし"}</span></div>
+        <div class="tech-extra-row"><span class="term">フィボナッチ位置</span><span>${fib.price_zone || "—"}</span></div>
+        <div class="tech-extra-row"><span class="term">出来高POC比</span><span>${volProfile.price_vs_poc != null ? (volProfile.price_vs_poc * 100).toFixed(2) + "%" : "—"}</span></div>
+      </div>
+    </div>`;
+  }
+
+  function row(item, rank) {
+    const t = item.technical;
+    const headlines = (item.fundamentals_raw || []).slice(0, 5).map((h) => {
+      const text = h.title_ja || h.title || "";
+      const hasOriginal = h.title_ja && h.title && h.title_ja !== h.title;
+      const tip = hasOriginal ? ` title="${escapeAttr(h.title)}"` : "";
+      const url = h.link || h.document_url || "";
+      const inner = `<time>${fmtDate(h.published_at)}</time><span${tip}>${text}</span>`;
+      return url
+        ? `<a class="headline" href="${escapeAttr(url)}" target="_blank" rel="noopener">${inner}</a>`
+        : `<div class="headline">${inner}</div>`;
+    }).join("") || `<div class="headline"><span>直近の材料は見つかりませんでした</span></div>`;
+
+    return `<details class="row">
+      <summary>
+        <span class="rank">${rank}</span>
+        <span class="name-block">
+          <span class="ticker">${item.ticker}</span>
+          <span class="company">${companyName(item)}</span>
+        </span>
+        <span class="price">${fmtNum(item.price)} ${scoreChangeBadge(item.score_change)}</span>
+        <span class="gauges">
+          ${gauge("短", t.short_term.score)}
+          ${gauge("中", t.mid_term.score)}
+          ${gauge("長", t.long_term.score)}
+        </span>
+        <a class="chart-link" href="${chartUrl(item.ticker)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">チャート ↗</a>
+      </summary>
+      <div class="detail">
+        <div class="detail-section">
+          <h3>テクニカル内訳</h3>
+          <div class="score-table">
+            ${scoreCard("短期", t.short_term)}
+            ${scoreCard("中期", t.mid_term)}
+            ${scoreCard("長期", t.long_term)}
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>ファンダメンタルズ材料（${item.fundamentals_source || "—"}）</h3>
+          <div class="headline-list">${headlines}</div>
+        </div>
+        ${technicalDetailSection(t)}
+      </div>
+    </details>`;
+  }
+
+  function renderBoard(items) {
+    if (!items || !items.length) return `<div class="empty-state">対象銘柄がありません</div>`;
+    const sorted = [...items].sort((a, b) => avgScore(b.technical) - avgScore(a.technical));
+    return sorted.map((item, i) => row(item, i + 1)).join("");
+  }
+
+  function renderSectors(sectors) {
+    const el = document.getElementById("sectors");
+    el.innerHTML = sectors.map((sector) => {
+      const allItems = [...(sector.us || []), ...(sector.jp || [])];
+      return `
+      <section class="sector-block">
+        <div class="sector-head">
+          <h2 class="sector-title">${sector.name}</h2>
+          ${sectorHealthBadge(allItems)}
+        </div>
+        ${tiltBar(allItems)}
+        <div class="boards">
+          <section class="board">
+            <div class="board-head"><h3>米国株</h3><span class="board-count">${(sector.us || []).length}銘柄</span></div>
+            <div>${renderBoard(sector.us)}</div>
+          </section>
+          <section class="board">
+            <div class="board-head"><h3>日本株</h3><span class="board-count">${(sector.jp || []).length}銘柄</span></div>
+            <div>${renderBoard(sector.jp)}</div>
+          </section>
+        </div>
+      </section>
+    `;
+    }).join("");
+  }
+
+  fetch("sector_watchlist_data.json")
+    .then((r) => r.json())
+    .then((data) => {
+      document.getElementById("updatedChip").textContent = `更新: ${fmtDate(data.generated_at)}`;
+      renderSectors(data.sectors || []);
+      animateGauges();
+    })
+    .catch((err) => {
+      document.getElementById("sectors").innerHTML = `<div class="empty-state">データの読み込みに失敗しました: ${err}</div>`;
+    });
+</script>
