@@ -127,16 +127,23 @@ def main():
         except Exception as exc:
             print(f"failed to build report for {ticker}: {exc}")
 
+    if not reports_by_ticker:
+        print(f"aborting: 0/{len(tickers)} tickers fetched successfully, leaving existing dashboard data untouched")
+        raise SystemExit(1)
+
     save_snapshot(history_dir, today, snapshot)
 
     score_changes = {}
     if previous:
         for ticker, avg in snapshot.items():
-            if ticker in previous:
-                score_changes[ticker] = round(avg - previous[ticker], 4)
+            prev = previous.get(ticker)
+            if prev is not None:
+                score_changes[ticker] = round(avg - prev, 4)
 
     payload = {
         "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "fetched": len(reports_by_ticker),
+        "expected": len(tickers),
         "sectors": build_sector_payload(SECTOR_TICKERS, reports_by_ticker, score_changes),
     }
 

@@ -214,3 +214,59 @@ def test_main_computes_score_change_from_prior_snapshot(tmp_path, monkeypatch):
     data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
     # _fake_report gives avg_score (0.1+0.1+0.1)/3 = 0.1; prior snapshot was 0.0 -> change is +0.1
     assert data["sectors"][0]["us"][0]["score_change"] == 0.1
+
+
+def test_main_includes_fetched_and_expected_counts(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+
+    small_sectors = {"宇宙": {"us": ["SPCX", "FAIL_ME"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report):
+        mod.main()
+
+    data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
+    assert data["fetched"] == 1
+    assert data["expected"] == 2
+
+
+def test_main_aborts_and_preserves_existing_data_when_all_tickers_fail(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+    out_path = tmp_path / "dashboard" / "sector_watchlist_data.json"
+    out_path.write_text('{"generated_at": "yesterday", "sectors": []}', encoding="utf-8")
+
+    small_sectors = {"宇宙": {"us": ["FAIL_ME"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report):
+        with pytest.raises(SystemExit):
+            mod.main()
+
+    # existing dashboard data must be left untouched, not overwritten with an empty payload
+    assert out_path.read_text(encoding="utf-8") == '{"generated_at": "yesterday", "sectors": []}'
+    # no snapshot should be recorded for a run that fetched nothing
+    history_dir = tmp_path / "output" / "sector_watchlist_history"
+    assert not history_dir.exists() or list(history_dir.glob("*.json")) == []
+
+
+def test_main_skips_ticker_with_null_prior_snapshot_value(tmp_path, monkeypatch):
+    import generate_sector_watchlist as mod
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "dashboard").mkdir()
+    # simulates a prior snapshot value that was NaN and got sanitized to null
+    mod.save_snapshot(tmp_path / "output" / "sector_watchlist_history", "2026-09-20", {"SPCX": None})
+
+    small_sectors = {"宇宙": {"us": ["SPCX"], "jp": []}}
+    with patch.object(mod, "SECTOR_TICKERS", small_sectors), \
+         patch.object(mod, "generate_report", side_effect=_fake_report), \
+         patch.object(mod, "date") as mock_date:
+        mock_date.today.return_value.isoformat.return_value = "2026-09-21"
+        mod.main()  # must not raise despite a null value in the prior snapshot
+
+    data = json.loads((tmp_path / "dashboard" / "sector_watchlist_data.json").read_text(encoding="utf-8"))
+    assert data["sectors"][0]["us"][0]["score_change"] is None

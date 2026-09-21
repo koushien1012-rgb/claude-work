@@ -151,6 +151,7 @@
       <div class="sub">宇宙・防衛・船舶・メモリ半導体 — 日米定点観測</div>
     </div>
     <span class="chip" id="updatedChip"></span>
+    <span class="chip" id="coverageChip"></span>
   </header>
 
   <a class="back-link" href="https://claude.ai/code/artifact/aae8bc26-18de-4aaf-964b-9ef16ccbd3f7" target="_blank" rel="noopener">📈 相場ボードを見る ↗</a>
@@ -203,7 +204,7 @@
   }
 
   function scoreChangeBadge(change) {
-    if (change === null || change === undefined) return "";
+    if (change === null || change === undefined || Math.abs(change) < 0.0005) return "";
     const cls = change >= 0 ? "pos" : "neg";
     const sign = change >= 0 ? "+" : "";
     return `<span class="score-change ${cls}">${sign}${change.toFixed(3)}</span>`;
@@ -377,6 +378,9 @@
     .then((r) => r.json())
     .then((data) => {
       document.getElementById("updatedChip").textContent = `更新: ${fmtDate(data.generated_at)}`;
+      if (data.fetched !== undefined && data.expected !== undefined) {
+        document.getElementById("coverageChip").textContent = `取得: ${data.fetched}/${data.expected}銘柄`;
+      }
       renderSectors(data.sectors || []);
       animateGauges();
     })
