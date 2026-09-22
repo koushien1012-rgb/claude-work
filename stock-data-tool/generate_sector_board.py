@@ -1,11 +1,14 @@
 import json
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
 
 from analysis.signals import label_for_score
 from screener import CATEGORY_LABELS, CATEGORY_ORDER, categories_for_sector, get_market_caps
+from stock_data import get_business_summary_en, get_next_earnings_date
+from translate import business_summary_ja
 
 SCAN_PATH = Path("output/watchlist/full_scan.csv")
 OUT_PATH = Path("output/watchlist/sector_board.json")
@@ -23,9 +26,23 @@ def _score_block(row: pd.Series, prefix: str) -> dict:
     return {"score": round(float(score), 3), "label": label_for_score(float(score))}
 
 
+@lru_cache(maxsize=None)
+def _business_summary_ja_cached(ticker: str) -> str | None:
+    # a ticker can appear as a top-N pick in more than one category/sector within a single
+    # run; memoize so it's only fetched/translated once per run (the on-disk cache in
+    # translate.py already avoids re-translating across runs, but not within one run).
+    return business_summary_ja(ticker, get_business_summary_en(ticker))
+
+
+@lru_cache(maxsize=None)
+def _next_earnings_date_cached(ticker: str) -> str | None:
+    return get_next_earnings_date(ticker)
+
+
 def _pick_to_dict(row: pd.Series) -> dict:
+    ticker = row["ticker"]
     return {
-        "ticker": row["ticker"],
+        "ticker": ticker,
         "name": row.get("name") or "",
         "name_ja": None,
         "sector": row.get("sector"),
@@ -34,6 +51,8 @@ def _pick_to_dict(row: pd.Series) -> dict:
         "short_term": _score_block(row, "short"),
         "mid_term": _score_block(row, "mid"),
         "long_term": _score_block(row, "long"),
+        "next_earnings_date": _next_earnings_date_cached(ticker),
+        "business_summary_ja": _business_summary_ja_cached(ticker),
     }
 
 

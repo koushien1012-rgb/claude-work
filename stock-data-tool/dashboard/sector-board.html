@@ -228,6 +228,16 @@
   .pick-meta .label.bull-strong, .pick-meta .label.bull { color: var(--bull); }
   .pick-meta .label.bear-strong, .pick-meta .label.bear { color: var(--bear); }
   .pick-meta .label.neutral { color: var(--neutral); }
+  .pick-summary {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+  .pick-earnings { color: var(--ink-faint); }
   .empty-pick { font-size: 0.76rem; color: var(--ink-faint); padding: 6px 0; }
 
   .sector-market-block { margin-bottom: 28px; }
@@ -314,6 +324,10 @@
     return item.name_ja || item.name || "";
   }
 
+  function escapeAttr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  }
+
   function chartUrl(ticker) {
     return `https://finance.yahoo.co.jp/quote/${encodeURIComponent(ticker)}`;
   }
@@ -328,11 +342,19 @@
 
   function pickRow(item) {
     const cls = LABEL_CLASS[item.short_term && item.short_term.label] || "neutral";
+    const summary = item.business_summary_ja
+      ? `<span class="pick-summary" title="${escapeAttr(item.business_summary_ja)}">${item.business_summary_ja}</span>`
+      : "";
+    const earnings = item.next_earnings_date
+      ? `<span class="pick-earnings">📅決算 ${item.next_earnings_date.slice(5)}</span>`
+      : "";
     return `<a class="pick" href="${chartUrl(item.ticker)}" target="_blank" rel="noopener">
       <span class="pick-ticker">${item.ticker}</span>
       <span class="pick-name">${companyName(item)}</span>
+      ${summary}
       <span class="pick-meta">
         <span>${fmtCap(item.market_cap, item.ticker)}</span>
+        ${earnings}
         <span class="label ${cls}">${(item.short_term && item.short_term.label) || "—"}</span>
       </span>
     </a>`;

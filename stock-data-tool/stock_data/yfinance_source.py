@@ -44,3 +44,12 @@ def get_next_earnings_date(ticker: str) -> str | None:
         return None
     date = dates[0] if isinstance(dates, list) else dates
     return date.isoformat() if hasattr(date, "isoformat") else str(date)
+
+
+def get_business_summary_en(ticker: str) -> str | None:
+    try:
+        info = yf.Ticker(ticker).info
+    except Exception:
+        return None
+    summary = info.get("longBusinessSummary") if isinstance(info, dict) else None
+    return summary.strip() if summary else None

@@ -2,7 +2,8 @@ from pathlib import Path
 
 from macro import get_macro_daily
 from news import get_tdnet_disclosures, get_yfinance_news
-from stock_data import get_daily, get_next_earnings_date
+from stock_data import get_business_summary_en, get_daily, get_next_earnings_date
+from translate import business_summary_ja, translate_to_ja
 
 from .signals import label_for_score, outlook
 from .technical import compute_indicators
@@ -49,6 +50,10 @@ def generate_report(ticker: str, news_limit: int = 8, name: str | None = None,
     else:
         fundamentals = get_yfinance_news(ticker, limit=news_limit)
         fundamentals_source = "Yahoo Finance News"
+        for item in fundamentals:
+            item["title_ja"] = translate_to_ja(item.get("title"))
+
+    summary_en = get_business_summary_en(ticker)
 
     return {
         "ticker": ticker,
@@ -72,6 +77,7 @@ def generate_report(ticker: str, news_limit: int = 8, name: str | None = None,
         "combined_technical_macro": combined,
         "fundamentals_source": fundamentals_source,
         "fundamentals_raw": fundamentals,
+        "business_summary_ja": business_summary_ja(ticker, summary_en),
         "fundamentals_note": (
             "自動スコアリングは未実施です。上記の見出し・開示内容を確認し、"
             "必要に応じてこの内容をClaudeとの会話に貼って影響度を判断してください。"

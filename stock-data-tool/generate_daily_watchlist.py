@@ -49,6 +49,7 @@ def _ticker_entry(ticker: str, report: dict, entry_timeframe: dict | None = None
         "combined": report["combined_technical_macro"],
         "fundamentals_source": report["fundamentals_source"],
         "fundamentals_raw": report["fundamentals_raw"],
+        "business_summary_ja": report.get("business_summary_ja"),
         "claude_judgment": None,
         "entry_timeframe": entry_timeframe,
         "chart": chart,

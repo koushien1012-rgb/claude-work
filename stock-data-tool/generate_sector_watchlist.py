@@ -69,8 +69,10 @@ def _build_entry(ticker: str, report: dict, score_change: float | None = None) -
         "price": report["price"],
         "price_source": report.get("price_source", "yfinance"),
         "technical": report["technical"],
+        "next_earnings_date": report.get("next_earnings_date"),
         "fundamentals_source": report.get("fundamentals_source"),
         "fundamentals_raw": report.get("fundamentals_raw") or [],
+        "business_summary_ja": report.get("business_summary_ja"),
         "score_change": score_change,
     }
 

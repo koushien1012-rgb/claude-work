@@ -40,8 +40,15 @@ def get_next_earnings_date(ticker: str) -> str | None:
     return yfinance_source.get_next_earnings_date(ticker)
 
 
+def get_business_summary_en(ticker: str) -> str | None:
+    return yfinance_source.get_business_summary_en(ticker)
+
+
 def get_us_realtime_snapshot(tickers: list[str]) -> dict:
     return moomoo_source.get_us_realtime_snapshot(tickers)
 
 
-__all__ = ["get_daily", "get_intraday", "save_csv", "get_next_earnings_date", "get_us_realtime_snapshot"]
+__all__ = [
+    "get_daily", "get_intraday", "save_csv", "get_next_earnings_date",
+    "get_business_summary_en", "get_us_realtime_snapshot",
+]

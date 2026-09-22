@@ -555,6 +555,27 @@
   .macro-news-block summary::-webkit-details-marker { display: none; }
   .macro-news-block summary:hover { background: var(--surface-2); }
   .macro-news-block .headline-list { padding: 0 12px 12px; }
+  .glossary {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .glossary summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 18px;
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+    color: var(--accent);
+  }
+  .glossary summary::-webkit-details-marker { display: none; }
+  .glossary summary:hover { background: var(--surface-2); }
+  .glossary-body { padding: 0 18px 16px; display: grid; gap: 10px; font-size: 0.82rem; line-height: 1.75; color: var(--ink-muted); }
+  .glossary-body strong { color: var(--ink); }
+  .glossary-caveat { font-size: 0.74rem; color: var(--ink-faint); }
   .proxy-tag {
     font-family: var(--font-mono);
     font-size: 0.65rem;
@@ -691,6 +712,18 @@
     <div id="macroNews" class="headline-list"></div>
   </details>
 
+  <details class="glossary">
+    <summary>📘 ダウ理論・ワイコフ・ローソク足パターンとは？（初めての方はこちら）</summary>
+    <div class="glossary-body">
+      <p><strong>ダウ理論</strong>：値動きの高値・安値の並び方から、相場の大きな流れ（トレンド）を読み取る古典的な分析手法です。高値・安値が切り上がっていれば「上昇トレンド」、切り下がっていれば「下降トレンド」と判断します。</p>
+      <p><strong>ワイコフ法</strong>：出来高（売買された株数）と値動きの関係から、大口投資家が株を「買い集めている（蓄積）」のか「売り抜けている（分配）」のかを読み解こうとする分析手法です。蓄積＝底値圏でじわじわ買われている可能性、分配＝天井圏でじわじわ売られている可能性を示します。</p>
+      <p><strong>ローソク足パターン</strong>：1本1本のローソク足（1日の値動きを表す棒）の形から、相場の転換点を予測する手法です。「強気の包み足」は下落→上昇への転換、「弱気の包み足」は上昇→下落への転換を示唆します。</p>
+      <p><strong>フィボナッチ位置</strong>：直近の高値・安値の値幅を基準にした節目（23.6%・38.2%・50%・61.8%など）に、現在の株価がどれだけ近いかを示します。節目付近では反発・反落が起きやすいとされます。</p>
+      <p><strong>出来高POC比</strong>：一定期間で最も多く売買された価格帯（POC）から、現在の株価がどれだけ離れているかを示します。POCから離れすぎると「行き過ぎ」の反動が出やすいとされます。</p>
+      <p class="glossary-caveat">いずれも過去の値動きに基づく経験則であり、将来の値動きを保証するものではありません。</p>
+    </div>
+  </details>
+
   <section class="market-block">
     <div class="market-head">
       <h2 class="market-title">日本株</h2>
@@ -820,6 +853,11 @@
     </svg>`;
   }
 
+  const TREND_LABEL = { up: "上昇", down: "下降", sideways: "方向感なし" };
+  const PATTERN_LABEL = {
+    bullish_engulfing: "強気の包み足", bearish_engulfing: "弱気の包み足",
+    hammer: "ハンマー", shooting_star: "上ヒゲ大陰線", doji: "十字線（迷い）",
+  };
   const TREND_PHRASE = { up: "上昇トレンド", down: "下降トレンド", sideways: "方向感の乏しいレンジ" };
   const WYCKOFF_PHRASE = {
     markup: "ワイコフ的には上昇（マークアップ）局面",
@@ -908,6 +946,12 @@
     accumulation: "蓄積", markup: "上昇", distribution: "分配", markdown: "下降", undefined: "判定不能",
   };
 
+  function fibZoneLabel(zone) {
+    if (!zone || zone === "unknown") return "—";
+    const pct = parseFloat(zone) * 100;
+    return Number.isFinite(pct) ? `${pct.toFixed(1)}%水準` : zone;
+  }
+
   function technicalDetailSection(t) {
     const dow = t.dow_theory || {};
     const dowDaily = dow.daily || {};
@@ -921,13 +965,21 @@
       <h3>ダウ理論・ワイコフ・パターン分析</h3>
       ${insightLine(t)}
       <div class="tech-extra">
-        <div class="tech-extra-row"><span class="term">日足トレンド</span><span>${dowDaily.trend || "—"}${dowDaily.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
-        <div class="tech-extra-row"><span class="term">週足トレンド</span><span>${dowWeekly.trend || "—"}${dowWeekly.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
+        <div class="tech-extra-row"><span class="term">日足トレンド</span><span>${TREND_LABEL[dowDaily.trend] || "—"}${dowDaily.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
+        <div class="tech-extra-row"><span class="term">週足トレンド</span><span>${TREND_LABEL[dowWeekly.trend] || "—"}${dowWeekly.confirmed_by_volume ? "（出来高確認あり）" : ""}</span></div>
         <div class="tech-extra-row"><span class="term">ワイコフフェーズ</span><span>${WYCKOFF_LABEL[wyckoff.phase] || "—"}</span></div>
-        <div class="tech-extra-row"><span class="term">ローソク足パターン</span><span>${candle.pattern || "検出なし"}</span></div>
-        <div class="tech-extra-row"><span class="term">フィボナッチ位置</span><span>${fib.price_zone || "—"}</span></div>
+        <div class="tech-extra-row"><span class="term">ローソク足パターン</span><span>${PATTERN_LABEL[candle.pattern] || "検出なし"}</span></div>
+        <div class="tech-extra-row"><span class="term">フィボナッチ位置</span><span>${fibZoneLabel(fib.price_zone)}</span></div>
         <div class="tech-extra-row"><span class="term">出来高POC比</span><span>${volProfile.price_vs_poc != null ? (volProfile.price_vs_poc * 100).toFixed(2) + "%" : "—"}</span></div>
       </div>
+    </div>`;
+  }
+
+  function businessSummarySection(item) {
+    if (!item.business_summary_ja) return "";
+    return `<div class="detail-section">
+      <h3>事業内容</h3>
+      <p class="hint">${item.business_summary_ja}</p>
     </div>`;
   }
 
@@ -1053,6 +1105,7 @@
       </summary>
       <div class="detail">
         ${metaRow(item)}
+        ${businessSummarySection(item)}
         <div class="detail-section">
           <h3>テクニカル内訳（個別銘柄）</h3>
           <div class="score-table">

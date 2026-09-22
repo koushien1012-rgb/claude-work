@@ -55,6 +55,7 @@ def _fake_report(ticker: str) -> dict:
         "combined_technical_macro": {},
         "fundamentals_source": "Yahoo Finance News",
         "fundamentals_raw": [],
+        "business_summary_ja": f"summary-ja-{ticker}",
         "fundamentals_note": "note",
     }
 
@@ -101,6 +102,7 @@ def test_build_market_block_threads_entry_timeframe_and_chart():
     assert by_ticker["BBB"]["entry_timeframe"]["alignment"] == "conflicting"
     assert by_ticker["AAA"]["chart"] is sentinel_chart
     assert by_ticker["BBB"]["chart"] is sentinel_chart
+    assert by_ticker["AAA"]["business_summary_ja"] == "summary-ja-AAA"
 
     assert mock_get_daily.call_count == 2
     assert mock_chart.call_count == 2
