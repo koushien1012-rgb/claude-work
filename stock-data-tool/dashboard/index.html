@@ -993,8 +993,7 @@
   }
 
   function chartUrl(ticker) {
-    const code = ticker.endsWith(".T") ? `${ticker.slice(0, -2)}-JP` : `${ticker}-US`;
-    return `https://www.moomoo.com/ja/stock/${encodeURIComponent(code)}`;
+    return `https://finance.yahoo.co.jp/quote/${encodeURIComponent(ticker)}`;
   }
 
   function metaRow(item) {
@@ -1061,7 +1060,7 @@
             ${scoreCard("中期", t.mid_term)}
             ${scoreCard("長期", t.long_term)}
           </div>
-          <p class="hint">移動平均線・ゴールデンクロス等は<a href="${chartUrl(item.ticker)}" target="_blank" rel="noopener">moomoo証券のチャート ↗</a>でテクニカル指標を表示すると確認できます。</p>
+          <p class="hint">移動平均線・ゴールデンクロス等は<a href="${chartUrl(item.ticker)}" target="_blank" rel="noopener">Yahoo!ファイナンスのチャート ↗</a>でテクニカル指標を表示すると確認できます。</p>
         </div>
         <div class="detail-section">
           <h3>総合スコア（個別70% + ${INDEX_NAME[item.macro_index && item.macro_index.name] || "指数"} 30%）</h3>

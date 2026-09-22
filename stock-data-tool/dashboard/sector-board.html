@@ -315,8 +315,7 @@
   }
 
   function chartUrl(ticker) {
-    const code = ticker.endsWith(".T") ? `${ticker.slice(0, -2)}-JP` : `${ticker}-US`;
-    return `https://www.moomoo.com/ja/stock/${encodeURIComponent(code)}`;
+    return `https://finance.yahoo.co.jp/quote/${encodeURIComponent(ticker)}`;
   }
 
   const LABEL_CLASS = {
