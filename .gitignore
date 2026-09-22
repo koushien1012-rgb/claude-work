@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 .pytest_cache/
 stock-data-tool/output/
+stock-data-tool/.env
