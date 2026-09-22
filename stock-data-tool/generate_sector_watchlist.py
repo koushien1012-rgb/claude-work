@@ -35,6 +35,13 @@ NAME_MAP: dict[str, str] = {
     "285A.T": "キオクシアHD", "8035.T": "東京エレクトロン", "6857.T": "アドバンテスト", "6146.T": "ディスコ",
 }
 
+NAME_JA: dict[str, str] = {
+    "SPCX": "スペースX", "RKLB": "ロケット・ラボ", "ASTS": "AST SpaceMobile", "LUNR": "インテュイティブ・マシーンズ",
+    "LMT": "ロッキード・マーチン", "RTX": "RTXコーポレーション", "NOC": "ノースロップ・グラマン", "GD": "ゼネラル・ダイナミクス",
+    "ZIM": "ジム・インテグレーテッド・シッピング", "FRO": "フロントライン", "GOGL": "ゴールデン・オーシャン・グループ", "GNK": "ジェンコ・シッピング",
+    "MU": "マイクロン・テクノロジー", "WDC": "ウエスタンデジタル", "SNDK": "サンディスク", "STX": "シーゲイト・テクノロジー",
+}
+
 
 def dedupe_tickers(sector_tickers: dict) -> list[dict]:
     seen: set[str] = set()
@@ -58,7 +65,7 @@ def _build_entry(ticker: str, report: dict, score_change: float | None = None) -
     return {
         "ticker": ticker,
         "name": report.get("name") or "",
-        "name_ja": None,
+        "name_ja": NAME_JA.get(ticker),
         "price": report["price"],
         "price_source": report.get("price_source", "yfinance"),
         "technical": report["technical"],

@@ -48,6 +48,15 @@ def test_build_entry_shapes_report_for_dashboard():
     assert entry["score_change"] is None  # default when no prior snapshot is passed
 
 
+def test_build_entry_fills_name_ja_for_us_ticker_with_known_translation():
+    report = {
+        "ticker": "SPCX", "name": "SpaceX", "price": 152.71, "price_source": "yfinance",
+        "technical": {}, "fundamentals_source": "Yahoo Finance News", "fundamentals_raw": [],
+    }
+    entry = _build_entry("SPCX", report)
+    assert entry["name_ja"] == "スペースX"
+
+
 def test_build_entry_includes_score_change_when_provided():
     report = {
         "ticker": "MU", "name": "Micron", "price": 1015.8, "price_source": "yfinance",
