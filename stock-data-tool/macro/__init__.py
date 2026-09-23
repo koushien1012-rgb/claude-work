@@ -2,6 +2,7 @@ from .tickers import MACRO_TICKERS, get_macro_daily, get_macro_snapshot
 from .news import get_macro_news
 from .calendar import get_upcoming_events
 from .figures import get_figure_mentions, load_watched_figures
+from .econ_indicators import get_calendar as get_econ_indicator_calendar
 
 __all__ = [
     "MACRO_TICKERS",
@@ -11,4 +12,5 @@ __all__ = [
     "get_upcoming_events",
     "get_figure_mentions",
     "load_watched_figures",
+    "get_econ_indicator_calendar",
 ]

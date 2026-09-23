@@ -1,0 +1,243 @@
+<meta charset="UTF-8">
+<title>経済指標カレンダー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --surface: #ffffff;
+    --surface-2: #efe8d8;
+    --ink: #1d1a15;
+    --ink-muted: #746b58;
+    --ink-faint: #9a9280;
+    --hairline: #e2d9c4;
+    --accent: #a97a1f;
+    --accent-ink: #ffffff;
+    --bull: #2f7d54;
+    --bull-soft: #d9ecdf;
+    --bear: #b2452c;
+    --bear-soft: #f3ddd4;
+    --neutral: #8a8270;
+    --neutral-soft: #ece6d6;
+    --shadow: 0 1px 2px rgba(30, 24, 10, 0.06), 0 8px 24px -16px rgba(30, 24, 10, 0.35);
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161a; --surface: #1b1e24; --surface-2: #22262e; --ink: #eeece4;
+      --ink-muted: #9a9a8f; --ink-faint: #6c6a60; --hairline: #2c2f37;
+      --accent: #dcae51; --accent-ink: #1a1305; --bull: #5cb787; --bull-soft: #1c3327;
+      --bear: #de7259; --bear-soft: #3a241e; --neutral: #8f9299; --neutral-soft: #2a2d33;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14161a; --surface: #1b1e24; --surface-2: #22262e; --ink: #eeece4;
+    --ink-muted: #9a9a8f; --ink-faint: #6c6a60; --hairline: #2c2f37;
+    --accent: #dcae51; --accent-ink: #1a1305; --bull: #5cb787; --bull-soft: #1c3327;
+    --bear: #de7259; --bear-soft: #3a241e; --neutral: #8f9299; --neutral-soft: #2a2d33;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.6);
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  @media (prefers-reduced-motion: no-preference) {
+    body { animation: fadeIn 420ms ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  }
+  .page { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
+  header.masthead {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+    gap: 16px; padding-bottom: 20px; margin-bottom: 16px; border-bottom: 2px solid var(--ink);
+  }
+  .masthead h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.7rem, 3vw, 2.3rem); margin: 0 0 4px; text-wrap: balance; letter-spacing: 0.02em; }
+  .masthead .sub { color: var(--ink-muted); font-size: 0.88rem; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .chip { font-family: var(--font-mono); font-size: 0.75rem; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--hairline); color: var(--ink-muted); background: var(--surface); }
+  .back-link { display: inline-block; margin: 0 18px 24px 0; font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-bottom: 22px; font-size: 0.76rem; color: var(--ink-faint); }
+  .legend b { color: var(--ink-muted); font-weight: 500; }
+
+  .day-block { margin-bottom: 22px; }
+  .day-head {
+    display: flex; align-items: baseline; gap: 10px; padding: 8px 4px;
+    font-family: var(--font-display); font-weight: 700; font-size: 1.15rem;
+    border-bottom: 1px solid var(--hairline); margin-bottom: 6px;
+  }
+  .day-head .cnt { font-family: var(--font-mono); font-weight: 400; font-size: 0.72rem; color: var(--ink-faint); }
+  .day-head.today { color: var(--accent); }
+
+  .board { background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+  .erow {
+    display: grid;
+    grid-template-columns: 62px 52px 1fr 92px 92px 74px 74px 74px;
+    align-items: center; gap: 10px; padding: 10px 14px;
+    border-bottom: 1px solid var(--hairline); font-size: 0.82rem;
+  }
+  .erow:last-child { border-bottom: none; }
+  .erow:hover { background: var(--surface-2); }
+  .erow.head {
+    font-family: var(--font-mono); font-size: 0.66rem; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.04em; background: var(--surface-2);
+  }
+  .e-time { font-family: var(--font-mono); color: var(--ink-muted); font-size: 0.78rem; }
+  .e-country { color: var(--ink-muted); font-size: 0.76rem; }
+  .e-name { min-width: 0; }
+  .e-name a { color: var(--ink); text-decoration: none; }
+  .e-name a:hover { color: var(--accent); }
+  .e-stars { white-space: nowrap; font-size: 0.7rem; }
+  .e-stars .on { color: var(--accent); }
+  .e-stars .off { color: var(--hairline); }
+  .e-move { font-family: var(--font-mono); font-size: 0.76rem; text-align: right; white-space: nowrap; }
+  .e-move.pos { color: var(--bull); }
+  .e-move.neg { color: var(--bear); }
+  .e-num { font-family: var(--font-mono); font-size: 0.78rem; text-align: right; color: var(--ink-muted); white-space: nowrap; }
+  .e-num.result { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 760px) {
+    .erow {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas: "time name name" "move prev forecast" "move result result";
+      row-gap: 4px;
+    }
+    .erow.head { display: none; }
+    .e-time { grid-area: time; }
+    .e-country { display: none; }
+    .e-name { grid-area: name; }
+    .e-stars { display: none; }
+    .e-move { grid-area: move; text-align: left; }
+    .e-num { text-align: left; }
+    .e-num.previous { grid-area: prev; }
+    .e-num.forecast { grid-area: forecast; }
+    .e-num.result { grid-area: result; }
+  }
+
+  .empty-state { padding: 40px 18px; text-align: center; color: var(--ink-faint); font-size: 0.85rem; }
+  footer.note { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--hairline); color: var(--ink-faint); font-size: 0.76rem; line-height: 1.7; }
+  footer.note a { color: var(--accent); }
+</style>
+
+<div class="page">
+  <header class="masthead">
+    <div>
+      <h1>経済指標カレンダー</h1>
+      <div class="sub">今後30日以内の主要経済指標 — 日時順</div>
+    </div>
+    <div class="chips">
+      <span class="chip" id="updatedChip"></span>
+      <span class="chip" id="countChip"></span>
+    </div>
+  </header>
+
+  <a class="back-link" href="https://fx.minkabu.jp/indicators" target="_blank" rel="noopener">みんかぶ FX 経済指標カレンダー（情報源） ↗</a>
+
+  <div class="legend">
+    <span><b>重要度</b>：★の数が多いほど為替への影響が大きいとされる指標です</span>
+    <span><b>前回ドル円変動幅</b>：前回発表の10分後にドル円が何pips動いたか</span>
+  </div>
+
+  <div id="days"></div>
+
+  <footer class="note">
+    データは<a href="https://fx.minkabu.jp/indicators" target="_blank" rel="noopener">みんかぶ FX 経済指標カレンダー</a>から取得しています。前回・予想・結果・前回ドル円変動幅はすべて情報源の値をそのまま表示しており、当サイトによる加工・判断は含みません。指標名をクリックすると、みんかぶの当該指標の詳細ページに移動します。いずれも自動取得された参考情報であり、投資助言ではありません。投資判断はご自身の責任で行ってください。
+  </footer>
+</div>
+
+<script>
+  function fmtDate(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return String(iso).slice(0, 10);
+    return d.toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+  }
+  function dayLabel(iso) {
+    const d = new Date(iso + "T00:00:00");
+    const w = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
+    return `${d.getMonth() + 1}月${d.getDate()}日（${w}）`;
+  }
+  function isToday(iso) {
+    const t = new Date();
+    const todayIso = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+    return iso === todayIso;
+  }
+  function escapeAttr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  }
+  function stars(n) {
+    const filled = Math.max(0, Math.min(5, n || 0));
+    let out = "";
+    for (let i = 0; i < 5; i++) out += `<span class="${i < filled ? "on" : "off"}">★</span>`;
+    return out;
+  }
+  function moveClass(move) {
+    if (!move) return "";
+    if (move.startsWith("+")) return "pos";
+    if (move.startsWith("-")) return "neg";
+    return "";
+  }
+
+  function eventRow(e) {
+    return `<div class="erow">
+      <span class="e-time">${e.time || "—"}</span>
+      <span class="e-country">${e.country || ""}</span>
+      <span class="e-name">
+        ${e.indicator_url
+          ? `<a href="${escapeAttr(e.indicator_url)}" target="_blank" rel="noopener">${e.indicator_name}</a>`
+          : e.indicator_name}
+      </span>
+      <span class="e-stars">${stars(e.importance)}</span>
+      <span class="e-move ${moveClass(e.prev_usdjpy_move)}">${e.prev_usdjpy_move || "—"}</span>
+      <span class="e-num previous">${e.previous || "—"}</span>
+      <span class="e-num forecast">${e.forecast || "—"}</span>
+      <span class="e-num result">${e.result || "—"}</span>
+    </div>`;
+  }
+
+  function dayBlock(dateIso, events) {
+    const today = isToday(dateIso);
+    return `<section class="day-block">
+      <div class="day-head${today ? " today" : ""}">
+        ${dayLabel(dateIso)}${today ? "（本日）" : ""}
+        <span class="cnt">${events.length}件</span>
+      </div>
+      <div class="board">
+        <div class="erow head">
+          <span>時間</span><span>国</span><span>指標名</span><span>重要度</span>
+          <span style="text-align:right">前回ドル円変動幅</span><span style="text-align:right">前回</span>
+          <span style="text-align:right">予想</span><span style="text-align:right">結果</span>
+        </div>
+        ${events.map(eventRow).join("")}
+      </div>
+    </section>`;
+  }
+
+  function render(data) {
+    const events = data.events || [];
+    document.getElementById("updatedChip").textContent = `更新: ${fmtDate(data.generated_at)}`;
+    document.getElementById("countChip").textContent = `${events.length}件`;
+
+    const byDate = new Map();
+    for (const e of events) {
+      if (!byDate.has(e.date)) byDate.set(e.date, []);
+      byDate.get(e.date).push(e);
+    }
+
+    const el = document.getElementById("days");
+    if (!byDate.size) {
+      el.innerHTML = `<div class="empty-state">対象期間内の経済指標がありません</div>`;
+      return;
+    }
+    el.innerHTML = [...byDate.entries()].map(([d, evs]) => dayBlock(d, evs)).join("");
+  }
+
+  fetch("econ_calendar_data.json")
+    .then((r) => r.json())
+    .then(render)
+    .catch((err) => {
+      document.getElementById("days").innerHTML = `<div class="empty-state">データの読み込みに失敗しました: ${err}</div>`;
+    });
+</script>
