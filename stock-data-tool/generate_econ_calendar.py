@@ -5,7 +5,7 @@ from pathlib import Path
 from macro import get_econ_indicator_calendar
 
 OUT_PATH = Path("dashboard/econ_calendar_data.json")
-WITHIN_DAYS = 30
+WITHIN_DAYS = 31
 
 
 def main():
