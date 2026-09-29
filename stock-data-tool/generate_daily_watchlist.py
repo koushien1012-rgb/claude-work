@@ -12,6 +12,7 @@ from screener import (
     refine_candidates, scan_universe, top_signals,
 )
 from stock_data import get_daily, get_us_realtime_snapshot
+from translate import translate_to_ja
 
 TOP_N = 10
 CANDIDATE_POOL_N = 40
@@ -31,12 +32,18 @@ def _sanitize(obj):
     return obj
 
 
+def _is_japanese_ticker(ticker: str) -> bool:
+    return ticker.upper().endswith(".T")
+
+
 def _ticker_entry(ticker: str, report: dict, entry_timeframe: dict | None = None,
                    chart: dict | None = None) -> dict:
+    name = report.get("name") or ""
+    name_ja = None if _is_japanese_ticker(ticker) else translate_to_ja(name)
     return {
         "ticker": ticker,
-        "name": report.get("name") or "",
-        "name_ja": None,
+        "name": name,
+        "name_ja": name_ja,
         "sector": report.get("sector"),
         "return_20d": report.get("return_20d"),
         "relative_strength_20d": report.get("relative_strength_20d"),

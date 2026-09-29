@@ -1,3 +1,15 @@
+import socket
+
+
+def opend_reachable(host: str = "127.0.0.1", port: int = 11111, timeout: float = 1.0) -> bool:
+    """Probe OpenD's port first: OpenQuoteContext retries forever when OpenD is down."""
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except OSError:
+        return False
+
+
 def get_us_realtime_snapshot(tickers: list[str], host: str = "127.0.0.1", port: int = 11111) -> dict:
     """Fetch real-time snapshots for US tickers via a locally running moomoo OpenD.
 
@@ -10,7 +22,7 @@ def get_us_realtime_snapshot(tickers: list[str], host: str = "127.0.0.1", port: 
     except ImportError:
         return {}
 
-    if not tickers:
+    if not tickers or not opend_reachable(host, port):
         return {}
 
     code_map = {f"US.{t}": t for t in tickers}

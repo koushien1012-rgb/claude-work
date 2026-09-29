@@ -88,7 +88,8 @@ def test_build_market_block_threads_entry_timeframe_and_chart():
     with patch("generate_daily_watchlist.generate_report", side_effect=lambda t, **kw: _fake_report(t)), \
          patch("generate_daily_watchlist.save_report"), \
          patch("generate_daily_watchlist.get_daily", return_value=price_df) as mock_get_daily, \
-         patch("generate_daily_watchlist.build_chart_data", return_value=sentinel_chart) as mock_chart:
+         patch("generate_daily_watchlist.build_chart_data", return_value=sentinel_chart) as mock_chart, \
+         patch("generate_daily_watchlist.translate_to_ja", side_effect=lambda n: f"{n}-ja") as mock_translate:
         reports_out = {}
         entries = _build_market_block(scan_df, bullish, bearish, name_map, reports_out)
 
@@ -103,6 +104,9 @@ def test_build_market_block_threads_entry_timeframe_and_chart():
     assert by_ticker["AAA"]["chart"] is sentinel_chart
     assert by_ticker["BBB"]["chart"] is sentinel_chart
     assert by_ticker["AAA"]["business_summary_ja"] == "summary-ja-AAA"
+    # US tickers (no ".T" suffix) get their company name machine-translated automatically.
+    assert by_ticker["AAA"]["name_ja"] == "name-AAA-ja"
+    assert mock_translate.call_count == 2
 
     assert mock_get_daily.call_count == 2
     assert mock_chart.call_count == 2
@@ -126,7 +130,8 @@ def test_build_market_block_feeds_real_build_chart_data():
 
     with patch("generate_daily_watchlist.generate_report", side_effect=lambda t, **kw: _fake_report(t)), \
          patch("generate_daily_watchlist.save_report"), \
-         patch("generate_daily_watchlist.get_daily", return_value=price_df):
+         patch("generate_daily_watchlist.get_daily", return_value=price_df), \
+         patch("generate_daily_watchlist.translate_to_ja", return_value="ja"):
         reports_out = {}
         entries = _build_market_block(scan_df, bullish, bearish, name_map, reports_out)
 
@@ -158,7 +163,8 @@ def test_build_market_block_keeps_ticker_when_chart_build_fails():
     with patch("generate_daily_watchlist.generate_report", side_effect=lambda t, **kw: _fake_report(t)), \
          patch("generate_daily_watchlist.save_report"), \
          patch("generate_daily_watchlist.get_daily", return_value=price_df), \
-         patch("generate_daily_watchlist.build_chart_data", side_effect=_chart_side_effect):
+         patch("generate_daily_watchlist.build_chart_data", side_effect=_chart_side_effect), \
+         patch("generate_daily_watchlist.translate_to_ja", return_value="ja"):
         reports_out = {}
         entries = _build_market_block(scan_df, bullish, bearish, name_map, reports_out)
 
@@ -191,7 +197,8 @@ def test_build_market_block_partial_chart_failure_only_drops_chart_for_failing_t
     with patch("generate_daily_watchlist.generate_report", side_effect=lambda t, **kw: _fake_report(t)), \
          patch("generate_daily_watchlist.save_report"), \
          patch("generate_daily_watchlist.get_daily", return_value=price_df), \
-         patch("generate_daily_watchlist.build_chart_data", side_effect=_chart_side_effect):
+         patch("generate_daily_watchlist.build_chart_data", side_effect=_chart_side_effect), \
+         patch("generate_daily_watchlist.translate_to_ja", return_value="ja"):
         reports_out = {}
         entries = _build_market_block(scan_df, bullish, bearish, name_map, reports_out)
 

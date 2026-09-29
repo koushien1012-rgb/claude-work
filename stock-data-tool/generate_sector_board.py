@@ -8,7 +8,7 @@ import pandas as pd
 from analysis.signals import label_for_score
 from screener import CATEGORY_LABELS, CATEGORY_ORDER, categories_for_sector, get_market_caps
 from stock_data import get_business_summary_en, get_next_earnings_date
-from translate import business_summary_ja
+from translate import business_summary_ja, translate_to_ja
 
 SCAN_PATH = Path("output/watchlist/full_scan.csv")
 OUT_PATH = Path("output/watchlist/sector_board.json")
@@ -39,12 +39,18 @@ def _next_earnings_date_cached(ticker: str) -> str | None:
     return get_next_earnings_date(ticker)
 
 
+@lru_cache(maxsize=None)
+def _name_ja_cached(ticker: str, name: str) -> str | None:
+    return None if _is_jp(ticker) else translate_to_ja(name)
+
+
 def _pick_to_dict(row: pd.Series) -> dict:
     ticker = row["ticker"]
+    name = row.get("name") or ""
     return {
         "ticker": ticker,
-        "name": row.get("name") or "",
-        "name_ja": None,
+        "name": name,
+        "name_ja": _name_ja_cached(ticker, name),
         "sector": row.get("sector"),
         "price": None if pd.isna(row.get("price")) else round(float(row["price"]), 2),
         "market_cap": None if pd.isna(row.get("market_cap")) else float(row["market_cap"]),

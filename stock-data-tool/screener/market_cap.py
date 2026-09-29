@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yfinance as yf
 
-from stock_data.moomoo_source import get_us_realtime_snapshot  # noqa: F401 (kept for symmetry/reference)
+from stock_data.moomoo_source import get_us_realtime_snapshot, opend_reachable  # noqa: F401 (kept for symmetry/reference)
 
 _CACHE_DIR = Path("output/cache")
 _CACHE_TTL_SECONDS = 7 * 24 * 3600
@@ -28,6 +28,8 @@ def _get_us_market_caps_via_moomoo(tickers: list[str]) -> dict:
     try:
         from moomoo import OpenQuoteContext, RET_OK
     except ImportError:
+        return {}
+    if not opend_reachable():
         return {}
     code_map = {f"US.{t}": t for t in tickers}
     result = {}
